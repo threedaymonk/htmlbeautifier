@@ -1,0 +1,115 @@
+#!/usr/bin/env ruby
+
+class HtmlNormalizer
+  
+  RUBY_INDENT  = 
+    %r{ ^ ( if | unless | while | begin | elsif )\b
+      | \b ( do | \{ ) ( \s* \| [^\|]+ \| )? $
+      }x
+  RUBY_OUTDENT = 
+    %r{ ^ ( end | elsif |\} ) \b 
+      }x
+  
+  def initialize(tab_stops=2)
+    @level = 0
+    @new_line = true
+    @tab = ' ' * tab_stops
+  end
+  
+  def indent
+    @level += 1
+  end
+  
+  def outdent
+    @level -= 1
+  end
+  
+  def emit(s)
+    if (@new_line)
+      print(@tab * @level)
+    end
+    print(s)
+    @new_line = false
+  end
+  
+  def whitespace
+    puts
+    @new_line = true
+  end
+  
+  def embed(e)
+    lines = e.gsub(/\A<%|%>\Z/, '').split(/\n/).map{ |l| l.strip }
+    outdent if lines.first =~ RUBY_OUTDENT
+    emit e
+    indent if lines.last =~ RUBY_INDENT
+  end
+  
+  def directive(e)
+    emit e
+  end
+  
+  def element(e)
+    emit e
+  end
+  
+  def verbatim(s)
+    emit s
+  end
+  
+  def close_element(e)
+    outdent
+    if @level < 0
+      puts 'error outdenting'
+      puts e
+    end
+    emit e
+  end
+  
+  def open_element(e)
+    emit e
+    indent
+  end
+  
+  def text(t)
+    emit t
+  end
+  
+  def scan(html)
+    html.strip.gsub(/\t/, @tab).scan(
+      %r{ <%.*?%>
+        | <script\b.*?</script>
+        | <style\b.*?</style>
+        | <!--.*?-->
+        | <.*?>
+        | \s+
+        | [^<]+
+        }mix
+    ) do |elem|
+      case elem
+      when %r{\A<%.*%>$}
+        embed(elem)
+      when %r{\A<!.*?>$}
+        directive(elem)
+      when %r{\A<script\b|\A<style\b}i
+        verbatim(elem)
+      when %r{<!--}
+        verbatim(elem)
+      when %r{\A<.*?/>$}
+        element(elem)
+      when %r{\A</}
+        close_element(elem)
+      when %r{\A<[^/]}
+        open_element(elem)
+      when %r{\A\s+\Z}
+        whitespace
+      else
+        text(elem.strip)
+        if elem =~ /\s+$/
+          whitespace
+        end
+      end
+    end
+  end
+end
+
+HtmlNormalizer.new.scan($stdin.read)
