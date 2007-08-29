@@ -1,6 +1,6 @@
-#!/usr/bin/env ruby
+require 'htmlbeautifier/parser'
 
-class HtmlNormalizer
+class HtmlBeautifier
   
   RUBY_INDENT  = 
     %r{ ^ ( if | unless | while | begin | elsif )\b
@@ -10,10 +10,15 @@ class HtmlNormalizer
     %r{ ^ ( end | elsif |\} ) \b 
       }x
   
-  def initialize(tab_stops=2)
+  def initialize(output)
     @level = 0
     @new_line = true
-    @tab = ' ' * tab_stops
+    self.tab_stops = 2
+    @output = output
+  end
+  
+  def tab_stops=(n)
+    @tab = ' ' * n
   end
   
   def indent
@@ -26,14 +31,14 @@ class HtmlNormalizer
   
   def emit(s)
     if (@new_line)
-      print(@tab * @level)
+      @output << (@tab * @level)
     end
-    print(s)
+    @output << s
     @new_line = false
   end
   
-  def whitespace
-    puts
+  def whitespace(*x)
+    emit "\n"
     @new_line = true
   end
   
@@ -71,45 +76,26 @@ class HtmlNormalizer
   end
   
   def text(t)
-    emit t
+    emit(t.strip)
+    if t =~ /\s+$/
+      whitespace
+    end
   end
   
   def scan(html)
-    html.strip.gsub(/\t/, @tab).scan(
-      %r{ <%.*?%>
-        | <script\b.*?</script>
-        | <style\b.*?</style>
-        | <!--.*?-->
-        | <.*?>
-        | \s+
-        | [^<]+
-        }mix
-    ) do |elem|
-      case elem
-      when %r{\A<%.*%>$}
-        embed(elem)
-      when %r{\A<!.*?>$}
-        directive(elem)
-      when %r{\A<script\b|\A<style\b}i
-        verbatim(elem)
-      when %r{<!--}
-        verbatim(elem)
-      when %r{\A<.*?/>$}
-        element(elem)
-      when %r{\A</}
-        close_element(elem)
-      when %r{\A<[^/]}
-        open_element(elem)
-      when %r{\A\s+\Z}
-        whitespace
-      else
-        text(elem.strip)
-        if elem =~ /\s+$/
-          whitespace
-        end
-      end
+    html = html.strip.gsub(/\t/, @tab)
+    parser = Parser.new do
+      map %r{<%.*?%>}m,               :embed
+      map %r{<!.*?>}m,                :directive
+      map %r{<script\b.*?</script>}m, :verbatim
+      map %r{<style\b.*?</style>}m,   :verbatim
+      map %r{<!--.*?-->}m,            :verbatim
+      map %r{</.*?>}m,                :close_element
+      map %r{<.*?/>}m,                :element
+      map %r{<.*?>}m,                 :open_element
+      map %r{\s+},                    :whitespace
+      map %r{[^<]+},                  :text
     end
+    parser.scan(html, self)
   end
 end
-
-HtmlNormalizer.new.scan($stdin.read)

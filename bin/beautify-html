@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+$:.unshift(ENV['HOME']+'/Projects/htmlbeautifier/lib')
+require 'htmlbeautifier/beautifier'
+
+HtmlBeautifier.new($stdout).scan($stdin.read)
