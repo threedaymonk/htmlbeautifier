@@ -1,3 +1,3 @@
 #!/usr/bin/env ruby
 require 'htmlbeautifier/beautifier'
-HtmlBeautifier.new($stdout).scan($stdin.read)
+HtmlBeautifier::Beautifier.new($stdout).scan($stdin.read)
