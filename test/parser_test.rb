@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/test_helper'
 require 'htmlbeautifier/parser'
 
 class HtmlBeautifierParserTest < Test::Unit::TestCase
@@ -11,7 +11,6 @@ class HtmlBeautifierParserTest < Test::Unit::TestCase
     end
     
     def method_missing(method, *params)
-      p [method, params]
       @sequence << [method, params]
     end
   end
