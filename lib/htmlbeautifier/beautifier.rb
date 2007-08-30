@@ -27,6 +27,7 @@ class HtmlBeautifier
   
   def outdent
     @level -= 1
+    raise "Outdented too far" if @level < 0
   end
   
   def emit(s)
@@ -61,12 +62,25 @@ class HtmlBeautifier
     emit s
   end
   
+  def foreign_block(s)
+    opening, code, closing = s.scan(%r{(<[^>]+>)(.*?)(</[^>]+>)}mi)[0]
+    lines = code.split(/\n/)
+    lines.shift while lines.first.strip.empty?
+    lines.pop while lines.last.strip.empty?
+    indentation = lines.first[/^ +/]
+    emit opening
+    indent
+    whitespace
+    lines.each do |line|
+      emit line.rstrip.sub(/^#{indentation}/, '')
+      whitespace
+    end
+    outdent
+    emit closing
+  end
+  
   def close_element(e)
     outdent
-    if @level < 0
-      puts 'error outdenting'
-      puts e
-    end
     emit e
   end
   
@@ -87,12 +101,12 @@ class HtmlBeautifier
     parser = Parser.new do
       map %r{<%.*?%>}m,               :embed
       map %r{<!.*?>}m,                :directive
-      map %r{<script\b.*?</script>}m, :verbatim
-      map %r{<style\b.*?</style>}m,   :verbatim
+      map %r{<script\b.*?</script>}m, :foreign_block
+      map %r{<style\b.*?</style>}m,   :foreign_block
       map %r{<!--.*?-->}m,            :verbatim
       map %r{</.*?>}m,                :close_element
+      map %r{<.*?[^/]>}m,             :open_element
       map %r{<.*?/>}m,                :element
-      map %r{<.*?>}m,                 :open_element
       map %r{\s+},                    :whitespace
       map %r{[^<]+},                  :text
     end

@@ -1,5 +1,15 @@
 class Parser
   
+  def self.debug_block(&blk)
+    @debug_block = blk
+  end
+  
+  def self.debug(match, method)
+    if @debug_block
+      @debug_block.call(match, method)
+    end
+  end
+  
   def initialize(&blk)
     @maps = []
     if block_given?
@@ -21,6 +31,7 @@ class Parser
   def dispatch(match, receiver)
     @maps.each do |pattern, method|
       if match.match(%r{ \A #{pattern} }x)
+        self.class.debug(match, method)
         receiver.__send__(method, match)
         return
       end
