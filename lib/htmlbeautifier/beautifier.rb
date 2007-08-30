@@ -55,10 +55,6 @@ module HtmlBeautifier
       emit e
     end
   
-    def element(e)
-      emit e
-    end
-  
     def verbatim(s)
       emit s
     end
@@ -78,6 +74,10 @@ module HtmlBeautifier
       end
       outdent
       emit closing
+    end
+  
+    def standalone_element(e)
+      emit e
     end
   
     def close_element(e)
@@ -105,9 +105,9 @@ module HtmlBeautifier
         map %r{<script\b.*?</script>}m, :foreign_block
         map %r{<style\b.*?</style>}m,   :foreign_block
         map %r{<!--.*?-->}m,            :verbatim
-        map %r{</.*?>}m,                :close_element
-        map %r{<.*?[^/]>}m,             :open_element
-        map %r{<.*?/>}m,                :element
+        map %r{<[^>]+/>}m,              :standalone_element
+        map %r{</[^>]+>}m,              :close_element
+        map %r{<[^>]+>}m,               :open_element
         map %r{\s+},                    :whitespace
         map %r{[^<]+},                  :text
       end

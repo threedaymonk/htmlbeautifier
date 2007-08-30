@@ -24,7 +24,7 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
   include HtmlBeautifierTestUtilities
   
   def setup
-    # Parser.debug_block{ |match, method|
+    # HtmlBeautifier::Parser.debug_block{ |match, method|
     #   puts("#{match.inspect} => #{method}")
     # }
   end
@@ -143,6 +143,20 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
       </style>
     ))
     assert_beautifies expected, source
+  end
+  
+  def test_should_indent_nested_divs
+    source = code(%q(
+      <div>
+        <div>
+          <img src="foo" alt="" />
+        </div>
+        <div>
+          <img src="foo" alt="" />
+        </div>
+      </div>
+    ))
+    assert_beautifies source, source
   end
   
 end
