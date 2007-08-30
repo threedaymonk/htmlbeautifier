@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'htmlbeautifier/parser'
 
-class ParserTest < Test::Unit::TestCase
+class HtmlBeautifierParserTest < Test::Unit::TestCase
   
   class Receiver
     attr_reader :sequence
@@ -18,7 +18,7 @@ class ParserTest < Test::Unit::TestCase
   
   def test_should_dispatch_matching_sequence
     receiver = Receiver.new
-    parser = Parser.new{
+    parser = HtmlBeautifier::Parser.new{
       map %r{foo}, :foo
       map %r{bar\s*}, :bar
       map %r{\s+}, :whitespace

@@ -1,13 +1,7 @@
 require 'test_helper'
 require 'htmlbeautifier/beautifier'
 
-class HtmlBeautifierRegressionTest < Test::Unit::TestCase
-  
-  def setup
-    # Parser.debug_block{ |match, method|
-    #   puts("#{match.inspect} => #{method}")
-    # }
-  end
+module HtmlBeautifierTestUtilities
   
   def code(str)
     str = str.gsub(/\A\n|\n\s*\Z/, '')
@@ -18,9 +12,21 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
   
   def assert_beautifies(expected, source)
     actual = ''
-    beautifier = HtmlBeautifier.new(actual)
+    beautifier = HtmlBeautifier::Beautifier.new(actual)
     beautifier.scan(source)
     assert_equal expected, actual
+  end
+  
+end
+
+class HtmlBeautifierRegressionTest < Test::Unit::TestCase
+  
+  include HtmlBeautifierTestUtilities
+  
+  def setup
+    # Parser.debug_block{ |match, method|
+    #   puts("#{match.inspect} => #{method}")
+    # }
   end
   
   def test_should_ignore_html_fragments_in_embedded_code
