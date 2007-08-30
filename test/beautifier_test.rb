@@ -93,6 +93,12 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     assert_beautifies expected, source
   end
   
+  def test_should_skip_over_empty_scripts
+    source = %q(<script src="/foo.js" type="text/javascript" charset="utf-8"></script>)
+    expected = source
+    assert_beautifies expected, source
+  end
+  
   def test_should_indent_styles
     source = code(%q(
       <style>
@@ -156,7 +162,8 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         </div>
       </div>
     ))
-    assert_beautifies source, source
+    expected = source
+    assert_beautifies expected, source
   end
   
 end

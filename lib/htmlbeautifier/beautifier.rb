@@ -61,18 +61,23 @@ module HtmlBeautifier
   
     def foreign_block(s)
       opening, code, closing = s.scan(%r{(<[^>]+>)(.*?)(</[^>]+>)}mi)[0]
-      lines = code.split(/\n/)
-      lines.shift while lines.first.strip.empty?
-      lines.pop while lines.last.strip.empty?
-      indentation = lines.first[/^ +/]
       emit opening
-      indent
-      whitespace
-      lines.each do |line|
-        emit line.rstrip.sub(/^#{indentation}/, '')
+      unless code.empty?
+        indent
+
+        lines = code.split(/\n/)
+        lines.shift while lines.first.strip.empty?
+        lines.pop while lines.last.strip.empty?
+        indentation = lines.first[/^ +/]
+
         whitespace
+        lines.each do |line|
+          emit line.rstrip.sub(/^#{indentation}/, '')
+          whitespace
+        end
+
+        outdent
       end
-      outdent
       emit closing
     end
   
