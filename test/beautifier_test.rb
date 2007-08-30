@@ -24,9 +24,9 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
   include HtmlBeautifierTestUtilities
   
   def setup
-    # HtmlBeautifier::Parser.debug_block{ |match, method|
-    #   puts("#{match.inspect} => #{method}")
-    # }
+    HtmlBeautifier::Parser.debug_block{ |match, method|
+      puts("#{match.inspect} => #{method}")
+    }
   end
   
   def test_should_ignore_html_fragments_in_embedded_code
@@ -151,7 +151,7 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     assert_beautifies expected, source
   end
   
-  def test_should_indent_nested_divs
+  def test_should_indent_divs_containing_standalone_elements
     source = code(%q(
       <div>
         <div>
@@ -162,6 +162,18 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         </div>
       </div>
     ))
+    expected = source
+    assert_beautifies expected, source
+  end
+  
+  def test_should_not_break_line_on_embedded_code_within_script_opening_element
+    source = '<script src="<%= path %>" type="text/javascript"></script>'
+    expected = source
+    assert_beautifies expected, source
+  end
+
+  def test_should_not_break_line_on_embedded_code_within_normal_element
+    source = '<img src="<%= path %>" alt="foo" />'
     expected = source
     assert_beautifies expected, source
   end

@@ -10,6 +10,7 @@ module HtmlBeautifier
     RUBY_OUTDENT = 
       %r{ ^ ( end | elsif |\} ) \b 
         }x
+    ELEMENT_CONTENT = %r{ (?:[^<>]|<%.*?%>)+ }mx
   
     def initialize(output)
       @level = 0
@@ -60,7 +61,7 @@ module HtmlBeautifier
     end
   
     def foreign_block(s)
-      opening, code, closing = s.scan(%r{(<[^>]+>)(.*?)(</[^>]+>)}mi)[0]
+      opening, code, closing = s.scan(%r{(<#{ELEMENT_CONTENT}>)(.*?)(</#{ELEMENT_CONTENT}>)}mi)[0]
       emit opening
       unless code.empty?
         indent
@@ -110,9 +111,9 @@ module HtmlBeautifier
         map %r{<script\b.*?</script>}m, :foreign_block
         map %r{<style\b.*?</style>}m,   :foreign_block
         map %r{<!--.*?-->}m,            :verbatim
-        map %r{<[^>]+/>}m,              :standalone_element
-        map %r{</[^>]+>}m,              :close_element
-        map %r{<[^>]+>}m,               :open_element
+        map %r{<#{ELEMENT_CONTENT}/>}m, :standalone_element
+        map %r{</#{ELEMENT_CONTENT}>}m, :close_element
+        map %r{<#{ELEMENT_CONTENT}>}m,  :open_element
         map %r{\s+},                    :whitespace
         map %r{[^<]+},                  :text
       end
