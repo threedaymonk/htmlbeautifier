@@ -56,7 +56,7 @@ module HtmlBeautifier
       emit e
     end
   
-    def verbatim(s)
+    def comment(s)
       emit s
     end
   
@@ -107,10 +107,12 @@ module HtmlBeautifier
       html = html.strip.gsub(/\t/, @tab)
       parser = Parser.new do
         map %r{<%.*?%>}m,               :embed
+        map %r{<!--\[.*?\]>}m,          :open_element
+        map %r{<!\[.*?\]-->}m,          :close_element
+        map %r{<!--.*?-->}m,            :comment
         map %r{<!.*?>}m,                :directive
         map %r{<script\b.*?</script>}m, :foreign_block
         map %r{<style\b.*?</style>}m,   :foreign_block
-        map %r{<!--.*?-->}m,            :verbatim
         map %r{<#{ELEMENT_CONTENT}/>}m, :standalone_element
         map %r{</#{ELEMENT_CONTENT}>}m, :close_element
         map %r{<#{ELEMENT_CONTENT}>}m,  :open_element

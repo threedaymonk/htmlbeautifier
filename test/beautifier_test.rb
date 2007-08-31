@@ -24,9 +24,9 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
   include HtmlBeautifierTestUtilities
   
   def setup
-    HtmlBeautifier::Parser.debug_block{ |match, method|
-      puts("#{match.inspect} => #{method}")
-    }
+    # HtmlBeautifier::Parser.debug_block{ |match, method|
+    #   puts("#{match.inspect} => #{method}")
+    # }
   end
   
   def test_should_ignore_html_fragments_in_embedded_code
@@ -175,6 +175,26 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
   def test_should_not_break_line_on_embedded_code_within_normal_element
     source = '<img src="<%= path %>" alt="foo" />'
     expected = source
+    assert_beautifies expected, source
+  end
+  
+  def test_should_indent_inside_IE_conditional_comments
+    source = code(%q(
+      <!--[if IE 6]>
+      <link rel="stylesheet" href="/stylesheets/ie6.css" type="text/css" />
+      <![endif]-->
+      <!--[if IE 5]>
+      <link rel="stylesheet" href="/stylesheets/ie5.css" type="text/css" />
+      <![endif]-->
+    ))
+    expected = code(%q(
+      <!--[if IE 6]>
+        <link rel="stylesheet" href="/stylesheets/ie6.css" type="text/css" />
+      <![endif]-->
+      <!--[if IE 5]>
+        <link rel="stylesheet" href="/stylesheets/ie5.css" type="text/css" />
+      <![endif]-->
+    ))
     assert_beautifies expected, source
   end
   
