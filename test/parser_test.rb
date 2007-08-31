@@ -15,6 +15,10 @@ class HtmlBeautifierParserTest < Test::Unit::TestCase
     end
   end
   
+  def setup
+    # HtmlBeautifier::Parser.debug_block{ |match, method| puts("#{match.inspect} => #{method}") }
+  end
+
   def test_should_dispatch_matching_sequence
     receiver = Receiver.new
     parser = HtmlBeautifier::Parser.new{
@@ -24,6 +28,15 @@ class HtmlBeautifierParserTest < Test::Unit::TestCase
     }
     parser.scan('foo bar ', receiver)
     assert_equal [[:foo, ['foo']], [:whitespace, [' ']], [:bar, ['bar ']]], receiver.sequence
+  end
+  
+  def test_should_send_parenthesized_components_as_separate_parameters
+    receiver = Receiver.new
+    parser = HtmlBeautifier::Parser.new{
+      map %r{(foo)\((.*?)\)}, :foo
+    }
+    parser.scan('foo(bar)', receiver)
+    assert_equal [[:foo, ['foo', 'bar']]], receiver.sequence
   end
   
 end

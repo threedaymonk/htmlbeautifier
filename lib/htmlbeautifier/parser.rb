@@ -1,3 +1,5 @@
+require 'strscan'
+
 module HtmlBeautifier
   class Parser
   
@@ -23,17 +25,24 @@ module HtmlBeautifier
     end
   
     def scan(subject, receiver)
-      pattern = %r{ #{ @maps.map{ |p,m| p }.join('|') } }x
-      subject.scan(pattern) do |match|
-        dispatch(match, receiver)
+      scanner = StringScanner.new(subject)
+      until scanner.eos?
+        dispatch(scanner, receiver)
       end
     end
   
-    def dispatch(match, receiver)
+    def dispatch(scanner, receiver)
       @maps.each do |pattern, method|
-        if match.match(%r{ \A #{pattern} }x)
-          self.class.debug(match, method)
-          receiver.__send__(method, match)
+        if scanner.scan(pattern)
+          params = []
+          i = 1
+          while scanner[i]
+            params << scanner[i]
+            i += 1
+          end
+          params = [scanner[0]] if params.empty?
+          self.class.debug(scanner[0], method)
+          receiver.__send__(method, *params)
           return
         end
       end
