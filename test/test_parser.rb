@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 require 'htmlbeautifier/parser'
 
-class HtmlBeautifierParserTest < Test::Unit::TestCase
+class TestParser < Test::Unit::TestCase
   
   class Receiver
     attr_reader :sequence

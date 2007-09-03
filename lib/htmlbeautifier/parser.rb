@@ -8,7 +8,7 @@ module HtmlBeautifier
     end
   
     def self.debug(match, method)
-      if @debug_block
+      if defined? @debug_block
         @debug_block.call(match, method)
       end
     end
