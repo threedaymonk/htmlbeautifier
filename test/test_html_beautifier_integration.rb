@@ -1,11 +1,8 @@
 require File.dirname(__FILE__) + '/test_helper'
-require 'htmlbeautifier/beautifier'
-require 'html_beautifier_test_utilities'
 
 class TestHtmlBeautifierIntegration < Test::Unit::TestCase
-  
   include HtmlBeautifierTestUtilities
-  
+
   def test_should_correctly_indent_mixed_document
     source = code(%q(
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

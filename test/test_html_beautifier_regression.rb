@@ -1,15 +1,14 @@
 require File.dirname(__FILE__) + '/test_helper'
 require 'htmlbeautifier/beautifier'
-require 'html_beautifier_test_utilities'
 
 class HtmlBeautifierRegressionTest < Test::Unit::TestCase
-  
+
   include HtmlBeautifierTestUtilities
-  
+
   def setup
     # HtmlBeautifier::Parser.debug_block{ |match, method| puts("#{match.inspect} => #{method}") }
   end
-  
+
   def test_should_ignore_html_fragments_in_embedded_code
     source = code(%q(
       <div>
@@ -23,7 +22,7 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies expected, source
   end
-  
+
   def test_should_indent_scripts
     source = code(%q(
       <script>
@@ -43,13 +42,13 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies expected, source
   end
-  
+
   def test_should_remove_blank_lines_around_scripts
     source = code(%q(
       <script>
-      
+
         f();
-      
+
       </script>
     ))
     expected = code(%q(
@@ -59,11 +58,11 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies expected, source
   end
-  
+
   def test_should_remove_trailing_space_from_script_lines
     source = code(%q(
       <script>
-        f();  
+        f();
       </script>
     ))
     expected = code(%q(
@@ -73,13 +72,13 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies expected, source
   end
-  
+
   def test_should_skip_over_empty_scripts
     source = %q(<script src="/foo.js" type="text/javascript" charset="utf-8"></script>)
     expected = source
     assert_beautifies expected, source
   end
-  
+
   def test_should_indent_styles
     source = code(%q(
       <style>
@@ -101,13 +100,13 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies expected, source
   end
-  
+
   def test_should_remove_blank_lines_around_styles
     source = code(%q(
       <style>
-      
+
         .foo{ margin: 0; }
-      
+
       </style>
     ))
     expected = code(%q(
@@ -121,7 +120,7 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
   def test_should_remove_trailing_space_from_style_lines
     source = code(%q(
       <style>
-        .foo{ margin: 0; }  
+        .foo{ margin: 0; }
       </style>
     ))
     expected = code(%q(
@@ -131,7 +130,7 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies expected, source
   end
-  
+
   def test_should_indent_divs_containing_standalone_elements
     source = code(%q(
       <div>
@@ -146,7 +145,7 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     expected = source
     assert_beautifies expected, source
   end
-  
+
   def test_should_not_break_line_on_embedded_code_within_script_opening_element
     source = '<script src="<%= path %>" type="text/javascript"></script>'
     expected = source
@@ -158,7 +157,7 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     expected = source
     assert_beautifies expected, source
   end
-  
+
   def test_should_indent_inside_IE_conditional_comments
     source = code(%q(
       <!--[if IE 6]>
@@ -178,5 +177,5 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies expected, source
   end
-  
+
 end
