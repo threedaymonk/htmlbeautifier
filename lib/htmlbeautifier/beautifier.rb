@@ -4,11 +4,11 @@ module HtmlBeautifier
   class Beautifier
 
     RUBY_INDENT  =
-      %r{ ^ ( if | unless | while | begin | elsif )\b
+      %r{ ^ ( if | unless | while | begin | elsif | else )\b
         | \b ( do | \{ ) ( \s* \| [^\|]+ \| )? $
         }x
     RUBY_OUTDENT =
-      %r{ ^ ( end | elsif |\} ) \b
+      %r{ ^ ( end | elsif | else |\} ) \b
         }x
     ELEMENT_CONTENT = %r{ (?:[^<>]|<%.*?%>)* }mx
 

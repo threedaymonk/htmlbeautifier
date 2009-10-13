@@ -178,6 +178,24 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     assert_beautifies expected, source
   end
 
+  def test_should_outdent_else
+    source = code(%q(
+      <% if @x %>
+      Foo
+      <% else %>
+      Bar
+      <% end %>
+    ))
+    expected = code(%q(
+      <% if @x %>
+        Foo
+      <% else %>
+        Bar
+      <% end %>
+    ))
+    assert_beautifies expected, source
+  end
+
   def test_should_indent_with_hyphenated_erb_tags
     source = code(%q(
       <%- if @x -%>
