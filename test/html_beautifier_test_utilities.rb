@@ -11,9 +11,7 @@ module HtmlBeautifierTestUtilities
     actual = ''
     beautifier = HtmlBeautifier::Beautifier.new(actual)
     beautifier.scan(source)
-    # puts expected
-    # puts actual
-    assert_equal expected, actual
+    assert expected == actual, "Expected:\n#{expected}\nbut was:\n#{actual}"
   end
 
 end
