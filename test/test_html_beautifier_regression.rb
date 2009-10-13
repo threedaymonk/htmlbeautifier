@@ -178,4 +178,26 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     assert_beautifies expected, source
   end
 
+  def test_should_indent_with_hyphenated_erb_tags
+    source = code(%q(
+      <%- if @x -%>
+      <%- @ys.each do |y| -%>
+      <p>Foo</p>
+      <%- end -%>
+      <%- elsif @z -%>
+      <hr />
+      <%- end -%>
+    ))
+    expected = code(%q(
+      <%- if @x -%>
+        <%- @ys.each do |y| -%>
+          <p>Foo</p>
+        <%- end -%>
+      <%- elsif @z -%>
+        <hr />
+      <%- end -%>
+    ))
+    assert_beautifies expected, source
+  end
+
 end

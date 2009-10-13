@@ -95,7 +95,7 @@ module HtmlBeautifier
     def scan(html)
       html = html.strip.gsub(/\t/, @tab)
       parser = Parser.new do
-        map %r{(<%=?)(.*?)(%>)}m,                               :embed
+        map %r{(<%-?=?)(.*?)(-?%>)}m,                           :embed
         map %r{<!--\[.*?\]>}m,                                  :open_element
         map %r{<!\[.*?\]-->}m,                                  :close_element
         map %r{<!--.*?-->}m,                                    :standalone_element
