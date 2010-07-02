@@ -1,4 +1,18 @@
 #!/usr/bin/env ruby
 require 'htmlbeautifier/beautifier'
-HtmlBeautifier::Beautifier.new($stdout).scan($stdin.read)
-$stdout << "\n"
+
+def beautify(input, output)
+  HtmlBeautifier::Beautifier.new(output).scan(input)
+  $stdout << "\n"
+end
+
+if ARGV.any?
+  ARGV.each do |f|
+    input = File.read(f)
+    File.open(f, "w") do |output|
+      beautify input, output
+    end
+  end
+else
+  beautify $stdin.read, $stdout
+end

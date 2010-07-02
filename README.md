@@ -1,8 +1,19 @@
-= HTML Beautifier
+HTML Beautifier
+===============
 
 A normaliser/beautifier for HTML that also understands embedded Ruby. Ideal for tidying up Rails templates.
 
-== What it does
+Usage
+-----
+
+    htmlbeautifier file1 [file2 ...]
+
+or
+
+    htmlbeautifier < input > output
+
+What it does
+------------
 
 * Normalises hard tabs to spaces
 * Removes trailing spaces
