@@ -3,7 +3,7 @@ require 'htmlbeautifier/beautifier'
 
 def beautify(input, output)
   HtmlBeautifier::Beautifier.new(output).scan(input)
-  $stdout << "\n"
+  output << "\n"
 end
 
 if ARGV.any?
