@@ -27,9 +27,9 @@ module HtmlBeautifier
       @level += 1
     end
 
-    def outdent
+    def outdent(line_num)
       @level -= 1
-      raise "Outdented too far" if @level < 0
+      raise "Outdented too far around line #{line_num}! Please revert, check that line and try again." if @level < 0
     end
 
     def emit(s)
@@ -45,14 +45,14 @@ module HtmlBeautifier
       @new_line = true
     end
 
-    def embed(opening, code, closing)
+    def embed(opening, code, closing, line_num)
       lines = code.split(/\n/).map{ |l| l.strip }
-      outdent if lines.first =~ RUBY_OUTDENT
+      outdent(line_num) if lines.first =~ RUBY_OUTDENT
       emit opening + code + closing
       indent if lines.last =~ RUBY_INDENT
     end
 
-    def foreign_block(opening, code, closing)
+    def foreign_block(opening, code, closing, line_num)
       emit opening
       unless code.empty?
         indent
@@ -68,26 +68,26 @@ module HtmlBeautifier
           whitespace
         end
 
-        outdent
+        outdent(line_num)
       end
       emit closing
     end
 
-    def standalone_element(e)
+    def standalone_element(e, line_num)
       emit e
     end
 
-    def close_element(e)
-      outdent
+    def close_element(e, line_num)
+      outdent(line_num)
       emit e
     end
 
-    def open_element(e)
+    def open_element(e, line_num)
       emit e
       indent
     end
 
-    def text(t)
+    def text(t, line_num)
       emit(t.strip)
       whitespace if t =~ /\s$/
     end

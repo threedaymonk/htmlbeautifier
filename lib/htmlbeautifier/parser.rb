@@ -41,6 +41,12 @@ module HtmlBeautifier
             i += 1
           end
           params = [scanner[0]] if params.empty?
+          # puts "----string so far:"
+          # puts scanner.string[0..(scanner.pos)].inspect
+          line_num = scanner.string[0..(scanner.pos)].chomp.split(/\n/).count
+          line_num = line_num > 0 ? line_num : 1
+          # puts "----line_num: #{line_num}"
+          params << line_num
           self.class.debug(scanner[0], method)
           receiver.__send__(method, *params)
           return
