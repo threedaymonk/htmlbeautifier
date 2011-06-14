@@ -25,29 +25,31 @@ module HtmlBeautifier
     end
 
     def scan(subject, receiver)
-      scanner = StringScanner.new(subject)
-      until scanner.eos?
-        dispatch(scanner, receiver)
+      @scanner = StringScanner.new(subject)
+      until @scanner.eos?
+        dispatch(receiver)
       end
     end
 
-    def dispatch(scanner, receiver)
+    def source_so_far
+      @scanner.string[0..(@scanner.pos)]
+    end
+
+    def source_line_number
+      [source_so_far.chomp.split(/\n/).count, 1].max
+    end
+
+    def dispatch(receiver)
       @maps.each do |pattern, method|
-        if scanner.scan(pattern)
+        if @scanner.scan(pattern)
           params = []
           i = 1
-          while scanner[i]
-            params << scanner[i]
+          while @scanner[i]
+            params << @scanner[i]
             i += 1
           end
-          params = [scanner[0]] if params.empty?
-          # puts "----string so far:"
-          # puts scanner.string[0..(scanner.pos)].inspect
-          line_num = scanner.string[0..(scanner.pos)].chomp.split(/\n/).count
-          line_num = line_num > 0 ? line_num : 1
-          # puts "----line_num: #{line_num}"
-          params << line_num
-          self.class.debug(scanner[0], method)
+          params = [@scanner[0]] if params.empty?
+          self.class.debug(@scanner[0], method)
           receiver.__send__(method, *params)
           return
         end

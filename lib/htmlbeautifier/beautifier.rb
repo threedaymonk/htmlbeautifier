@@ -27,9 +27,11 @@ module HtmlBeautifier
       @level += 1
     end
 
-    def outdent(line_num)
+    def outdent
       @level -= 1
-      raise "Outdented too far around line #{line_num}! Please revert, check that line and try again." if @level < 0
+      if @level < 0
+        raise "Outdented too far around line #{@parser.source_line_number}! Please revert, check that line and try again."
+      end
     end
 
     def emit(s)
@@ -45,14 +47,14 @@ module HtmlBeautifier
       @new_line = true
     end
 
-    def embed(opening, code, closing, line_num)
+    def embed(opening, code, closing)
       lines = code.split(/\n/).map{ |l| l.strip }
-      outdent(line_num) if lines.first =~ RUBY_OUTDENT
+      outdent if lines.first =~ RUBY_OUTDENT
       emit opening + code + closing
       indent if lines.last =~ RUBY_INDENT
     end
 
-    def foreign_block(opening, code, closing, line_num)
+    def foreign_block(opening, code, closing)
       emit opening
       unless code.empty?
         indent
@@ -68,33 +70,33 @@ module HtmlBeautifier
           whitespace
         end
 
-        outdent(line_num)
+        outdent
       end
       emit closing
     end
 
-    def standalone_element(e, line_num)
+    def standalone_element(e)
       emit e
     end
 
-    def close_element(e, line_num)
-      outdent(line_num)
+    def close_element(e)
+      outdent
       emit e
     end
 
-    def open_element(e, line_num)
+    def open_element(e)
       emit e
       indent
     end
 
-    def text(t, line_num)
+    def text(t)
       emit(t.strip)
       whitespace if t =~ /\s$/
     end
 
     def scan(html)
       html = html.strip.gsub(/\t/, @tab)
-      parser = Parser.new do
+      @parser = Parser.new do
         map %r{(<%-?=?)(.*?)(-?%>)}m,                           :embed
         map %r{<!--\[.*?\]>}m,                                  :open_element
         map %r{<!\[.*?\]-->}m,                                  :close_element
@@ -108,7 +110,7 @@ module HtmlBeautifier
         map %r{\s+},                                            :whitespace
         map %r{[^<]+},                                          :text
       end
-      parser.scan(html, self)
+      @parser.scan(html, self)
     end
 
   end
