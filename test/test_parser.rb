@@ -15,6 +15,20 @@ class TestParser < Test::Unit::TestCase
     end
   end
 
+  class SourceGatheringReceiver < Receiver
+    attr_reader :sources_so_far
+
+    def initialize(parser)
+      @sources_so_far = []
+      @parser = parser
+      super()
+    end
+
+    def append_new_source_so_far(*ignored)
+      @sources_so_far << @parser.source_so_far
+    end
+  end
+
   def setup
     # HtmlBeautifier::Parser.debug_block{ |match, method| puts("#{match.inspect} => #{method}") }
   end
@@ -37,6 +51,16 @@ class TestParser < Test::Unit::TestCase
     }
     parser.scan('foo(bar)', receiver)
     assert_equal [[:foo, ['foo', 'bar']]], receiver.sequence
+  end
+
+  def test_should_give_source_so_far
+    parser = HtmlBeautifier::Parser.new{
+      map %r{(M+)}m, :append_new_source_so_far
+      map %r{( +)}m, :space
+    }
+    receiver = SourceGatheringReceiver.new(parser)
+    parser.scan('M MM MMM', receiver)
+    assert_equal ['M', 'M MM', 'M MM MMM'], receiver.sources_so_far
   end
 
 end
