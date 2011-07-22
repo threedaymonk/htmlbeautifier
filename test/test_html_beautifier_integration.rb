@@ -79,4 +79,15 @@ class TestHtmlBeautifierIntegration < Test::Unit::TestCase
     assert_beautifies expected, source
   end
 
+  def test_should_raise_an_error_with_the_source_line_of_an_illegal_outdent
+    begin
+      HtmlBeautifier::Beautifier.new('').scan("<html>\n</html>\n</html>")
+    rescue Exception => e
+      @exception = e
+    end
+    assert_equal RuntimeError, @exception.class
+    assert_match /outdent/i, @exception.message
+    assert_match /line 3/i, @exception.message
+  end
+
 end
