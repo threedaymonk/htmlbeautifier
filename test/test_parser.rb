@@ -39,4 +39,44 @@ class TestParser < Test::Unit::TestCase
     assert_equal [[:foo, ['foo', 'bar']]], receiver.sequence
   end
 
+  class SourceTrackingReceiver < Receiver
+    attr_reader :sources_so_far
+    attr_reader :source_line_numbers
+
+    def initialize(parser)
+      @sources_so_far = []
+      @source_line_numbers = []
+      @parser = parser
+      super()
+    end
+
+    def append_new_source_so_far(*ignored)
+      @sources_so_far << @parser.source_so_far
+    end
+
+    def append_new_source_line_number(*ignored)
+      @source_line_numbers << @parser.source_line_number
+    end
+  end
+  
+  def test_should_give_source_so_far
+    parser = HtmlBeautifier::Parser.new{
+      map %r{(M+)}m, :append_new_source_so_far
+      map %r{([\s\n]+)}m, :space_or_newline
+    }
+    receiver = SourceTrackingReceiver.new(parser)
+    parser.scan("M MM MMM", receiver)
+    assert_equal ['M', 'M MM', 'M MM MMM'], receiver.sources_so_far
+  end
+
+  def test_should_give_source_line_number
+    parser = HtmlBeautifier::Parser.new{
+      map %r{(M+)}m, :append_new_source_line_number
+      map %r{([\s\n]+)}m, :space_or_newline
+    }
+    receiver = SourceTrackingReceiver.new(parser)
+    parser.scan("M \n\nMM\nMMM", receiver)
+    assert_equal [1, 3, 4], receiver.source_line_numbers
+  end
+
 end

@@ -29,7 +29,9 @@ module HtmlBeautifier
 
     def outdent
       @level -= 1
-      raise "Outdented too far" if @level < 0
+      if @level < 0
+        raise "Outdented too far on line #{@parser.source_line_number}! Please revert, check that line and try again."
+      end
     end
 
     def emit(s)
@@ -94,7 +96,7 @@ module HtmlBeautifier
 
     def scan(html)
       html = html.strip.gsub(/\t/, @tab)
-      parser = Parser.new do
+      @parser = Parser.new do
         map %r{(<%-?=?)(.*?)(-?%>)}m,                           :embed
         map %r{<!--\[.*?\]>}m,                                  :open_element
         map %r{<!\[.*?\]-->}m,                                  :close_element
@@ -108,7 +110,7 @@ module HtmlBeautifier
         map %r{\s+},                                            :whitespace
         map %r{[^<]+},                                          :text
       end
-      parser.scan(html, self)
+      @parser.scan(html, self)
     end
 
   end
