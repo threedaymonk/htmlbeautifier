@@ -30,7 +30,7 @@ module HtmlBeautifier
     def outdent
       @level -= 1
       if @level < 0
-        raise "Outdented too far on line #{@parser.source_line_number}! Please revert, check that line and try again."
+        raise "Outdented too far on line #{@parser.source_line_number}"
       end
     end
 
