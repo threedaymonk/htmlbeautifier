@@ -58,7 +58,7 @@ class TestParser < Test::Unit::TestCase
       @source_line_numbers << @parser.source_line_number
     end
   end
-  
+
   def test_should_give_source_so_far
     parser = HtmlBeautifier::Parser.new{
       map %r{(M+)}m, :append_new_source_so_far
