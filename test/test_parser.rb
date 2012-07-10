@@ -21,10 +21,10 @@ class TestParser < Test::Unit::TestCase
 
   def test_should_dispatch_matching_sequence
     receiver = Receiver.new
-    parser = HtmlBeautifier::Parser.new{
-      map %r{foo}, :foo
-      map %r{bar\s*}, :bar
-      map %r{\s+}, :whitespace
+    parser = HtmlBeautifier::Parser.new { |p|
+      p.map %r{foo}, :foo
+      p.map %r{bar\s*}, :bar
+      p.map %r{\s+}, :whitespace
     }
     parser.scan('foo bar ', receiver)
     assert_equal [[:foo, ['foo']], [:whitespace, [' ']], [:bar, ['bar ']]], receiver.sequence
@@ -32,8 +32,8 @@ class TestParser < Test::Unit::TestCase
 
   def test_should_send_parenthesized_components_as_separate_parameters
     receiver = Receiver.new
-    parser = HtmlBeautifier::Parser.new{
-      map %r{(foo)\((.*?)\)}, :foo
+    parser = HtmlBeautifier::Parser.new { |p|
+      p.map %r{(foo)\((.*?)\)}, :foo
     }
     parser.scan('foo(bar)', receiver)
     assert_equal [[:foo, ['foo', 'bar']]], receiver.sequence
@@ -60,9 +60,9 @@ class TestParser < Test::Unit::TestCase
   end
 
   def test_should_give_source_so_far
-    parser = HtmlBeautifier::Parser.new{
-      map %r{(M+)}m, :append_new_source_so_far
-      map %r{([\s\n]+)}m, :space_or_newline
+    parser = HtmlBeautifier::Parser.new { |p|
+      p.map %r{(M+)}m, :append_new_source_so_far
+      p.map %r{([\s\n]+)}m, :space_or_newline
     }
     receiver = SourceTrackingReceiver.new(parser)
     parser.scan("M MM MMM", receiver)
@@ -70,9 +70,9 @@ class TestParser < Test::Unit::TestCase
   end
 
   def test_should_give_source_line_number
-    parser = HtmlBeautifier::Parser.new{
-      map %r{(M+)}m, :append_new_source_line_number
-      map %r{([\s\n]+)}m, :space_or_newline
+    parser = HtmlBeautifier::Parser.new{ |p|
+      p.map %r{(M+)}m, :append_new_source_line_number
+      p.map %r{([\s\n]+)}m, :space_or_newline
     }
     receiver = SourceTrackingReceiver.new(parser)
     parser.scan("M \n\nMM\nMMM", receiver)

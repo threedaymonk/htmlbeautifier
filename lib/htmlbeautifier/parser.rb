@@ -15,9 +15,7 @@ module HtmlBeautifier
 
     def initialize(&blk)
       @maps = []
-      if block_given?
-        self.instance_eval(&blk)
-      end
+      yield self if block_given?
     end
 
     def map(pattern, method)

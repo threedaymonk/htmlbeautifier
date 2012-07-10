@@ -5,19 +5,19 @@ module HtmlBeautifier
     ELEMENT_CONTENT = %r{ (?:[^<>]|<%.*?%>)* }mx
 
     def initialize
-      super do
-        map %r{(<%-?=?)(.*?)(-?%>)}m,                           :embed
-        map %r{<!--\[.*?\]>}m,                                  :open_element
-        map %r{<!\[.*?\]-->}m,                                  :close_element
-        map %r{<!--.*?-->}m,                                    :standalone_element
-        map %r{<!.*?>}m,                                        :standalone_element
-        map %r{(<script#{ELEMENT_CONTENT}>)(.*?)(</script>)}m,  :foreign_block
-        map %r{(<style#{ELEMENT_CONTENT}>)(.*?)(</style>)}m,    :foreign_block
-        map %r{<#{ELEMENT_CONTENT}/>}m,                         :standalone_element
-        map %r{</#{ELEMENT_CONTENT}>}m,                         :close_element
-        map %r{<#{ELEMENT_CONTENT}>}m,                          :open_element
-        map %r{\s+},                                            :whitespace
-        map %r{[^<]+},                                          :text
+      super do |p|
+        p.map %r{(<%-?=?)(.*?)(-?%>)}m,                           :embed
+        p.map %r{<!--\[.*?\]>}m,                                  :open_element
+        p.map %r{<!\[.*?\]-->}m,                                  :close_element
+        p.map %r{<!--.*?-->}m,                                    :standalone_element
+        p.map %r{<!.*?>}m,                                        :standalone_element
+        p.map %r{(<script#{ELEMENT_CONTENT}>)(.*?)(</script>)}m,  :foreign_block
+        p.map %r{(<style#{ELEMENT_CONTENT}>)(.*?)(</style>)}m,    :foreign_block
+        p.map %r{<#{ELEMENT_CONTENT}/>}m,                         :standalone_element
+        p.map %r{</#{ELEMENT_CONTENT}>}m,                         :close_element
+        p.map %r{<#{ELEMENT_CONTENT}>}m,                          :open_element
+        p.map %r{\s+},                                            :whitespace
+        p.map %r{[^<]+},                                          :text
       end
     end
   end
