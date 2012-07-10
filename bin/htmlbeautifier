@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'htmlbeautifier/beautifier'
+require 'htmlbeautifier'
 
 def beautify(input, output)
   HtmlBeautifier::Beautifier.new(output).scan(input)

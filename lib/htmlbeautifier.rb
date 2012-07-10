@@ -1,5 +1,2 @@
-$:.unshift File.dirname(__FILE__)
-
-module HtmlBeautifier
-
-end
+require 'htmlbeautifier/beautifier'
+require 'htmlbeautifier/version'

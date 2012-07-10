@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + '/test_helper'
+require 'test_helper'
+require 'htmlbeautifier/beautifier'
 
 class TestHtmlBeautifierIntegration < Test::Unit::TestCase
   include HtmlBeautifierTestUtilities
