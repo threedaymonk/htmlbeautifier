@@ -32,7 +32,7 @@ module HtmlBeautifier
     end
 
     def source_so_far
-      @scanner.string[0..(@scanner.pos-1)]
+      @scanner.string[0...@scanner.pos]
     end
 
     def source_line_number
