@@ -37,6 +37,7 @@ module HtmlBeautifier
       [source_so_far.chomp.split(/\n/).count, 1].max
     end
 
+  private
     def dispatch(receiver)
       @maps.each do |pattern, method|
         if @scanner.scan(pattern)
@@ -56,6 +57,5 @@ module HtmlBeautifier
     rescue => ex
       raise "#{ex.message} on line #{source_line_number}"
     end
-
   end
 end
