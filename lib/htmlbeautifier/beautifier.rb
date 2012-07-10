@@ -12,6 +12,9 @@ module HtmlBeautifier
         }x
     ELEMENT_CONTENT = %r{ (?:[^<>]|<%.*?%>)* }mx
 
+    # Create a new Beautifier.
+    # output should be an object that responds to <<
+    # i.e. a String or an IO
     def initialize(output)
       @level = 0
       @new_line = true
@@ -19,8 +22,31 @@ module HtmlBeautifier
       @output = output
     end
 
+    # Set the number of spaces to indent each subsequent level
+    # The default is 2
     def tab_stops=(n)
       @tab = ' ' * n
+    end
+
+    # Process an HTML/HTML+ERB document
+    # html should be a string
+    def scan(html)
+      html = html.strip.gsub(/\t/, @tab)
+      @parser = Parser.new do
+        map %r{(<%-?=?)(.*?)(-?%>)}m,                           :embed
+        map %r{<!--\[.*?\]>}m,                                  :open_element
+        map %r{<!\[.*?\]-->}m,                                  :close_element
+        map %r{<!--.*?-->}m,                                    :standalone_element
+        map %r{<!.*?>}m,                                        :standalone_element
+        map %r{(<script#{ELEMENT_CONTENT}>)(.*?)(</script>)}m,  :foreign_block
+        map %r{(<style#{ELEMENT_CONTENT}>)(.*?)(</style>)}m,    :foreign_block
+        map %r{<#{ELEMENT_CONTENT}/>}m,                         :standalone_element
+        map %r{</#{ELEMENT_CONTENT}>}m,                         :close_element
+        map %r{<#{ELEMENT_CONTENT}>}m,                          :open_element
+        map %r{\s+},                                            :whitespace
+        map %r{[^<]+},                                          :text
+      end
+      @parser.scan(html, self)
     end
 
     def indent
@@ -93,25 +119,5 @@ module HtmlBeautifier
       emit(t.strip)
       whitespace if t =~ /\s$/
     end
-
-    def scan(html)
-      html = html.strip.gsub(/\t/, @tab)
-      @parser = Parser.new do
-        map %r{(<%-?=?)(.*?)(-?%>)}m,                           :embed
-        map %r{<!--\[.*?\]>}m,                                  :open_element
-        map %r{<!\[.*?\]-->}m,                                  :close_element
-        map %r{<!--.*?-->}m,                                    :standalone_element
-        map %r{<!.*?>}m,                                        :standalone_element
-        map %r{(<script#{ELEMENT_CONTENT}>)(.*?)(</script>)}m,  :foreign_block
-        map %r{(<style#{ELEMENT_CONTENT}>)(.*?)(</style>)}m,    :foreign_block
-        map %r{<#{ELEMENT_CONTENT}/>}m,                         :standalone_element
-        map %r{</#{ELEMENT_CONTENT}>}m,                         :close_element
-        map %r{<#{ELEMENT_CONTENT}>}m,                          :open_element
-        map %r{\s+},                                            :whitespace
-        map %r{[^<]+},                                          :text
-      end
-      @parser.scan(html, self)
-    end
-
   end
 end
