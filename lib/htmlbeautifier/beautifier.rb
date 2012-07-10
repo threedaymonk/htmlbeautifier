@@ -16,9 +16,8 @@ module HtmlBeautifier
     # Process an HTML/HTML+ERB document
     # html should be a string
     def scan(html)
-      html = html.strip.gsub(/\t/, ' ' * self.tab_stops)
       @parser = HtmlParser.new
-      @parser.scan html, Builder.new(@output, self.tab_stops)
+      @parser.scan html.strip, Builder.new(@output, self.tab_stops)
     end
   end
 end
