@@ -218,4 +218,34 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     assert_beautifies expected, source
   end
 
+  def test_should_not_indent_comments
+    source = code(%q(
+      <!-- This is a comment -->
+      <!-- So is this -->
+    ))
+    assert_beautifies source, source
+  end
+
+  def test_should_not_indent_conditional_comments
+    source = code(%q(
+      <!--[if lt IE 7]><html lang="en-us" class="ie6"><![endif]-->
+      <!--[if IE 7]><html lang="en-us" class="ie7"><![endif]-->
+      <!--[if IE 8]><html lang="en-us" class="ie8"><![endif]-->
+      <!--[if gt IE 8]><!--><html lang="en-us"><!--<![endif]-->
+        <body>
+        </body>
+      </html>
+    ))
+    assert_beautifies source, source
+  end
+
+  def test_should_not_indent_doctype
+    source = code(%q(
+      <!DOCTYPE html>
+      <html>
+      </html>
+    ))
+    assert_beautifies source, source
+  end
+
 end

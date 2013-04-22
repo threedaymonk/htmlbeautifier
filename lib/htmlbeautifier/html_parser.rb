@@ -7,8 +7,8 @@ module HtmlBeautifier
     def initialize
       super do |p|
         p.map %r{(<%-?=?)(.*?)(-?%>)}m,                           :embed
-        p.map %r{<!--\[.*?\]>}m,                                  :open_element
-        p.map %r{<!\[.*?\]-->}m,                                  :close_element
+        p.map %r{<!--\[.*?\]>}m,                                  :open_ie_cc
+        p.map %r{<!\[.*?\]-->}m,                                  :close_ie_cc
         p.map %r{<!--.*?-->}m,                                    :standalone_element
         p.map %r{<!.*?>}m,                                        :standalone_element
         p.map %r{(<script#{ELEMENT_CONTENT}>)(.*?)(</script>)}m,  :foreign_block

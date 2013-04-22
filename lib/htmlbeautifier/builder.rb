@@ -17,6 +17,7 @@ module HtmlBeautifier
       @new_line = true
       @tab = ' ' * tab_stops
       @output = output
+      @ie_cc_levels = []
     end
 
     def indent
@@ -80,6 +81,18 @@ module HtmlBeautifier
 
     def open_element(e)
       emit e
+      indent
+    end
+
+    def close_ie_cc(e)
+      raise "Unclosed conditional comment" if @ie_cc_levels.empty?
+      @level = @ie_cc_levels.pop
+      emit e
+    end
+
+    def open_ie_cc(e)
+      emit e
+      @ie_cc_levels.push @level
       indent
     end
 
