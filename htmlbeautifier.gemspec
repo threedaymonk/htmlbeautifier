@@ -14,5 +14,7 @@ spec = Gem::Specification.new do |s|
   s.executables       = Dir["bin/**"].map { |f| File.basename(f) }
 
   s.require_paths     = ["lib"]
+
+  s.add_development_dependency "rake"
 end
 
