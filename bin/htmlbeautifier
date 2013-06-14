@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'htmlbeautifier'
+require 'fileutils'
 
 def beautify(input, output)
   HtmlBeautifier::Beautifier.new(output).scan(input)
@@ -7,11 +8,13 @@ def beautify(input, output)
 end
 
 if ARGV.any?
-  ARGV.each do |f|
-    input = File.read(f)
-    File.open(f, "w") do |output|
+  ARGV.each do |path|
+    input = File.read(path)
+    temppath = path + ".tmp"
+    File.open(temppath, "w") do |output|
       beautify input, output
     end
+    FileUtils.mv temppath, path
   end
 else
   beautify $stdin.read, $stdout
