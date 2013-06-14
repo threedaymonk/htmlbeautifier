@@ -2,9 +2,11 @@
 require 'htmlbeautifier'
 require 'fileutils'
 
-def beautify(input, output)
+def beautify(name, input, output)
   HtmlBeautifier::Beautifier.new(output).scan(input)
   output << "\n"
+rescue => e
+  raise "Error parsing #{name}: #{e}"
 end
 
 if ARGV.any?
@@ -12,10 +14,10 @@ if ARGV.any?
     input = File.read(path)
     temppath = path + ".tmp"
     File.open(temppath, "w") do |output|
-      beautify input, output
+      beautify path, input, output
     end
     FileUtils.mv temppath, path
   end
 else
-  beautify $stdin.read, $stdout
+  beautify "standard input", $stdin.read, $stdout
 end
