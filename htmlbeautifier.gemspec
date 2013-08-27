@@ -7,6 +7,7 @@ spec = Gem::Specification.new do |s|
   s.author            = "Paul Battley"
   s.email             = "pbattley@gmail.com"
   s.homepage          = "http://github.com/threedaymonk/htmlbeautifier"
+  s.license           = "MIT"
 
   s.has_rdoc          = true
 
