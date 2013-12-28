@@ -248,4 +248,13 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     assert_beautifies source, source
   end
 
+  def test_should_not_indent_html_void_elements
+    source = code(%q(
+    <meta>
+    <input id="id">
+    <br>
+    ))
+    assert_beautifies source, source
+  end
+
 end
