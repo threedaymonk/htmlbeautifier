@@ -257,4 +257,13 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     assert_beautifies source, source
   end
 
+  def test_should_ignore_case_of_void_elements
+    source = code(%q(
+    <META>
+    <INPUT id="id">
+    <BR>
+    ))
+    assert_beautifies source, source
+  end
+
 end
