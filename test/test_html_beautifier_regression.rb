@@ -71,6 +71,23 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     assert_beautifies expected, source
   end
 
+  def test_should_ignore_case_of_script
+    source = code(%q(
+      <SCRIPT>
+
+      // code
+
+      </SCRIPT>
+    ))
+    expected = code(%q(
+      <SCRIPT>
+        // code
+      </SCRIPT>
+    ))
+    assert_beautifies expected, source
+  end
+
+
   def test_should_indent_styles
     source = code(%q(
       <style>
@@ -112,6 +129,22 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
   def test_should_remove_trailing_space_from_style_lines
     source   = %Q(<style>\n  .foo{ margin: 0; }  \n</style>)
     expected = %Q(<style>\n  .foo{ margin: 0; }\n</style>)
+    assert_beautifies expected, source
+  end
+
+  def test_should_ignore_case_of_style
+    source = code(%q(
+      <STYLE>
+
+      .foo{ margin: 0; }
+
+      </STYLE>
+    ))
+    expected = code(%q(
+      <STYLE>
+        .foo{ margin: 0; }
+      </STYLE>
+    ))
     assert_beautifies expected, source
   end
 
