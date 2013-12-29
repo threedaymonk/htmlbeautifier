@@ -60,16 +60,8 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
   end
 
   def test_should_remove_trailing_space_from_script_lines
-    source = code(%q(
-      <script>
-        f();
-      </script>
-    ))
-    expected = code(%q(
-      <script>
-        f();
-      </script>
-    ))
+    source   = %Q(<script>\n  f();  \n</script>)
+    expected = %Q(<script>\n  f();\n</script>)
     assert_beautifies expected, source
   end
 
@@ -118,16 +110,8 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
   end
 
   def test_should_remove_trailing_space_from_style_lines
-    source = code(%q(
-      <style>
-        .foo{ margin: 0; }
-      </style>
-    ))
-    expected = code(%q(
-      <style>
-        .foo{ margin: 0; }
-      </style>
-    ))
+    source   = %Q(<style>\n  .foo{ margin: 0; }  \n</style>)
+    expected = %Q(<style>\n  .foo{ margin: 0; }\n</style>)
     assert_beautifies expected, source
   end
 
