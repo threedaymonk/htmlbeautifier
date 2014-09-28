@@ -5,10 +5,6 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
 
   include HtmlBeautifierTestUtilities
 
-  def setup
-    # HtmlBeautifier::Parser.debug_block{ |match, method| puts("#{match.inspect} => #{method}") }
-  end
-
   def test_should_ignore_html_fragments_in_embedded_code
     source = code(%q(
       <div>
@@ -267,29 +263,28 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
 
   def test_should_not_indent_html_void_elements
     source = code(%q(
-    <meta>
-    <input id="id">
-    <br>
+      <meta>
+      <input id="id">
+      <br>
     ))
     assert_beautifies source, source
   end
 
   def test_should_ignore_case_of_void_elements
     source = code(%q(
-    <META>
-    <INPUT id="id">
-    <BR>
+      <META>
+      <INPUT id="id">
+      <BR>
     ))
     assert_beautifies source, source
   end
 
   def test_should_not_parse_colgroup_as_standalone
     source = code(%q(
-    <colgroup>
-      <col style="width: 50%;">
-    </colgroup>
+      <colgroup>
+        <col style="width: 50%;">
+      </colgroup>
     ))
     assert_beautifies source, source
   end
-
 end
