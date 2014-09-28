@@ -283,4 +283,13 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     assert_beautifies source, source
   end
 
+  def test_should_not_parse_colgroup_as_standalone
+    source = code(%q(
+    <colgroup>
+      <col style="width: 50%;">
+    </colgroup>
+    ))
+    assert_beautifies source, source
+  end
+
 end

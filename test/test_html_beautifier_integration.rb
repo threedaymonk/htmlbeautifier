@@ -38,6 +38,20 @@ class TestHtmlBeautifierIntegration < Test::Unit::TestCase
       <hr />
       <% end %>
       </div>
+      <table>
+      <colgroup>
+      <col style="width: 50%;">
+      <col style="width: 50%;">
+      </colgroup>
+      <tbody>
+      <tr>
+      <td>First column</td>
+      </tr>
+      <tr>
+      <td>Second column</td>
+      </tr>
+      </tbody>
+      </table>
       </body>
       </html>
     ))
@@ -74,6 +88,20 @@ class TestHtmlBeautifierIntegration < Test::Unit::TestCase
               <hr />
             <% end %>
           </div>
+          <table>
+            <colgroup>
+              <col style="width: 50%;">
+              <col style="width: 50%;">
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>First column</td>
+              </tr>
+              <tr>
+                <td>Second column</td>
+              </tr>
+            </tbody>
+          </table>
         </body>
       </html>
     ))
