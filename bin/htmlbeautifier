@@ -4,10 +4,7 @@ require 'optparse'
 require 'fileutils'
 
 def beautify(name, input, output, options)
-  beautifier = HtmlBeautifier::Beautifier.new(output)
-  beautifier.tab_stops = options[:tab_stops]
-  beautifier.scan(input)
-  output << "\n"
+  output.puts HtmlBeautifier.beautify(input, options[:tab_stops])
 rescue => e
   raise "Error parsing #{name}: #{e}"
 end
