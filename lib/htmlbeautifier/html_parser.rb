@@ -20,9 +20,9 @@ module HtmlBeautifier
           :standalone_element
         p.map %r{<!.*?>}m,
           :standalone_element
-        p.map %r{(<script#{ELEMENT_CONTENT}>)(.*?)(</script>)}m,
+        p.map %r{(<script#{ELEMENT_CONTENT}>)(.*?)(</script>)}mi,
           :foreign_block
-        p.map %r{(<style#{ELEMENT_CONTENT}>)(.*?)(</style>)}m,
+        p.map %r{(<style#{ELEMENT_CONTENT}>)(.*?)(</style>)}mi,
           :foreign_block
         p.map %r{<#{ELEMENT_CONTENT}/>}m,
           :standalone_element
