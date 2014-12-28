@@ -287,4 +287,19 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies source, source
   end
+
+  def test_should_not_modify_pre_content
+    source = code(%q(
+      <div>
+        <pre>   Preformatted   text
+
+                should  <em>not  be </em>
+                      modified,
+                ever!
+
+        </pre>
+      </div>
+    ))
+    assert_beautifies source, source
+  end
 end
