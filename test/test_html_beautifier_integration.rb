@@ -26,8 +26,7 @@ class TestHtmlBeautifierIntegration < Test::Unit::TestCase
       Heading 1
       </h1>
       </div>
-      <div id="somethingElse">
-      <p>Lorem Ipsum</p>
+      <div id="somethingElse"><p>Lorem Ipsum</p>
       <% if @x %>
       <% @ys.each do |y| %>
       <p>
@@ -44,12 +43,8 @@ class TestHtmlBeautifierIntegration < Test::Unit::TestCase
       <col style="width: 50%;">
       </colgroup>
       <tbody>
-      <tr>
-      <td>First column</td>
-      </tr>
-      <tr>
-      <td>Second column</td>
-      </tr>
+      <tr><td>First column</td></tr><tr>
+      <td>Second column</td></tr>
       </tbody>
       </table>
       </body>

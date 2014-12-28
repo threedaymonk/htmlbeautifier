@@ -287,4 +287,24 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies source, source
   end
+
+  def test_should_add_newline_after_block_elements
+    source = code(%q(
+      <section><h1>Title</h1><p>Lorem <em>ipsum</em></p>
+      <ol>
+        <li>First</li><li>Second</li></ol>
+      </section>
+    ))
+    expected = code(%(
+      <section>
+        <h1>Title</h1>
+        <p>Lorem <em>ipsum</em></p>
+        <ol>
+          <li>First</li>
+          <li>Second</li>
+        </ol>
+      </section>
+    ))
+    assert_beautifies expected, source
+  end
 end
