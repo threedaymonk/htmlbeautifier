@@ -14,7 +14,7 @@ module HtmlBeautifier
 
     def initialize(output, tab_stops)
       @level = 0
-      @new_line = true
+      @new_line = false
       @tab = ' ' * tab_stops
       @output = output
       @ie_cc_levels = []
@@ -30,15 +30,14 @@ module HtmlBeautifier
     end
 
     def emit(s)
-      if (@new_line)
-        @output << (@tab * @level)
+      if @new_line && !@output.empty?
+        @output << ("\n" + @tab * @level)
       end
       @output << s
       @new_line = false
     end
 
-    def whitespace(*x)
-      emit "\n"
+    def new_line(*_args)
       @new_line = true
     end
 
@@ -59,10 +58,10 @@ module HtmlBeautifier
         lines.pop while lines.last.strip.empty?
         indentation = lines.first[/^ +/]
 
-        whitespace
+        new_line
         lines.each do |line|
           emit line.rstrip.sub(/^#{indentation}/, '')
-          whitespace
+          new_line
         end
 
         outdent
@@ -78,6 +77,18 @@ module HtmlBeautifier
 
     def standalone_element(e)
       emit e
+    end
+
+    def close_block_element(e)
+      outdent
+      emit e
+      new_line
+    end
+
+    def open_block_element(e)
+      new_line
+      emit e
+      indent
     end
 
     def close_element(e)
@@ -103,8 +114,8 @@ module HtmlBeautifier
     end
 
     def text(t)
-      emit(t.strip)
-      whitespace if t =~ /\s$/
+      emit t.chomp
+      new_line if t.end_with? $/
     end
   end
 end
