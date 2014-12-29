@@ -331,4 +331,15 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies expected, source
   end
+
+  def test_should_add_newline_after_br_element
+    source = %(<p>Lorem ipsum<br>dolor sit<br />amet,<br/>consectetur.</p>)
+    expected = code(%(
+      <p>Lorem ipsum<br>
+        dolor sit<br />
+        amet,<br/>
+        consectetur.</p>
+    ))
+    assert_beautifies expected, source
+  end
 end

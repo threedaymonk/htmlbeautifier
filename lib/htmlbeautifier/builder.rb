@@ -79,6 +79,7 @@ module HtmlBeautifier
 
     def standalone_element(e)
       emit e
+      new_line if e =~ /^<br[^\w]/
     end
 
     def close_block_element(e)
