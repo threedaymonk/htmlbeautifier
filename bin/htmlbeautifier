@@ -1,23 +1,39 @@
 #!/usr/bin/env ruby
 require 'htmlbeautifier'
+require 'optparse'
 require 'fileutils'
 
-def beautify(name, input, output)
-  HtmlBeautifier::Beautifier.new(output).scan(input)
+def beautify(name, input, output, options)
+  beautifier = HtmlBeautifier::Beautifier.new(output)
+  beautifier.tab_stops = options[:tab_stops]
+  beautifier.scan(input)
   output << "\n"
 rescue => e
   raise "Error parsing #{name}: #{e}"
 end
+
+options = {:tab_stops => 2}
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: #{__FILE__} [options] [file ...]"
+  opts.on("-t", "--tab-stops NUMBER", Integer, "Set number of tab stops") do |num|
+    options[:tab_stops] = num
+  end
+  opts.on("-h", "--help", "Display this help message and exit") do
+    puts opts
+    exit
+  end
+end
+parser.parse!
 
 if ARGV.any?
   ARGV.each do |path|
     input = File.read(path)
     temppath = path + ".tmp"
     File.open(temppath, "w") do |output|
-      beautify path, input, output
+      beautify path, input, output, options
     end
     FileUtils.mv temppath, path
   end
 else
-  beautify "standard input", $stdin.read, $stdout
+  beautify "standard input", $stdin.read, $stdout, options
 end
