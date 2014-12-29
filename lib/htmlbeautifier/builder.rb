@@ -70,9 +70,11 @@ module HtmlBeautifier
     end
 
     def preformatted_block(opening, content, closing)
+      new_line
       emit opening
       emit content
       emit closing
+      new_line
     end
 
     def standalone_element(e)
