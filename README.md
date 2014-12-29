@@ -1,5 +1,6 @@
 HTML Beautifier
 ===============
+[![Build Status](https://travis-ci.org/threedaymonk/htmlbeautifier.svg?branch=master)](https://travis-ci.org/threedaymonk/htmlbeautifier)
 
 A normaliser/beautifier for HTML that also understands embedded Ruby. Ideal for tidying up Rails templates.
 
