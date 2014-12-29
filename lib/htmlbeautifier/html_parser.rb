@@ -8,10 +8,10 @@ module HtmlBeautifier
       link | meta | param | source | track | wbr
     )}mix
     HTML_BLOCK_ELEMENTS = %r{(?:
-      address | blockquote | center | dd | dir | div | dl | dt | fieldset |
-      form | h1 | h2 | h3 | h4 | h5 | h6 | hr | isindex | li | menu |
-      noframes | noscript | ol | p | pre | table | tbody | td | tfoot | th |
-      thead | tr | ul
+      address | article | aside | audio | blockquote | canvas | dd | dir | div |
+      dl | dt | fieldset | figcaption | figure | footer | form | h1 | h2 | h3 |
+      h4 | h5 | h6 | header | hr | li | menu | noframes | noscript | ol | p |
+      pre | section | table | tbody | td | tfoot | th | thead | tr | ul | video
     )}mix
 
     def initialize
