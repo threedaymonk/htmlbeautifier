@@ -17,6 +17,7 @@ module HtmlBeautifier
       @new_line = false
       @tab = ' ' * tab_stops
       @output = output
+      @empty = true
       @ie_cc_levels = []
     end
 
@@ -30,11 +31,12 @@ module HtmlBeautifier
     end
 
     def emit(s)
-      if @new_line && !@output.empty?
+      if @new_line && !@empty
         @output << ("\n" + @tab * @level)
       end
       @output << s
       @new_line = false
+      @empty = false
     end
 
     def new_line(*_args)
