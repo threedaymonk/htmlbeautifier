@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'htmlbeautifier/beautifier'
+require 'htmlbeautifier'
 
 class TestHtmlBeautifierIntegration < Test::Unit::TestCase
   include HtmlBeautifierTestUtilities
@@ -105,7 +105,7 @@ class TestHtmlBeautifierIntegration < Test::Unit::TestCase
 
   def test_should_raise_an_error_with_the_source_line_of_an_illegal_outdent
     begin
-      HtmlBeautifier::Beautifier.new('').scan("<html>\n</html>\n</html>")
+      HtmlBeautifier.beautify("<html>\n</html>\n</html>")
     rescue Exception => e
       @exception = e
     end
