@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'htmlbeautifier/beautifier'
+require 'htmlbeautifier'
 
 class HtmlBeautifierRegressionTest < Test::Unit::TestCase
 
