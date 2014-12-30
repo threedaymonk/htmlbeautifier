@@ -32,9 +32,7 @@ module HtmlBeautifier
           :foreign_block
         p.map %r{(<pre#{ELEMENT_CONTENT}>)(.*?)(</pre>)}mi,
           :preformatted_block
-        p.map %r{<#{ELEMENT_CONTENT}/>}m,
-          :standalone_element
-        p.map %r{<#{HTML_VOID_ELEMENTS}(?: #{ELEMENT_CONTENT})?>}m,
+        p.map %r{<#{HTML_VOID_ELEMENTS}(?: #{ELEMENT_CONTENT})?/?>}m,
           :standalone_element
         p.map %r{</#{HTML_BLOCK_ELEMENTS}>}m,
           :close_block_element
