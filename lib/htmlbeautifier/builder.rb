@@ -70,13 +70,16 @@ module HtmlBeautifier
     end
 
     def preformatted_block(opening, content, closing)
+      new_line
       emit opening
       emit content
       emit closing
+      new_line
     end
 
     def standalone_element(e)
       emit e
+      new_line if e =~ /^<br[^\w]/
     end
 
     def close_block_element(e)

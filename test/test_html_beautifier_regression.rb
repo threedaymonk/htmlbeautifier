@@ -321,4 +321,25 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
     ))
     assert_beautifies expected, source
   end
+
+  def test_should_add_newlines_around_pre_element
+    source = %(<section><pre>puts "Allons-y!"</pre></section>)
+    expected = code(%(
+      <section>
+        <pre>puts "Allons-y!"</pre>
+      </section>
+    ))
+    assert_beautifies expected, source
+  end
+
+  def test_should_add_newline_after_br_element
+    source = %(<p>Lorem ipsum<br>dolor sit<br />amet,<br/>consectetur.</p>)
+    expected = code(%(
+      <p>Lorem ipsum<br>
+        dolor sit<br />
+        amet,<br/>
+        consectetur.</p>
+    ))
+    assert_beautifies expected, source
+  end
 end
