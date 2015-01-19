@@ -101,9 +101,35 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
-  it 'raises an error with the source line of an illegal outdent' do
-    expect {
-      HtmlBeautifier.beautify("<html>\n</html>\n</html>")
-    }.to raise_error(RuntimeError, 'Outdented too far on line 3')
+  context 'when stop_on_errors is true' do
+    it 'raises an error with the source line of an illegal closing tag' do
+      expect {
+        source = "<html>\n</html>\n</html>"
+        described_class.beautify(source, stop_on_errors: true)
+      }.to raise_error(RuntimeError, 'Extraneous closing tag on line 3')
+    end
+  end
+
+  context 'when stop_on_errors is false' do
+    it 'processes the rest of the document after the errant closing tag' do
+      source = code(%q(
+        </head>
+        <body>
+        <div>
+        text
+        </div>
+        </body>
+      ))
+      expected = code(%q(
+        </head>
+        <body>
+          <div>
+            text
+          </div>
+        </body>
+      ))
+      expect(described_class.beautify(source, stop_on_errors: false)).
+        to eq(expected)
+    end
   end
 end

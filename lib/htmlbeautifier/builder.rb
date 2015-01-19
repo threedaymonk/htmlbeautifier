@@ -12,13 +12,27 @@ module HtmlBeautifier
         }x
     ELEMENT_CONTENT = %r{ (?:[^<>]|<%.*?%>)* }mx
 
-    def initialize(output, tab_stops)
+    DEFAULT_OPTIONS = {
+      tab_stops: 2,
+      stop_on_errors: false
+    }
+
+    def initialize(output, options = {})
+      options = DEFAULT_OPTIONS.merge(options)
       @level = 0
       @new_line = false
-      @tab = ' ' * tab_stops
+      @tab = ' ' * options[:tab_stops]
+      @stop_on_errors = options[:stop_on_errors]
       @output = output
       @empty = true
       @ie_cc_levels = []
+    end
+
+  private
+
+    def error(text)
+      return unless @stop_on_errors
+      raise RuntimeError, text
     end
 
     def indent
@@ -26,8 +40,8 @@ module HtmlBeautifier
     end
 
     def outdent
-      @level -= 1
-      raise "Outdented too far" if @level < 0
+      error "Extraneous closing tag" if @level == 0
+      @level = [@level - 1, 0].max
     end
 
     def emit(s)
@@ -107,8 +121,11 @@ module HtmlBeautifier
     end
 
     def close_ie_cc(e)
-      raise "Unclosed conditional comment" if @ie_cc_levels.empty?
-      @level = @ie_cc_levels.pop
+      if @ie_cc_levels.empty?
+        error "Unclosed conditional comment"
+      else
+        @level = @ie_cc_levels.pop
+      end
       emit e
     end
 

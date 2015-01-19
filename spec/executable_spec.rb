@@ -64,4 +64,26 @@ describe 'bin/htmlbeautifier' do
 
     expect(read(path)).to eq(expected)
   end
+
+  it 'ignores closing tag errors by default' do
+    input = "</p>\n"
+    expected = "</p>\n"
+    path = path_to('tmp', 'in-place.html')
+    write path, input
+
+    status = system('%s %s' % [command, escape(path)])
+
+    expect(read(path)).to eq(expected)
+    expect(status).to be_truthy
+  end
+
+  it 'raises an exception on closing tag errors with --stop-on-errors' do
+    input = "</p>\n"
+    path = path_to('tmp', 'in-place.html')
+    write path, input
+
+    status = system('%s --stop-on-errors %s 2>/dev/null' % [command, escape(path)])
+
+    expect(status).to be_falsey
+  end
 end

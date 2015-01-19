@@ -15,6 +15,9 @@ parser = OptionParser.new do |opts|
   opts.on("-t", "--tab-stops NUMBER", Integer, "Set number of tab stops") do |num|
     options[:tab_stops] = num
   end
+  opts.on("-e", "--stop-on-errors", "Stop with an error on problems in source") do |num|
+    options[:stop_on_errors] = num
+  end
   opts.on("-h", "--help", "Display this help message and exit") do
     puts opts
     exit
