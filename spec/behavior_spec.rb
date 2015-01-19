@@ -1,11 +1,7 @@
-require 'test_helper'
 require 'htmlbeautifier'
 
-class HtmlBeautifierRegressionTest < Test::Unit::TestCase
-
-  include HtmlBeautifierTestUtilities
-
-  def test_should_ignore_html_fragments_in_embedded_code
+describe HtmlBeautifier do
+  it 'ignores HTML fragments in embedded ERB' do
     source = code(%q(
       <div>
         <%= a[:b].gsub("\n","<br />\n") %>
@@ -16,10 +12,10 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         <%= a[:b].gsub("\n","<br />\n") %>
       </div>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_indent_scripts
+  it 'indents within <script>' do
     source = code(%q(
       <script>
       function(f) {
@@ -36,10 +32,10 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         }
       </script>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_remove_blank_lines_around_scripts
+  it 'trims blank lines around scripts' do
     source = code(%q(
       <script>
 
@@ -52,22 +48,21 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         f();
       </script>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_remove_trailing_space_from_script_lines
+  it 'removes trailing space from script lines' do
     source   = %Q(<script>\n  f();  \n</script>)
     expected = %Q(<script>\n  f();\n</script>)
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_skip_over_empty_scripts
+  it 'leaves empty scripts as they are' do
     source = %q(<script src="/foo.js" type="text/javascript" charset="utf-8"></script>)
-    expected = source
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(source)
   end
 
-  def test_should_ignore_case_of_script
+  it 'ignores case of <script> tag' do
     source = code(%q(
       <SCRIPT>
 
@@ -80,10 +75,10 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         // code
       </SCRIPT>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_indent_styles
+  it 'indents within <style>' do
     source = code(%q(
       <style>
       .foo{ margin: 0; }
@@ -102,10 +97,10 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         }
       </style>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_remove_blank_lines_around_styles
+  it 'trims blank lines around styles' do
     source = code(%q(
       <style>
 
@@ -118,16 +113,16 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         .foo{ margin: 0; }
       </style>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_remove_trailing_space_from_style_lines
+  it 'removes trailing space from style lines' do
     source   = %Q(<style>\n  .foo{ margin: 0; }  \n</style>)
     expected = %Q(<style>\n  .foo{ margin: 0; }\n</style>)
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_ignore_case_of_style
+  it 'ignores case of <style> tag' do
     source = code(%q(
       <STYLE>
 
@@ -140,11 +135,21 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         .foo{ margin: 0; }
       </STYLE>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_indent_divs_containing_standalone_elements
+  it 'indents <div>s containing standalone elements' do
     source = code(%q(
+      <div>
+      <div>
+      <img src="foo" alt="" />
+      </div>
+      <div>
+      <img src="foo" alt="" />
+      </div>
+      </div>
+    ))
+    expected = code(%q(
       <div>
         <div>
           <img src="foo" alt="" />
@@ -154,43 +159,20 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         </div>
       </div>
     ))
-    expected = source
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_not_break_line_on_embedded_code_within_script_opening_element
+  it 'does not break line on embedded code within <script> opening tag' do
     source = '<script src="<%= path %>" type="text/javascript"></script>'
-    expected = source
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(source)
   end
 
-  def test_should_not_break_line_on_embedded_code_within_normal_element
+  it 'does not break line on embedded code within normal element' do
     source = '<img src="<%= path %>" alt="foo" />'
-    expected = source
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(source)
   end
 
-  def test_should_indent_inside_IE_conditional_comments
-    source = code(%q(
-      <!--[if IE 6]>
-      <link rel="stylesheet" href="/stylesheets/ie6.css" type="text/css" />
-      <![endif]-->
-      <!--[if IE 5]>
-      <link rel="stylesheet" href="/stylesheets/ie5.css" type="text/css" />
-      <![endif]-->
-    ))
-    expected = code(%q(
-      <!--[if IE 6]>
-        <link rel="stylesheet" href="/stylesheets/ie6.css" type="text/css" />
-      <![endif]-->
-      <!--[if IE 5]>
-        <link rel="stylesheet" href="/stylesheets/ie5.css" type="text/css" />
-      <![endif]-->
-    ))
-    assert_beautifies expected, source
-  end
-
-  def test_should_outdent_else
+  it 'outdents else' do
     source = code(%q(
       <% if @x %>
       Foo
@@ -205,10 +187,10 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         Bar
       <% end %>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_indent_with_hyphenated_erb_tags
+  it 'indents with hyphenated ERB tags' do
     source = code(%q(
       <%- if @x -%>
       <%- @ys.each do |y| -%>
@@ -227,18 +209,18 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         <hr />
       <%- end -%>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_not_indent_comments
+  it 'does not indent after comments' do
     source = code(%q(
       <!-- This is a comment -->
       <!-- So is this -->
     ))
-    assert_beautifies source, source
+    expect(described_class.beautify(source)).to eq(source)
   end
 
-  def test_should_not_indent_conditional_comments
+  it 'does not indent one-line IE conditional comments' do
     source = code(%q(
       <!--[if lt IE 7]><html lang="en-us" class="ie6"><![endif]-->
       <!--[if IE 7]><html lang="en-us" class="ie7"><![endif]-->
@@ -248,46 +230,66 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         </body>
       </html>
     ))
-    assert_beautifies source, source
+    expect(described_class.beautify(source)).to eq(source)
   end
 
-  def test_should_not_indent_doctype
+  it 'indents inside IE conditional comments' do
+    source = code(%q(
+      <!--[if IE 6]>
+      <link rel="stylesheet" href="/stylesheets/ie6.css" type="text/css" />
+      <![endif]-->
+      <!--[if IE 5]>
+      <link rel="stylesheet" href="/stylesheets/ie5.css" type="text/css" />
+      <![endif]-->
+    ))
+    expected = code(%q(
+      <!--[if IE 6]>
+        <link rel="stylesheet" href="/stylesheets/ie6.css" type="text/css" />
+      <![endif]-->
+      <!--[if IE 5]>
+        <link rel="stylesheet" href="/stylesheets/ie5.css" type="text/css" />
+      <![endif]-->
+    ))
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
+  it 'does not indent after doctype' do
     source = code(%q(
       <!DOCTYPE html>
       <html>
       </html>
     ))
-    assert_beautifies source, source
+    expect(described_class.beautify(source)).to eq(source)
   end
 
-  def test_should_not_indent_html_void_elements
+  it 'does not indent after void HTML elements' do
     source = code(%q(
       <meta>
       <input id="id">
       <br>
     ))
-    assert_beautifies source, source
+    expect(described_class.beautify(source)).to eq(source)
   end
 
-  def test_should_ignore_case_of_void_elements
+  it 'ignores case of void elements' do
     source = code(%q(
       <META>
       <INPUT id="id">
       <BR>
     ))
-    assert_beautifies source, source
+    expect(described_class.beautify(source)).to eq(source)
   end
 
-  def test_should_not_parse_colgroup_as_standalone
+  it 'does not treat <colgroup> as standalone' do
     source = code(%q(
       <colgroup>
         <col style="width: 50%;">
       </colgroup>
     ))
-    assert_beautifies source, source
+    expect(described_class.beautify(source)).to eq(source)
   end
 
-  def test_should_not_modify_pre_content
+  it 'does not modify content of <pre>' do
     source = code(%q(
       <div>
         <pre>   Preformatted   text
@@ -299,14 +301,16 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         </pre>
       </div>
     ))
-    assert_beautifies source, source
+    expect(described_class.beautify(source)).to eq(source)
   end
 
-  def test_should_add_newline_after_block_elements
+  it 'adds a single newline after block elements' do
     source = code(%q(
       <section><h1>Title</h1><p>Lorem <em>ipsum</em></p>
       <ol>
         <li>First</li><li>Second</li></ol>
+
+
       </section>
     ))
     expected = code(%(
@@ -319,20 +323,20 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         </ol>
       </section>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_add_newlines_around_pre_element
+  it 'adds newlines around <pre>' do
     source = %(<section><pre>puts "Allons-y!"</pre></section>)
     expected = code(%(
       <section>
         <pre>puts "Allons-y!"</pre>
       </section>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_add_newline_after_br_element
+  it 'adds newline after <br>' do
     source = %(<p>Lorem ipsum<br>dolor sit<br />amet,<br/>consectetur.</p>)
     expected = code(%(
       <p>Lorem ipsum<br>
@@ -340,6 +344,6 @@ class HtmlBeautifierRegressionTest < Test::Unit::TestCase
         amet,<br/>
         consectetur.</p>
     ))
-    assert_beautifies expected, source
+    expect(described_class.beautify(source)).to eq(expected)
   end
 end

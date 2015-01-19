@@ -1,8 +1,7 @@
-require 'test_helper'
 require 'shellwords'
 require 'fileutils'
 
-class TestExecutable < Test::Unit::TestCase
+describe 'bin/htmlbeautifier' do
   def path_to(*partial)
     File.join(File.expand_path('../..', __FILE__), *partial)
   end
@@ -18,7 +17,7 @@ class TestExecutable < Test::Unit::TestCase
     Shellwords.escape(s)
   end
 
-  def test_should_beautify_a_file_in_place
+  it 'beautifies a file in place' do
     FileUtils.mkdir_p path_to('tmp')
     input = "<p>\nfoo\n</p>"
     expected = "<p>\n  foo\n</p>\n"
@@ -30,10 +29,10 @@ class TestExecutable < Test::Unit::TestCase
     system '%s %s' % [command, escape(path)]
 
     output = File.read(path)
-    assert_equal expected, output
+    expect(output).to eq(expected)
   end
 
-  def test_should_beautify_a_file_from_stdin_to_stdout
+  it 'beautifies a file from stdin to stdout' do
     FileUtils.mkdir_p path_to('tmp')
     input = "<p>\nfoo\n</p>"
     expected = "<p>\n  foo\n</p>\n"
@@ -46,10 +45,10 @@ class TestExecutable < Test::Unit::TestCase
     system '%s < %s > %s' % [command, escape(in_path), escape(out_path)]
 
     output = File.read(out_path)
-    assert_equal expected, output
+    expect(output).to eq(expected)
   end
 
-  def test_should_allow_configurable_number_of_tab_stops
+  it 'allows a configurable number of tab stops' do
     FileUtils.mkdir_p path_to('tmp')
     input = "<p>\nfoo\n</p>"
     expected = "<p>\n   foo\n</p>\n"
@@ -61,6 +60,6 @@ class TestExecutable < Test::Unit::TestCase
     system '%s --tab-stops=3 %s' % [command, escape(path)]
 
     output = File.read(path)
-    assert_equal expected, output
+    expect(output).to eq(expected)
   end
 end

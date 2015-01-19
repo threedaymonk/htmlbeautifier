@@ -1,10 +1,7 @@
-require 'test_helper'
 require 'htmlbeautifier'
 
-class TestHtmlBeautifierIntegration < Test::Unit::TestCase
-  include HtmlBeautifierTestUtilities
-
-  def test_should_correctly_indent_mixed_document
+describe HtmlBeautifier do
+  it 'correctly indents mixed document' do
     source = code(%q(
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -100,18 +97,13 @@ class TestHtmlBeautifierIntegration < Test::Unit::TestCase
         </body>
       </html>
     ))
-    assert_beautifies expected, source
+
+    expect(described_class.beautify(source)).to eq(expected)
   end
 
-  def test_should_raise_an_error_with_the_source_line_of_an_illegal_outdent
-    begin
+  it 'raises an error with the source line of an illegal outdent' do
+    expect {
       HtmlBeautifier.beautify("<html>\n</html>\n</html>")
-    rescue Exception => e
-      @exception = e
-    end
-    assert_equal RuntimeError, @exception.class
-    assert_match /outdent/i, @exception.message
-    assert_match /line 3/i, @exception.message
+    }.to raise_error(RuntimeError, 'Outdented too far on line 3')
   end
-
 end
