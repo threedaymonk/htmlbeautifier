@@ -9,16 +9,39 @@ rescue => e
   raise "Error parsing #{name}: #{e}"
 end
 
+executable = File.basename(__FILE__)
+
 options = {:tab_stops => 2}
 parser = OptionParser.new do |opts|
-  opts.banner = "Usage: #{__FILE__} [options] [file ...]"
-  opts.on("-t", "--tab-stops NUMBER", Integer, "Set number of tab stops") do |num|
+  opts.banner = "Usage: #{executable} [options] [file ...]"
+  opts.separator <<END
+
+#{executable} has two modes of operation:
+
+1. If no files are listed, it will read from standard input and write to
+   standard output.
+2. If files are listed, it will modify each file in place, overwriting it
+   with the beautified output.
+
+The following options are available:
+
+END
+  opts.on(
+    "-t", "--tab-stops NUMBER", Integer,
+    "Set number of spaces per indent (default #{options[:tab_stops]})"
+  ) do |num|
     options[:tab_stops] = num
   end
-  opts.on("-e", "--stop-on-errors", "Stop with an error on problems in source") do |num|
+  opts.on(
+    "-e", "--stop-on-errors",
+    "Stop when invalid nesting is encountered in the input"
+  ) do |num|
     options[:stop_on_errors] = num
   end
-  opts.on("-h", "--help", "Display this help message and exit") do
+  opts.on(
+    "-h", "--help",
+    "Display this help message and exit"
+  ) do
     puts opts
     exit
   end
