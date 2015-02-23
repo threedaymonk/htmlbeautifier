@@ -34,6 +34,8 @@ describe HtmlBeautifier do
       <hr />
       <% end %>
       </div>
+      <div ng-show="foo < 1">
+      </div>
       <table>
       <colgroup>
       <col style="width: 50%;">
@@ -79,6 +81,8 @@ describe HtmlBeautifier do
             <% elsif @z %>
               <hr />
             <% end %>
+          </div>
+          <div ng-show="foo < 1">
           </div>
           <table>
             <colgroup>
