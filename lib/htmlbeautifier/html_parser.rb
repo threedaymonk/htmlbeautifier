@@ -2,7 +2,7 @@ require 'htmlbeautifier/parser'
 
 module HtmlBeautifier
   class HtmlParser < Parser
-    ELEMENT_CONTENT = %r{ (?:[^<>]|<%.*?%>)* }mx
+    ELEMENT_CONTENT = %r{ (?:<%.*?%>|[^>])* }mx
     HTML_VOID_ELEMENTS = %r{(?:
       area | base | br | col | command | embed | hr | img | input | keygen |
       link | meta | param | source | track | wbr

@@ -15,6 +15,34 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it 'allows < in an attribute' do
+    source = code(%q(
+      <div ng-show="foo < 1">
+      <p>Hello</p>
+      </div>
+    ))
+    expected = code(%q(
+      <div ng-show="foo < 1">
+        <p>Hello</p>
+      </div>
+    ))
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
+  it 'allows > in an attribute' do
+    source = code(%q(
+      <div ng-show="foo > 1">
+      <p>Hello</p>
+      </div>
+    ))
+    expected = code(%q(
+      <div ng-show="foo > 1">
+        <p>Hello</p>
+      </div>
+    ))
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
   it 'indents within <script>' do
     source = code(%q(
       <script>
