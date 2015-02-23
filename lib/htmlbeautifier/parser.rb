@@ -53,7 +53,7 @@ module HtmlBeautifier
           return
         end
       end
-      raise "Unmatched sequence #{match.inspect}"
+      raise "Unmatched sequence"
     rescue => ex
       raise "#{ex.message} on line #{source_line_number}"
     end
