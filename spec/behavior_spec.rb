@@ -90,6 +90,12 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(source)
   end
 
+  it 'removes whitespace from script tags containing only whitespace' do
+    source   = %Q(<script>\n</script>)
+    expected = %Q(<script></script>)
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
   it 'ignores case of <script> tag' do
     source = code(%q(
       <SCRIPT>
