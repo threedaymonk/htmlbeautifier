@@ -66,7 +66,7 @@ module HtmlBeautifier
 
     def foreign_block(opening, code, closing)
       emit opening
-      unless code.empty? || code.match(/\A\s+\z/)
+      unless code.strip.empty?
         indent
 
         lines = code.split(/\n/)
