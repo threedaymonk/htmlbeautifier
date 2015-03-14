@@ -48,3 +48,16 @@ You can also specify the number of spaces to indent (the default is 2):
 ```ruby
 beautiful = HtmlBeautifier.beautify(messy, tab_stops: 4)
 ```
+
+Installation
+------------
+This is a Ruby gem. For command-line access:
+```
+gem install htmlbeautifier
+```
+
+Or for bundler:
+
+```ruby
+gem 'htmlbeautifier'
+```
