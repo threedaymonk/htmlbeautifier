@@ -2,16 +2,6 @@ require "strscan"
 
 module HtmlBeautifier
   class Parser
-    def self.debug_block(&blk)
-      @debug_block = blk
-    end
-
-    def self.debug(match, method)
-      if defined? @debug_block
-        @debug_block.call(match, method)
-      end
-    end
-
     def initialize(&blk)
       @maps = []
       yield self if block_given?
@@ -46,7 +36,6 @@ module HtmlBeautifier
             i += 1
           end
           params = [@scanner[0]] if params.empty?
-          self.class.debug(@scanner[0], method)
           receiver.__send__(method, *params)
           return
         end
