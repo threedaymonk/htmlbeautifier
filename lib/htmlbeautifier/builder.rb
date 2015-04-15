@@ -1,20 +1,8 @@
 require "htmlbeautifier/parser"
+require "htmlbeautifier/ruby_indenter"
 
 module HtmlBeautifier
   class Builder
-    INDENT_KEYWORDS = %w[ if elsif else unless while until begin for ]
-    OUTDENT_KEYWORDS = %w[ elsif else end ]
-    RUBY_INDENT  = %r{
-      ^
-      ( #{INDENT_KEYWORDS.join("|")} )\b
-      | \b ( do | \{ ) ( \s* \| [^\|]+ \| )?
-      $
-    }xo
-    RUBY_OUTDENT = %r{
-      ^ ( #{OUTDENT_KEYWORDS.join("|")} | \} ) \b
-    }xo
-    ELEMENT_CONTENT = %r{ (?:[^<>]|<%.*?%>)* }mx
-
     DEFAULT_OPTIONS = {
       tab_stops: 2,
       stop_on_errors: false
@@ -22,13 +10,14 @@ module HtmlBeautifier
 
     def initialize(output, options = {})
       options = DEFAULT_OPTIONS.merge(options)
-      @level = 0
-      @new_line = false
       @tab = " " * options[:tab_stops]
       @stop_on_errors = options[:stop_on_errors]
-      @output = output
+      @level = 0
+      @new_line = false
       @empty = true
       @ie_cc_levels = []
+      @output = output
+      @embedded_indenter = RubyIndenter.new
     end
 
   private
@@ -47,52 +36,46 @@ module HtmlBeautifier
       @level = [@level - 1, 0].max
     end
 
-    def emit(s)
-      if @new_line && !@empty
-        @output << ("\n" + @tab * @level)
-      end
-      @output << s
+    def emit(*strings)
+      @output << ("\n" + @tab * @level) if @new_line && !@empty
+      @output << strings.join("")
       @new_line = false
       @empty = false
     end
 
-    def new_line(*_args)
+    def new_line(*)
       @new_line = true
     end
 
     def embed(opening, code, closing)
       lines = code.split(%r{\n}).map(&:strip)
-      outdent if lines.first =~ RUBY_OUTDENT
-      emit opening + code + closing
-      indent if lines.last =~ RUBY_INDENT
+      outdent if @embedded_indenter.outdent?(lines)
+      emit opening, code, closing
+      indent if @embedded_indenter.indent?(lines)
     end
 
     def foreign_block(opening, code, closing)
       emit opening
-      unless code.strip.empty?
-        indent
-
-        lines = code.split(%r{\n})
-        lines.shift while lines.first.strip.empty?
-        lines.pop while lines.last.strip.empty?
-        indentation = lines.first[%r{^ +}]
-
-        new_line
-        lines.each do |line|
-          emit line.rstrip.sub(%r{^#{indentation}}, "")
-          new_line
-        end
-
-        outdent
-      end
+      emit_reindented_block_content code unless code.strip.empty?
       emit closing
+    end
+
+    def emit_reindented_block_content(code)
+      lines = code.strip.split(%r{\n})
+      indentation = lines.first[%r{^\s+}]
+
+      indent
+      new_line
+      lines.each do |line|
+        emit line.rstrip.sub(%r{^#{indentation}}, "")
+        new_line
+      end
+      outdent
     end
 
     def preformatted_block(opening, content, closing)
       new_line
-      emit opening
-      emit content
-      emit closing
+      emit opening, content, closing
       new_line
     end
 
@@ -101,26 +84,24 @@ module HtmlBeautifier
       new_line if e =~ %r{^<br[^\w]}
     end
 
-    def close_block_element(e)
-      outdent
-      emit e
-      new_line
-    end
-
-    def open_block_element(e)
-      new_line
-      emit e
-      indent
-    end
-
     def close_element(e)
       outdent
       emit e
     end
 
+    def close_block_element(e)
+      close_element e
+      new_line
+    end
+
     def open_element(e)
       emit e
       indent
+    end
+
+    def open_block_element(e)
+      new_line
+      open_element e
     end
 
     def close_ie_cc(e)
