@@ -140,7 +140,7 @@ module HtmlBeautifier
 
     def text(t)
       emit t.chomp
-      new_line if t.end_with? $/
+      new_line if t.end_with?("\n")
     end
   end
 end
