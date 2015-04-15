@@ -1,4 +1,4 @@
-require 'htmlbeautifier/parser'
+require "htmlbeautifier/parser"
 
 module HtmlBeautifier
   class HtmlParser < Parser

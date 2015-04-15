@@ -1,4 +1,4 @@
-require 'htmlbeautifier/parser'
+require "htmlbeautifier/parser"
 
 module HtmlBeautifier
   class Builder
@@ -6,12 +6,12 @@ module HtmlBeautifier
     OUTDENT_KEYWORDS = %w[ elsif else end ]
     RUBY_INDENT  = %r{
       ^
-      ( #{INDENT_KEYWORDS.join('|')} )\b
+      ( #{INDENT_KEYWORDS.join("|")} )\b
       | \b ( do | \{ ) ( \s* \| [^\|]+ \| )?
       $
     }xo
     RUBY_OUTDENT = %r{
-      ^ ( #{OUTDENT_KEYWORDS.join('|')} | \} ) \b
+      ^ ( #{OUTDENT_KEYWORDS.join("|")} | \} ) \b
     }xo
     ELEMENT_CONTENT = %r{ (?:[^<>]|<%.*?%>)* }mx
 
@@ -24,7 +24,7 @@ module HtmlBeautifier
       options = DEFAULT_OPTIONS.merge(options)
       @level = 0
       @new_line = false
-      @tab = ' ' * options[:tab_stops]
+      @tab = " " * options[:tab_stops]
       @stop_on_errors = options[:stop_on_errors]
       @output = output
       @empty = true
@@ -79,7 +79,7 @@ module HtmlBeautifier
 
         new_line
         lines.each do |line|
-          emit line.rstrip.sub(/^#{indentation}/, '')
+          emit line.rstrip.sub(/^#{indentation}/, "")
           new_line
         end
 

@@ -1,6 +1,6 @@
-require 'htmlbeautifier/builder'
-require 'htmlbeautifier/html_parser'
-require 'htmlbeautifier/version'
+require "htmlbeautifier/builder"
+require "htmlbeautifier/html_parser"
+require "htmlbeautifier/version"
 
 module HtmlBeautifier
 
@@ -13,7 +13,7 @@ module HtmlBeautifier
   # is false, i.e. continue to process the rest of the document.
   #
   def self.beautify(html, options = {})
-    ''.tap { |output|
+    "".tap { |output|
       HtmlParser.new.scan html.to_s, Builder.new(output, options)
     }
   end

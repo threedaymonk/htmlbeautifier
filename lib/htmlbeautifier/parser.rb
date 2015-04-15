@@ -1,4 +1,4 @@
-require 'strscan'
+require "strscan"
 
 module HtmlBeautifier
   class Parser
