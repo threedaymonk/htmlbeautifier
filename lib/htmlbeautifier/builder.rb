@@ -61,7 +61,7 @@ module HtmlBeautifier
     end
 
     def embed(opening, code, closing)
-      lines = code.split(/\n/).map{ |l| l.strip }
+      lines = code.split(%r{\n}).map{ |l| l.strip }
       outdent if lines.first =~ RUBY_OUTDENT
       emit opening + code + closing
       indent if lines.last =~ RUBY_INDENT
@@ -72,14 +72,14 @@ module HtmlBeautifier
       unless code.strip.empty?
         indent
 
-        lines = code.split(/\n/)
+        lines = code.split(%r{\n})
         lines.shift while lines.first.strip.empty?
         lines.pop while lines.last.strip.empty?
-        indentation = lines.first[/^ +/]
+        indentation = lines.first[%r{^ +}]
 
         new_line
         lines.each do |line|
-          emit line.rstrip.sub(/^#{indentation}/, "")
+          emit line.rstrip.sub(%r{^#{indentation}}, "")
           new_line
         end
 
@@ -98,7 +98,7 @@ module HtmlBeautifier
 
     def standalone_element(e)
       emit e
-      new_line if e =~ /^<br[^\w]/
+      new_line if e =~ %r{^<br[^\w]}
     end
 
     def close_block_element(e)

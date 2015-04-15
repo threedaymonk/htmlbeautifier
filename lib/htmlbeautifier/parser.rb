@@ -34,7 +34,7 @@ module HtmlBeautifier
     end
 
     def source_line_number
-      [source_so_far.chomp.split(/\n/).count, 1].max
+      [source_so_far.chomp.split(%r{\n}).count, 1].max
     end
 
   private

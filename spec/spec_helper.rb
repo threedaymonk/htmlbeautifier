@@ -1,9 +1,9 @@
 module HtmlBeautifierSpecUtilities
   def code(str)
-    str = str.gsub(/\A\n|\n\s*\Z/, "")
-    indentation = str[/\A +/]
-    lines = str.split(/\n/)
-    lines.map{ |line| line.sub(/^#{indentation}/, "") }.join("\n")
+    str = str.gsub(%r{\A\n|\n\s*\Z}, "")
+    indentation = str[%r{\A +}]
+    lines = str.split(%r{\n})
+    lines.map{ |line| line.sub(%r{^#{indentation}}, "") }.join("\n")
   end
 end
 
