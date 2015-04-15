@@ -2,14 +2,17 @@ require 'htmlbeautifier/parser'
 
 module HtmlBeautifier
   class Builder
-
-    RUBY_INDENT  =
-      %r{ ^ ( if | unless | while | begin | elsif | else | until | for )\b
-        | \b ( do | \{ ) ( \s* \| [^\|]+ \| )? $
-        }x
-    RUBY_OUTDENT =
-      %r{ ^ ( end | elsif | else |\} ) \b
-        }x
+    INDENT_KEYWORDS = %w[ if elsif else unless while until begin for ]
+    OUTDENT_KEYWORDS = %w[ elsif else end ]
+    RUBY_INDENT  = %r{
+      ^
+      ( #{INDENT_KEYWORDS.join('|')} )\b
+      | \b ( do | \{ ) ( \s* \| [^\|]+ \| )?
+      $
+    }xo
+    RUBY_OUTDENT = %r{
+      ^ ( #{OUTDENT_KEYWORDS.join('|')} | \} ) \b
+    }xo
     ELEMENT_CONTENT = %r{ (?:[^<>]|<%.*?%>)* }mx
 
     DEFAULT_OPTIONS = {
