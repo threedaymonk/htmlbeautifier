@@ -1,11 +1,9 @@
-HTML Beautifier
-===============
+# HTML Beautifier
 
 A normaliser/beautifier for HTML that also understands embedded Ruby.
 Ideal for tidying up Rails templates.
 
-What it does
-------------
+## What it does
 
 * Normalises hard tabs to spaces
 * Removes trailing spaces
@@ -18,8 +16,7 @@ What it does
 * Indents the left-hand margin of JavaScript and CSS blocks to match the
   indentation level of the code
 
-Usage
------
+## Usage
 
 ### From the command line
 
@@ -35,7 +32,7 @@ or to operate on standard input and output:
 $ htmlbeautifier < input > output
 ```
 
-## In your code
+### In your code
 
 ```ruby
 require 'htmlbeautifier'
@@ -49,15 +46,26 @@ You can also specify the number of spaces to indent (the default is 2):
 beautiful = HtmlBeautifier.beautify(messy, tab_stops: 4)
 ```
 
-Installation
-------------
-This is a Ruby gem. For command-line access:
-```
-gem install htmlbeautifier
+## Installation
+
+This is a Ruby gem.
+To install the command-line tool (you may need `sudo`):
+
+```sh
+$ gem install htmlbeautifier
 ```
 
-Or for bundler:
+To use the gem with Bundler, add to your `Gemfile`:
 
 ```ruby
 gem 'htmlbeautifier'
 ```
+
+## Contributing
+
+1. Follow [these guidelines][git-commit] when writing commit messages (briefly,
+   the first line should begin with a capital letter, use the imperative mood,
+   be no more than 50 characters, and not end with a period).
+2. Include tests.
+
+[git-commit]:http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
