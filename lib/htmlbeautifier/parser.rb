@@ -2,7 +2,7 @@ require "strscan"
 
 module HtmlBeautifier
   class Parser
-    def initialize(&blk)
+    def initialize
       @maps = []
       yield self if block_given?
     end
