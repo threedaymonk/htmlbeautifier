@@ -14,38 +14,43 @@ module HtmlBeautifier
       pre | section | table | tbody | td | tfoot | th | thead | tr | ul | video
     )}mix
 
+    MAPPINGS = [
+      [%r{(<%-?=?)(.*?)(-?%>)}om,
+       :embed],
+      [%r{<!--\[.*?\]>}om,
+       :open_ie_cc],
+      [%r{<!\[.*?\]-->}om,
+       :close_ie_cc],
+      [%r{<!--.*?-->}om,
+       :standalone_element],
+      [%r{<!.*?>}om,
+       :standalone_element],
+      [%r{(<script#{ELEMENT_CONTENT}>)(.*?)(</script>)}omi,
+       :foreign_block],
+      [%r{(<style#{ELEMENT_CONTENT}>)(.*?)(</style>)}omi,
+       :foreign_block],
+      [%r{(<pre#{ELEMENT_CONTENT}>)(.*?)(</pre>)}omi,
+       :preformatted_block],
+      [%r{<#{HTML_VOID_ELEMENTS}(?: #{ELEMENT_CONTENT})?/?>}om,
+       :standalone_element],
+      [%r{</#{HTML_BLOCK_ELEMENTS}>}om,
+       :close_block_element],
+      [%r{<#{HTML_BLOCK_ELEMENTS}(?: #{ELEMENT_CONTENT})?>}om,
+       :open_block_element],
+      [%r{</#{ELEMENT_CONTENT}>}om,
+       :close_element],
+      [%r{<#{ELEMENT_CONTENT}>}om,
+       :open_element],
+      [%r{\s*\r?\n\s*}om,
+       :new_line],
+      [%r{[^<]+},
+       :text]]
+
     def initialize
       super do |p|
-        p.map %r{(<%-?=?)(.*?)(-?%>)}m,
-          :embed
-        p.map %r{<!--\[.*?\]>}m,
-          :open_ie_cc
-        p.map %r{<!\[.*?\]-->}m,
-          :close_ie_cc
-        p.map %r{<!--.*?-->}m,
-          :standalone_element
-        p.map %r{<!.*?>}m,
-          :standalone_element
-        p.map %r{(<script#{ELEMENT_CONTENT}>)(.*?)(</script>)}mi,
-          :foreign_block
-        p.map %r{(<style#{ELEMENT_CONTENT}>)(.*?)(</style>)}mi,
-          :foreign_block
-        p.map %r{(<pre#{ELEMENT_CONTENT}>)(.*?)(</pre>)}mi,
-          :preformatted_block
-        p.map %r{<#{HTML_VOID_ELEMENTS}(?: #{ELEMENT_CONTENT})?/?>}m,
-          :standalone_element
-        p.map %r{</#{HTML_BLOCK_ELEMENTS}>}m,
-          :close_block_element
-        p.map %r{<#{HTML_BLOCK_ELEMENTS}(?: #{ELEMENT_CONTENT})?>}m,
-          :open_block_element
-        p.map %r{</#{ELEMENT_CONTENT}>}m,
-          :close_element
-        p.map %r{<#{ELEMENT_CONTENT}>}m,
-          :open_element
-        p.map %r{\s*\r?\n\s*}m,
-          :new_line
-        p.map %r{[^<]+},
-          :text
+        MAPPINGS.each do |regexp, method|
+          p.map regexp, method
+        end
       end
     end
   end
