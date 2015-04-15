@@ -1,0 +1,82 @@
+AllCops:
+  # Exclude anything that isn't really part of our code.
+  Exclude:
+    - 'vendor/**/*'
+    - '**/*.gemspec'
+    - '**/Rakefile'
+
+# private/protected/public
+Style/AccessModifierIndentation:
+  EnforcedStyle: outdent
+
+# Just indent parameters by two spaces. It's less volatile if methods change,
+# and there's less busy work lining things up.
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+# Use Weirich style
+Style/BlockDelimiters:
+  EnforcedStyle: semantic
+
+Style/CollectionMethods:
+  PreferredMethods:
+    inject: inject
+    reduce: inject
+
+# Chain methods with trailing dots.
+Style/DotPosition:
+  EnforcedStyle: trailing
+
+# Percent-formatting and hash interpolation both have their place. Don't
+# enforce any particular one.
+Style/FormatString:
+  Enabled: false
+
+# It's not really clearer to replace every if with a return if.
+Style/GuardClause:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 80
+  Exclude:
+    - 'spec/**/*'
+
+# Don't worry about long methods in specs.
+Metrics/MethodLength:
+  Max: 10
+  Exclude:
+    - 'spec/**/*'
+
+Style/RegexpLiteral:
+  EnforcedStyle: percent_r
+
+# I'm happy with raise, thanks.
+Style/SignalException:
+  Enabled: false
+
+# Enforce double quotes everywhere.
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+# Prefer sensible naming to comments everywhere.
+Documentation:
+  Description: Document classes and non-namespace modules.
+  Enabled: false
+
+# Would enforce do_y if x over if x / do y / end. As with GuardClause above,
+# this enforces code organisation that doesn't necesarily make things clearer.
+IfUnlessModifier:
+  Enabled: false
+
+# Don't allow assignment in conditions
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: false
+
+# Just a preference to use %w[] over %w()
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%i': '[]'
+    '%w': '[]'
+    '%W': '[]'
+    '%':  '{}'
+    '%r': '{}'
