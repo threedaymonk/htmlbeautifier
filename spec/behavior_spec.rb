@@ -380,4 +380,29 @@ describe HtmlBeautifier do
     ))
     expect(described_class.beautify(source)).to eq(expected)
   end
+  it 'indents after control expressions without optional `do` keyword' do
+    source = code(%q(
+      <% for value in list %>
+      Lorem ipsum
+      <% end %>
+      <% until something %>
+      Lorem ipsum
+      <% end %>
+      <% while something_else %>
+      Lorem ipsum
+      <% end %>
+    ))
+    expected = code(%q(
+      <% for value in list %>
+        Lorem ipsum
+      <% end %>
+      <% until something %>
+        Lorem ipsum
+      <% end %>
+      <% while something_else %>
+        Lorem ipsum
+      <% end %>
+    ))
+    expect(described_class.beautify(source)).to eq(expected)
+  end
 end
