@@ -4,7 +4,7 @@ module HtmlBeautifier
   class Builder
 
     RUBY_INDENT  =
-      %r{ ^ ( if | unless | while | begin | elsif | else )\b
+      %r{ ^ ( if | unless | while | begin | elsif | else | until | for )\b
         | \b ( do | \{ ) ( \s* \| [^\|]+ \| )? $
         }x
     RUBY_OUTDENT =
