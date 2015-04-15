@@ -2,7 +2,6 @@ require "strscan"
 
 module HtmlBeautifier
   class Parser
-
     def self.debug_block(&blk)
       @debug_block = blk
     end
@@ -24,9 +23,7 @@ module HtmlBeautifier
 
     def scan(subject, receiver)
       @scanner = StringScanner.new(subject)
-      until @scanner.eos?
-        dispatch(receiver)
-      end
+      dispatch(receiver) until @scanner.eos?
     end
 
     def source_so_far
@@ -38,6 +35,7 @@ module HtmlBeautifier
     end
 
   private
+
     def dispatch(receiver)
       @maps.each do |pattern, method|
         if @scanner.scan(pattern)

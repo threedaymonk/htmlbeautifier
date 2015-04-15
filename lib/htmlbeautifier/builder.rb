@@ -35,7 +35,7 @@ module HtmlBeautifier
 
     def error(text)
       return unless @stop_on_errors
-      raise RuntimeError, text
+      raise text
     end
 
     def indent
@@ -61,7 +61,7 @@ module HtmlBeautifier
     end
 
     def embed(opening, code, closing)
-      lines = code.split(%r{\n}).map{ |l| l.strip }
+      lines = code.split(%r{\n}).map(&:strip)
       outdent if lines.first =~ RUBY_OUTDENT
       emit opening + code + closing
       indent if lines.last =~ RUBY_INDENT

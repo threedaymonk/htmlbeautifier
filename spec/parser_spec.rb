@@ -31,7 +31,7 @@ describe HtmlBeautifier::Parser do
       p.map %r{(foo)\((.*?)\)}, :foo
     }
     parser.scan("foo(bar)", receiver)
-    expected = [[:foo, ["foo", "bar"]]]
+    expected = [[:foo, %w[ foo bar ]]]
     expect(receiver.sequence).to eq(expected)
   end
 
