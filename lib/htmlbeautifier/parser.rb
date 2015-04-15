@@ -27,22 +27,22 @@ module HtmlBeautifier
   private
 
     def dispatch(receiver)
-      @maps.each do |pattern, method|
-        if @scanner.scan(pattern)
-          params = []
-          i = 1
-          while @scanner[i]
-            params << @scanner[i]
-            i += 1
-          end
-          params = [@scanner[0]] if params.empty?
-          receiver.__send__(method, *params)
-          return
-        end
-      end
-      raise "Unmatched sequence"
+      _, method = @maps.find { |pattern, _| @scanner.scan(pattern) }
+      raise "Unmatched sequence" unless method
+      receiver.__send__(method, *extract_params(@scanner))
     rescue => ex
       raise "#{ex.message} on line #{source_line_number}"
+    end
+
+    def extract_params(scanner)
+      return [scanner[0]] unless scanner[1]
+      params = []
+      i = 1
+      while scanner[i]
+        params << scanner[i]
+        i += 1
+      end
+      params
     end
   end
 end
