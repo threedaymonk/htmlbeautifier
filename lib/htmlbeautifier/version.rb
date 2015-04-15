@@ -4,6 +4,6 @@ module HtmlBeautifier #:nodoc:
     MINOR = 1
     TINY  = 0
 
-    STRING = [MAJOR, MINOR, TINY].join('.')
+    STRING = [MAJOR, MINOR, TINY].join(".")
   end
 end

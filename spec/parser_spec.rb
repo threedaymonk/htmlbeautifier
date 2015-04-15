@@ -1,4 +1,4 @@
-require 'htmlbeautifier/parser'
+require "htmlbeautifier/parser"
 
 describe HtmlBeautifier::Parser do
   class Receiver
@@ -13,25 +13,25 @@ describe HtmlBeautifier::Parser do
     end
   end
 
-  it 'dispatches matching sequence' do
+  it "dispatches matching sequence" do
     receiver = Receiver.new
     parser = described_class.new { |p|
       p.map %r{foo}, :foo
       p.map %r{bar\s*}, :bar
       p.map %r{\s+}, :whitespace
     }
-    parser.scan('foo bar ', receiver)
-    expected =  [[:foo, ['foo']], [:whitespace, [' ']], [:bar, ['bar ']]]
+    parser.scan("foo bar ", receiver)
+    expected =  [[:foo, ["foo"]], [:whitespace, [" "]], [:bar, ["bar "]]]
     expect(receiver.sequence).to eq(expected)
   end
 
-  it 'sends parenthesized components as separate parameters' do
+  it "sends parenthesized components as separate parameters" do
     receiver = Receiver.new
     parser = described_class.new { |p|
       p.map %r{(foo)\((.*?)\)}, :foo
     }
-    parser.scan('foo(bar)', receiver)
-    expected = [[:foo, ['foo', 'bar']]]
+    parser.scan("foo(bar)", receiver)
+    expected = [[:foo, %w[ foo bar ]]]
     expect(receiver.sequence).to eq(expected)
   end
 
@@ -55,17 +55,17 @@ describe HtmlBeautifier::Parser do
     end
   end
 
-  it 'gives source so far' do
+  it "gives source so far" do
     parser = described_class.new { |p|
       p.map %r{(M+)}m, :append_new_source_so_far
       p.map %r{([\s\n]+)}m, :space_or_newline
     }
     receiver = SourceTrackingReceiver.new(parser)
     parser.scan("M MM MMM", receiver)
-    expect(receiver.sources_so_far).to eq(['M', 'M MM', 'M MM MMM'])
+    expect(receiver.sources_so_far).to eq(["M", "M MM", "M MM MMM"])
   end
 
-  it 'gives source line number' do
+  it "gives source line number" do
     parser = described_class.new{ |p|
       p.map %r{(M+)}m, :append_new_source_line_number
       p.map %r{([\s\n]+)}m, :space_or_newline

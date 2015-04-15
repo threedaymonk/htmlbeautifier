@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-require 'htmlbeautifier'
-require 'optparse'
-require 'fileutils'
+require "htmlbeautifier"
+require "optparse"
+require "fileutils"
 
 def beautify(name, input, output, options)
   output.puts HtmlBeautifier.beautify(input, options)
@@ -11,7 +11,7 @@ end
 
 executable = File.basename(__FILE__)
 
-options = {:tab_stops => 2}
+options = { tab_stops: 2 }
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{executable} [options] [file ...]"
   opts.separator <<END

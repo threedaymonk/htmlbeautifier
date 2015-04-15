@@ -1,8 +1,8 @@
-require 'htmlbeautifier'
+require "htmlbeautifier"
 
 describe HtmlBeautifier do
-  it 'correctly indents mixed document' do
-    source = code(%q(
+  it "correctly indents mixed document" do
+    source = code <<-END
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head>
@@ -46,8 +46,8 @@ describe HtmlBeautifier do
       </table>
       </body>
       </html>
-    ))
-    expected = code(%q(
+    END
+    expected = code <<-END
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
         <head>
@@ -96,38 +96,38 @@ describe HtmlBeautifier do
           </table>
         </body>
       </html>
-    ))
+    END
 
     expect(described_class.beautify(source)).to eq(expected)
   end
 
-  context 'when stop_on_errors is true' do
-    it 'raises an error with the source line of an illegal closing tag' do
+  context "when stop_on_errors is true" do
+    it "raises an error with the source line of an illegal closing tag" do
       expect {
         source = "<html>\n</html>\n</html>"
         described_class.beautify(source, stop_on_errors: true)
-      }.to raise_error(RuntimeError, 'Extraneous closing tag on line 3')
+      }.to raise_error(RuntimeError, "Extraneous closing tag on line 3")
     end
   end
 
-  context 'when stop_on_errors is false' do
-    it 'processes the rest of the document after the errant closing tag' do
-      source = code(%q(
+  context "when stop_on_errors is false" do
+    it "processes the rest of the document after the errant closing tag" do
+      source = code <<-END
         </head>
         <body>
         <div>
         text
         </div>
         </body>
-      ))
-      expected = code(%q(
+      END
+      expected = code <<-END
         </head>
         <body>
           <div>
             text
           </div>
         </body>
-      ))
+      END
       expect(described_class.beautify(source, stop_on_errors: false)).
         to eq(expected)
     end

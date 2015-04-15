@@ -1,19 +1,8 @@
-require 'strscan'
+require "strscan"
 
 module HtmlBeautifier
   class Parser
-
-    def self.debug_block(&blk)
-      @debug_block = blk
-    end
-
-    def self.debug(match, method)
-      if defined? @debug_block
-        @debug_block.call(match, method)
-      end
-    end
-
-    def initialize(&blk)
+    def initialize
       @maps = []
       yield self if block_given?
     end
@@ -24,9 +13,7 @@ module HtmlBeautifier
 
     def scan(subject, receiver)
       @scanner = StringScanner.new(subject)
-      until @scanner.eos?
-        dispatch(receiver)
-      end
+      dispatch(receiver) until @scanner.eos?
     end
 
     def source_so_far
@@ -34,28 +21,28 @@ module HtmlBeautifier
     end
 
     def source_line_number
-      [source_so_far.chomp.split(/\n/).count, 1].max
+      [source_so_far.chomp.split(%r{\n}).count, 1].max
     end
 
   private
+
     def dispatch(receiver)
-      @maps.each do |pattern, method|
-        if @scanner.scan(pattern)
-          params = []
-          i = 1
-          while @scanner[i]
-            params << @scanner[i]
-            i += 1
-          end
-          params = [@scanner[0]] if params.empty?
-          self.class.debug(@scanner[0], method)
-          receiver.__send__(method, *params)
-          return
-        end
-      end
-      raise "Unmatched sequence"
+      _, method = @maps.find { |pattern, _| @scanner.scan(pattern) }
+      raise "Unmatched sequence" unless method
+      receiver.__send__(method, *extract_params(@scanner))
     rescue => ex
       raise "#{ex.message} on line #{source_line_number}"
+    end
+
+    def extract_params(scanner)
+      return [scanner[0]] unless scanner[1]
+      params = []
+      i = 1
+      while scanner[i]
+        params << scanner[i]
+        i += 1
+      end
+      params
     end
   end
 end

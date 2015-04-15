@@ -1,9 +1,9 @@
-require 'htmlbeautifier/builder'
-require 'htmlbeautifier/html_parser'
-require 'htmlbeautifier/version'
+require "htmlbeautifier/builder"
+require "htmlbeautifier/html_parser"
+require "htmlbeautifier/version"
 
 module HtmlBeautifier
-
+  #
   # Returns a beautified HTML/HTML+ERB document as a String.
   # html must be an object that responds to +#to_s+.
   #
@@ -13,7 +13,7 @@ module HtmlBeautifier
   # is false, i.e. continue to process the rest of the document.
   #
   def self.beautify(html, options = {})
-    ''.tap { |output|
+    "".tap { |output|
       HtmlParser.new.scan html.to_s, Builder.new(output, options)
     }
   end
