@@ -406,4 +406,82 @@ describe HtmlBeautifier do
     END
     expect(described_class.beautify(source)).to eq(expected)
   end
+
+  # This test is more just to give some context to the one below
+  it "various html without comments" do
+    source = code <<-END
+      <span class="generic"></span> <img src="none">
+      <ul>
+        <li>first</li>
+        <li>second</li>
+      </ul>
+      <some-angular-directive></some-angular-directive>
+    END
+    expected = code <<-END
+      <span class="generic"></span> <img src="none">
+      <ul>
+        <li>first</li>
+        <li>second</li>
+      </ul>
+      <some-angular-directive></some-angular-directive>
+    END
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
+  # This tests all combinations of block/void/unknown elements and ensures adding comments to remove whitespace doesnt mess with indentation
+  it "various html with comments" do
+    source = code <<-END
+      <embed><!--
+      --><span class="generic"></span><!--
+      --><img><!--
+      --><ul>
+        <li>first</li><!--
+        --><li>second</li>
+      </ul><!--
+      --><input type="text"><!--
+      --><div></div><!--
+      --><another-directive></another-directive><!--
+      --><span></span><!--
+      --><h2></h2>
+    END
+    expected = code <<-END
+      <embed><!--
+      --><span class="generic"></span><!--
+      --><img><!--
+      --><ul>
+        <li>first</li><!--
+        --><li>second</li>
+      </ul><!--
+      --><input type="text"><!--
+      --><div></div><!--
+      --><another-directive></another-directive><!--
+      --><span></span><!--
+      --><h2></h2>
+    END
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
+  # Finally to test malformatting corrections.  Block elements should still be given their
+  #   own lines, while generic and void should be capable of keeping on the same lines
+  it "various html with comments" do
+    source = code <<-END
+      <embed><!----><span class="generic"></span><!----><img><!--
+      --><ul>
+        <li>first</li><!----><li>second</li>
+      </ul><!----><input type="text"><!----><div></div><!--
+      --><another-directive></another-directive><!----><span></span><!----><h2></h2>
+    END
+    expected = code <<-END
+      <embed><!----><span class="generic"></span><!----><img><!--
+      --><ul>
+        <li>first</li><!--
+        --><li>second</li>
+      </ul><!--
+      --><input type="text"><!--
+      --><div></div><!--
+      --><another-directive></another-directive><!----><span></span><!--
+      --><h2></h2>
+    END
+    expect(described_class.beautify(source)).to eq(expected)
+  end
 end
