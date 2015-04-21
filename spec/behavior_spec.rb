@@ -428,7 +428,7 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
-  # This tests all combinations of block/void/unknown elements and ensures adding comments to remove whitespace 
+  # This tests all combinations of block/void/unknown elements and ensures adding comments to remove whitespace
   #   doesnt mess with indentation
   it "indents with comments" do
     source = code <<-END
