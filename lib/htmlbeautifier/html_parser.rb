@@ -31,6 +31,8 @@ module HtmlBeautifier
        :foreign_block],
       [%r{(<pre#{ELEMENT_CONTENT}>)(.*?)(</pre>)}omi,
        :preformatted_block],
+      [%r{(<textarea#{ELEMENT_CONTENT}>)(.*?)(</textarea>)}omi,
+       :preformatted_block],
       [%r{<#{HTML_VOID_ELEMENTS}(?: #{ELEMENT_CONTENT})?/?>}om,
        :standalone_element],
       [%r{</#{HTML_BLOCK_ELEMENTS}>}om,

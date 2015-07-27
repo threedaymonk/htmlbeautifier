@@ -360,6 +360,21 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it "does not modify content of <textarea>" do
+    source = code <<-END
+      <div>
+        <textarea>   Preformatted   text
+
+                should  <em>not  be </em>
+                      modified,
+                ever!
+
+        </textarea>
+      </div>
+    END
+    expect(described_class.beautify(source)).to eq(source)
+  end
+
   it "adds newlines around <pre>" do
     source = %{<section><pre>puts "Allons-y!"</pre></section>}
     expected = code <<-END
