@@ -11,7 +11,7 @@ module HtmlBeautifier
 
     def initialize(output, options = {})
       options = DEFAULT_OPTIONS.merge(options)
-      @tab = options[:translate_spaces_to_tabs] ? " " * options[:tab_stops] : "\t"
+      @tab = options[:translate_spaces_to_tabs] ? "\t" : " " * options[:tab_stops]
       @stop_on_errors = options[:stop_on_errors]
       @level = 0
       @new_line = false
