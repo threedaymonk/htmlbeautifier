@@ -5,12 +5,13 @@ module HtmlBeautifier
   class Builder
     DEFAULT_OPTIONS = {
       tab_stops: 2,
-      stop_on_errors: false
+      stop_on_errors: false,
+      translate_spaces_to_tabs: false
     }
 
     def initialize(output, options = {})
       options = DEFAULT_OPTIONS.merge(options)
-      @tab = " " * options[:tab_stops]
+      @tab = options[:translate_spaces_to_tabs] ? " " * options[:tab_stops] : "\t"
       @stop_on_errors = options[:stop_on_errors]
       @level = 0
       @new_line = false

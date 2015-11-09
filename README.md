@@ -45,6 +45,11 @@ You can also specify the number of spaces to indent (the default is 2):
 ```ruby
 beautiful = HtmlBeautifier.beautify(messy, tab_stops: 4)
 ```
+Or use tabs instead of spaces ("tab_stops" will be ignored)
+
+```ruby
+beautiful = HtmlBeautifier.beautify(messy, translate_spaces_to_tabs: 4)
+```
 
 ## Installation
 
