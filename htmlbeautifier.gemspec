@@ -2,7 +2,7 @@ require File.expand_path("../lib/htmlbeautifier/version", __FILE__)
 
 spec = Gem::Specification.new do |s|
   s.name              = "htmlbeautifier"
-  s.version           = '1.2.1'
+  s.version           = HtmlBeautifier::VERSION::STRING
   s.summary           = "HTML/ERB beautifier"
   s.description       = "A normaliser/beautifier for HTML that also understands embedded Ruby."
   s.author            = "Paul Battley"
