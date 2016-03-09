@@ -17,6 +17,10 @@ module HtmlBeautifier
     MAPPINGS = [
       [%r{(<%-?=?)(.*?)(-?%>)}om,
        :embed],
+      [%r{(\{%-?)(.*?)(-?%\})}om,
+       :liquid],
+      [%r{(\{\{-?)(.*?)(-?\}\})}om,
+       :liquid],
       [%r{<!--\[.*?\]>}om,
        :open_ie_cc],
       [%r{<!\[.*?\]-->}om,
