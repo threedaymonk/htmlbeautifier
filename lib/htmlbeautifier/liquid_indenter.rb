@@ -4,7 +4,7 @@ module HtmlBeautifier
       %w[if elsif else unless for comment capture raw case when]
     LIQUID_OUTDENT_KEYWORDS =
       %w[elsif else endif endunless endfor endcomment endcapture endraw
-          endcase]
+         endcase]
     LIQUID_INDENT  = %r{
       ^ ( #{LIQUID_INDENT_KEYWORDS.join("|")} )\b
       | \b ( do | \{ ) ( \s* \| [^\|]+ \| )? $
