@@ -5,6 +5,7 @@ module HtmlBeautifier
   class Builder
     DEFAULT_OPTIONS = {
       tab_stops: 2,
+      start_level: 0,
       stop_on_errors: false
     }
 
@@ -12,7 +13,7 @@ module HtmlBeautifier
       options = DEFAULT_OPTIONS.merge(options)
       @tab = " " * options[:tab_stops]
       @stop_on_errors = options[:stop_on_errors]
-      @level = 0
+      @level = options[:start_level]
       @new_line = false
       @empty = true
       @ie_cc_levels = []
