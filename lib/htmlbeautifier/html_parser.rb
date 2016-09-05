@@ -35,6 +35,8 @@ module HtmlBeautifier
        :preformatted_block],
       [%r{<#{HTML_VOID_ELEMENTS}(?: #{ELEMENT_CONTENT})?/?>}om,
        :standalone_element],
+      [%r{<\w+(?: #{ELEMENT_CONTENT})?/>}om,
+       :standalone_element],
       [%r{</#{HTML_BLOCK_ELEMENTS}>}om,
        :close_block_element],
       [%r{<#{HTML_BLOCK_ELEMENTS}(?: #{ELEMENT_CONTENT})?>}om,
