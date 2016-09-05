@@ -421,4 +421,34 @@ describe HtmlBeautifier do
     END
     expect(described_class.beautify(source)).to eq(expected)
   end
+
+  it "indents general self-closing tags" do
+    source = code <<-END
+      <div>
+      <svg>
+      <path d="M150 0 L75 200 L225 200 Z" />
+      <circle cx="50" cy="50" r="40" />
+      </svg>
+      <br>
+      <br/>
+      <p>
+      <foo />
+      </p>
+      </div>
+    END
+    expected = code <<-END
+      <div>
+        <svg>
+          <path d="M150 0 L75 200 L225 200 Z" />
+          <circle cx="50" cy="50" r="40" />
+        </svg>
+        <br>
+        <br/>
+        <p>
+          <foo />
+        </p>
+      </div>
+    END
+    expect(described_class.beautify(source)).to eq(expected)
+  end
 end
