@@ -36,6 +36,9 @@ Style/FormatString:
 Style/GuardClause:
   Enabled: false
 
+Metrics/ClassLength:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 80
   Exclude:
