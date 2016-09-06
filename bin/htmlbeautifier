@@ -11,7 +11,7 @@ end
 
 executable = File.basename(__FILE__)
 
-options = { tab_stops: 2 }
+options = { indent: "  " }
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{executable} [options] [file ...]"
   opts.separator <<END
@@ -30,7 +30,13 @@ END
     "-t", "--tab-stops NUMBER", Integer,
     "Set number of spaces per indent (default #{options[:tab_stops]})"
   ) do |num|
-    options[:tab_stops] = num
+    options[:indent] = " " * num
+  end
+  opts.on(
+    "-T", "--tab",
+    "Indent using tabs"
+  ) do
+    options[:indent] = "\t"
   end
   opts.on(
     "-e", "--stop-on-errors",

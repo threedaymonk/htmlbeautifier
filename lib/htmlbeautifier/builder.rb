@@ -4,13 +4,13 @@ require "htmlbeautifier/ruby_indenter"
 module HtmlBeautifier
   class Builder
     DEFAULT_OPTIONS = {
-      tab_stops: 2,
+      indent: "  ",
       stop_on_errors: false
     }
 
     def initialize(output, options = {})
       options = DEFAULT_OPTIONS.merge(options)
-      @tab = " " * options[:tab_stops]
+      @tab = options[:indent]
       @stop_on_errors = options[:stop_on_errors]
       @level = 0
       @new_line = false

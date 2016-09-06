@@ -5,7 +5,7 @@ Ideal for tidying up Rails templates.
 
 ## What it does
 
-* Normalises hard tabs to spaces
+* Normalises hard tabs to spaces (or vice versa)
 * Removes trailing spaces
 * Indents after opening HTML elements
 * Outdents before closing elements
@@ -40,10 +40,10 @@ require 'htmlbeautifier'
 beautiful = HtmlBeautifier.beautify(messy)
 ```
 
-You can also specify the number of spaces to indent (the default is 2):
+You can also specify how to indent (the default is two spaces):
 
 ```ruby
-beautiful = HtmlBeautifier.beautify(messy, tab_stops: 4)
+beautiful = HtmlBeautifier.beautify(messy, indent: "\t")
 ```
 
 ## Installation
