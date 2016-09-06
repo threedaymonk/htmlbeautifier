@@ -42,6 +42,10 @@ describe HtmlBeautifier do
       <tbody>
       <tr><td>First column</td></tr><tr>
       <td>Second column</td></tr>
+      {% if x == y %}
+      <tr><td>{{ third_column }}</td></tr>{% else %}<tr>
+      <td>{{ fourth_column }}</td></tr>
+      {% endif %}
       </tbody>
       </table>
       </body>
@@ -92,6 +96,15 @@ describe HtmlBeautifier do
               <tr>
                 <td>Second column</td>
               </tr>
+              {% if x == y %}
+                <tr>
+                  <td>{{ third_column }}</td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td>{{ fourth_column }}</td>
+                </tr>
+              {% endif %}
             </tbody>
           </table>
         </body>

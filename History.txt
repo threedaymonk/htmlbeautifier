@@ -1,3 +1,6 @@
+== 1.2.0 (2016-03-09)
+* Add support for Liquid (http://liquidmarkup.org) syntax
+
 == 1.1.1 (2015-07-27)
 * Indent after 'until' and 'for'.
 * Do not modify the content of <textarea>.

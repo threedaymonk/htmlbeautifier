@@ -1,5 +1,6 @@
 require "htmlbeautifier/parser"
 require "htmlbeautifier/ruby_indenter"
+require "htmlbeautifier/liquid_indenter"
 
 module HtmlBeautifier
   class Builder
@@ -19,6 +20,7 @@ module HtmlBeautifier
       @ie_cc_levels = []
       @output = output
       @embedded_indenter = RubyIndenter.new
+      @liquid_indenter = LiquidIndenter.new
     end
 
   private
@@ -54,6 +56,13 @@ module HtmlBeautifier
       outdent if @embedded_indenter.outdent?(lines)
       emit opening, code, closing
       indent if @embedded_indenter.indent?(lines)
+    end
+
+    def liquid(opening, code, closing)
+      lines = code.split(%r{\n}).map(&:strip)
+      outdent if @liquid_indenter.outdent?(lines)
+      emit opening, code, closing
+      indent if @liquid_indenter.indent?(lines)
     end
 
     def foreign_block(opening, code, closing)
