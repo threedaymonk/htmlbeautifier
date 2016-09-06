@@ -39,6 +39,12 @@ END
     options[:indent] = "\t"
   end
   opts.on(
+    "-i", "--indent-by NUMBER", Integer,
+    "Indent the output by NUMBER steps (default 0)."
+  ) do |num|
+    options[:initial_level] = num
+  end
+  opts.on(
     "-e", "--stop-on-errors",
     "Stop when invalid nesting is encountered in the input"
   ) do |num|

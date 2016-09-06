@@ -5,6 +5,7 @@ module HtmlBeautifier
   class Builder
     DEFAULT_OPTIONS = {
       indent: "  ",
+      initial_level: 0,
       stop_on_errors: false
     }
 
@@ -12,7 +13,7 @@ module HtmlBeautifier
       options = DEFAULT_OPTIONS.merge(options)
       @tab = options[:indent]
       @stop_on_errors = options[:stop_on_errors]
-      @level = 0
+      @level = options[:initial_level]
       @new_line = false
       @empty = true
       @ie_cc_levels = []
@@ -37,7 +38,8 @@ module HtmlBeautifier
     end
 
     def emit(*strings)
-      @output << ("\n" + @tab * @level) if @new_line && !@empty
+      @output << "\n" if @new_line && !@empty
+      @output << (@tab * @level) if @new_line
       @output << strings.join("")
       @new_line = false
       @empty = false

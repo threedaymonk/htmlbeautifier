@@ -13,6 +13,8 @@ module HtmlBeautifier
   # indent - what to indent with ("  ", "\t" etc.), default "  "
   # stop_on_errors - raise an exception on a badly-formed document. Default
   # is false, i.e. continue to process the rest of the document.
+  # initial_level - The entire output will be indented by this number of steps.
+  # Default is 0.
   #
   def self.beautify(html, options = {})
     if options[:tab_stops]
