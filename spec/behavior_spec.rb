@@ -451,4 +451,24 @@ describe HtmlBeautifier do
     END
     expect(described_class.beautify(source)).to eq(expected)
   end
+
+  it "removes excess indentation on next line after text" do
+    source = code <<-END
+      Lorem ipsum
+                      <br>
+      Lorem ipsum
+                      <em>
+        Lorem ipsum
+                      </em>
+    END
+    expected = code <<-END
+      Lorem ipsum
+      <br>
+      Lorem ipsum
+      <em>
+        Lorem ipsum
+      </em>
+    END
+    expect(described_class.beautify(source)).to eq(expected)
+  end
 end
