@@ -1,3 +1,6 @@
+== 1.2.1 (2016-11-22)
+* Support arbitrary self-closing tags.
+
 == 1.2.0 (2016-09-06)
 * Support indentation via tabs.
 * Allow the whole output to be indented by a number of steps.
