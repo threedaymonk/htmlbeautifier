@@ -47,7 +47,7 @@ module HtmlBeautifier
        :open_element],
       [%r{\s*\r?\n\s*}om,
        :new_line],
-      [%r{[^<]+},
+      [%r{[^<\n]+},
        :text]]
 
     def initialize
