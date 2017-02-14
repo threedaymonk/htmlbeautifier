@@ -471,4 +471,22 @@ describe HtmlBeautifier do
     END
     expect(described_class.beautify(source)).to eq(expected)
   end
+
+  it "indents subsequent lines of multiline text" do
+    source = code <<-END
+      <p>
+      Lorem
+      Lorem
+      Lorem
+      </p>
+    END
+    expected = code <<-END
+      <p>
+        Lorem
+        Lorem
+        Lorem
+      </p>
+    END
+    expect(described_class.beautify(source)).to eq(expected)
+  end
 end
