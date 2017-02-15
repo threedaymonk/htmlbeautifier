@@ -523,6 +523,17 @@ describe HtmlBeautifier do
       END
       expect(described_class.beautify(source, preserve_empty_lines: 1)).to eq(expected)
     end
+
+    it "does not add empty lines" do
+      source = code <<-END
+        <h1>Lorem</h1>
+        <div>
+          Ipsum
+          <p>dolor</p>
+        </div>
+      END
+      expect(described_class.beautify(source, preserve_empty_lines: 1)).to eq(source)
+    end
   end
 
   context "when preserve_empty_lines is 2" do
