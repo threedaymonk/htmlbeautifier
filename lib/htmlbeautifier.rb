@@ -15,6 +15,8 @@ module HtmlBeautifier
   # is false, i.e. continue to process the rest of the document.
   # initial_level - The entire output will be indented by this number of steps.
   # Default is 0.
+  # preserve_empty_lines - an integer for the number of empty lines to allow
+  # in a row.
   #
   def self.beautify(html, options = {})
     if options[:tab_stops]
