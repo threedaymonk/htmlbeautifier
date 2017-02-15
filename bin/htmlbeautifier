@@ -51,6 +51,12 @@ END
     options[:stop_on_errors] = num
   end
   opts.on(
+    "-p", "--preserve-empty-lines NUMBER", Integer,
+    "Set number of empty lines in a row to preserve (default 0)"
+  ) do |num|
+    options[:preserve_empty_lines] = num
+  end
+  opts.on(
     "-h", "--help",
     "Display this help message and exit"
   ) do
