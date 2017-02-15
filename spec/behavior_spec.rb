@@ -534,6 +534,25 @@ describe HtmlBeautifier do
       END
       expect(described_class.beautify(source, preserve_empty_lines: 1)).to eq(source)
     end
+
+    it "does not indent empty lines" do
+      source = code <<-END
+        <div>
+          Ipsum
+
+
+          <p>dolor</p>
+        </div>
+      END
+      expected = code <<-END
+        <div>
+          Ipsum
+
+          <p>dolor</p>
+        </div>
+      END
+      expect(described_class.beautify(source, preserve_empty_lines: 1)).to eq(expected)
+    end
   end
 
   context "when preserve_empty_lines is 2" do
