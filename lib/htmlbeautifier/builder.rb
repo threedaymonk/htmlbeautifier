@@ -6,7 +6,8 @@ module HtmlBeautifier
     DEFAULT_OPTIONS = {
       indent: "  ",
       initial_level: 0,
-      stop_on_errors: false
+      stop_on_errors: false,
+      preserve_empty_lines: 0
     }
 
     def initialize(output, options = {})
@@ -14,6 +15,7 @@ module HtmlBeautifier
       @tab = options[:indent]
       @stop_on_errors = options[:stop_on_errors]
       @level = options[:initial_level]
+      @preserve_empty_lines = options[:preserve_empty_lines]
       @new_line = false
       @empty = true
       @ie_cc_levels = []
@@ -45,7 +47,7 @@ module HtmlBeautifier
       @empty = false
     end
 
-    def new_line(*)
+    def new_line
       @new_line = true
     end
 
@@ -119,6 +121,13 @@ module HtmlBeautifier
       emit e
       @ie_cc_levels.push @level
       indent
+    end
+
+    def new_lines(*content)
+      empty_lines = content.first.lines.count - 1
+      empty_lines = [empty_lines, @preserve_empty_lines].min
+      @output << "\n" * empty_lines
+      new_line
     end
 
     def text(t)
