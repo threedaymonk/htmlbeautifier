@@ -109,13 +109,13 @@ describe "bin/htmlbeautifier" do
     expect(status).to be_falsey
   end
 
-  it "allows a configurable number of empty lines in a row" do
+  it "allows a configurable number of consecutive blank lines" do
     input = "<h1>foo</h1>\n\n\n\n\n<p>bar</p>\n"
     expected = "<h1>foo</h1>\n\n\n<p>bar</p>\n"
     path = path_to("tmp", "in-place.html")
     write path, input
 
-    system "%s --preserve-empty-lines=2 %s" % [command, escape(path)]
+    system "%s --keep-blank-lines=2 %s" % [command, escape(path)]
 
     expect(read(path)).to eq(expected)
   end
