@@ -111,6 +111,22 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it "retains empty <script> and <style> blocks" do
+    source = code <<-END
+      <script>
+
+      </script>
+      <style>
+
+      </style>
+    END
+    expected = code <<-END
+      <script></script>
+      <style></style>
+    END
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
   it "trims blank lines around scripts" do
     source = code <<-END
       <script>
