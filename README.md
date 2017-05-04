@@ -1,4 +1,4 @@
-# HTML Beautifier
+# HTML Beautifier!
 
 A normaliser/beautifier for HTML that also understands embedded Ruby.
 Ideal for tidying up Rails templates.
