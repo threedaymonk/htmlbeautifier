@@ -63,6 +63,54 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it "indents only the first line of code inside <script> or <style> and retains the other lines' indents relative to the first line" do
+    source = code <<-END
+      <script>
+        function(f) {
+            g();
+            return 42;
+        }
+      </script>
+      <style>
+                    .foo{ margin: 0; }
+                    .bar{
+                      padding: 0;
+                      margin: 0;
+                    }
+      </style>
+      <style>
+        .foo{ margin: 0; }
+                    .bar{
+                      padding: 0;
+                      margin: 0;
+                    }
+      </style>
+    END
+    expected = code <<-END
+      <script>
+        function(f) {
+            g();
+            return 42;
+        }
+      </script>
+      <style>
+        .foo{ margin: 0; }
+        .bar{
+          padding: 0;
+          margin: 0;
+        }
+      </style>
+      <style>
+        .foo{ margin: 0; }
+                    .bar{
+                      padding: 0;
+                      margin: 0;
+                    }
+      </style>
+    END
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
   it "trims blank lines around scripts" do
     source = code <<-END
       <script>
