@@ -66,7 +66,7 @@ module HtmlBeautifier
 
     def emit_reindented_block_content(code)
       lines = code.strip.split(%r{\n})
-      indentation = lines.first[%r{^\s+}]
+      indentation = calc_foreign_block_indentation code
 
       indent
       new_line
@@ -75,6 +75,17 @@ module HtmlBeautifier
         new_line
       end
       outdent
+    end
+
+    def calc_foreign_block_indentation(code)
+      lines = code.split(%r{\n})
+      indentation = ""
+      lines.each do |line|
+        unless line.strip.empty?
+          indentation = line[%r{^\s+}]
+          return indentation
+        end
+      end
     end
 
     def preformatted_block(opening, content, closing)
