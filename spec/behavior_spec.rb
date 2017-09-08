@@ -65,6 +65,12 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it "does not indent blank lines in scripts" do
+    source   = "<script>\n  function(f) {\n\n  }\n</script>"
+    expected = "<script>\n  function(f) {\n\n  }\n</script>"
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
   it "handles self-closing HTML fragments in javascript: <img /> (bug repro)" do
     source = code <<-ERB
     <div class="<%= get_class %>" ></div>
