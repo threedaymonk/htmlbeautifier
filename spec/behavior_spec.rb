@@ -43,11 +43,12 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
-  it "indents within <script>" do
+  it "indents within <script>, with no whitespace on blank lines" do
     source = code <<-END
       <script>
       function(f) {
           g();
+
           return 42;
       }
       </script>
@@ -56,6 +57,7 @@ describe HtmlBeautifier do
       <script>
         function(f) {
             g();
+
             return 42;
         }
       </script>
