@@ -1,5 +1,6 @@
 require "htmlbeautifier/parser"
 require "htmlbeautifier/ruby_indenter"
+require "htmlbeautifier/elixir_indenter"
 
 module HtmlBeautifier
   class Builder
@@ -20,7 +21,12 @@ module HtmlBeautifier
       @empty = true
       @ie_cc_levels = []
       @output = output
-      @embedded_indenter = RubyIndenter.new
+
+      if options[:engine] == "eex"
+        @embedded_indenter = ElixirIndenter.new
+      else
+        @embedded_indenter = RubyIndenter.new
+      end
     end
 
   private

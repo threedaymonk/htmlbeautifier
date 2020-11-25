@@ -101,6 +101,41 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it "correctly indents eex document" do
+    source = code <<-END
+      <div class="<%= class(:asdf) %>">
+      <%= if @x, do: @x %>
+      <span>asd</span>
+      <%= form_for @changeset, "", fn f -> %>
+      <%= text_input f, :name, class: "input" %>
+      <% end %>
+      <%= if @x do %>
+      <%= @x %>
+      <% end %>
+      <p data-tag="<%= if @x > 0, do: "1", else: "0" %>">
+      <%= if @x > 0, do: "1", else: "0" %>
+      </p>
+      </div>
+    END
+    expected = code <<-END
+      <div class="<%= class(:asdf) %>">
+        <%= if @x, do: @x %>
+        <span>asd</span>
+        <%= form_for @changeset, "", fn f -> %>
+          <%= text_input f, :name, class: "input" %>
+        <% end %>
+        <%= if @x do %>
+          <%= @x %>
+        <% end %>
+        <p data-tag="<%= if @x > 0, do: "1", else: "0" %>">
+          <%= if @x > 0, do: "1", else: "0" %>
+        </p>
+      </div>
+    END
+
+    expect(described_class.beautify(source, {engine: "eex"})).to eq(expected)
+  end
+
   context "when stop_on_errors is true" do
     it "raises an error with the source line of an illegal closing tag" do
       expect {
