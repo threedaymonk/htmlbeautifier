@@ -57,6 +57,12 @@ END
     options[:keep_blank_lines] = num
   end
   opts.on(
+    "-n", "--engine STRING", String,
+    "Use engine STRING (default erb, allowed: eex)."
+  ) do |eng|
+    options[:engine] = eng
+  end
+  opts.on(
     "-h", "--help",
     "Display this help message and exit"
   ) do
