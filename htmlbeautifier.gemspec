@@ -5,9 +5,9 @@ spec = Gem::Specification.new do |s|
   s.version           = HtmlBeautifier::VERSION::STRING
   s.summary           = "HTML/ERB/EEX beautifier"
   s.description       = "A normaliser/beautifier for HTML that also understands embedded Ruby and Elixir."
-  s.authors           = ["Bartosz Kalinowski", "Paul Battley"]
-  s.email             = ["kelostrada@gmail.com", "pbattley@gmail.com"]
-  s.homepage          = "http://github.com/kelostrada/htmlbeautifier"
+  s.author            = "Paul Battley"
+  s.email             = "pbattley@gmail.com"
+  s.homepage          = "http://github.com/threedaymonk/htmlbeautifier"
   s.license           = "MIT"
 
   s.has_rdoc          = true
