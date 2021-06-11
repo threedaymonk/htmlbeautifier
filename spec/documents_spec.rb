@@ -1,6 +1,6 @@
-require "htmlbeautifier"
+require "htmlformatter"
 
-describe HtmlBeautifier do
+describe HtmlFormatter do
   it "correctly indents mixed document" do
     source = code <<-END
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -98,7 +98,7 @@ describe HtmlBeautifier do
       </html>
     END
 
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "correctly indents eex document" do
@@ -133,14 +133,14 @@ describe HtmlBeautifier do
       </div>
     END
 
-    expect(described_class.beautify(source, {engine: "eex"})).to eq(expected)
+    expect(described_class.format(source, {engine: "eex"})).to eq(expected)
   end
 
   context "when stop_on_errors is true" do
     it "raises an error with the source line of an illegal closing tag" do
       expect {
         source = "<html>\n</html>\n</html>"
-        described_class.beautify(source, stop_on_errors: true)
+        described_class.format(source, stop_on_errors: true)
       }.to raise_error(RuntimeError, "Extraneous closing tag on line 3")
     end
   end
@@ -163,7 +163,7 @@ describe HtmlBeautifier do
           </div>
         </body>
       END
-      expect(described_class.beautify(source, stop_on_errors: false)).
+      expect(described_class.format(source, stop_on_errors: false)).
         to eq(expected)
     end
   end

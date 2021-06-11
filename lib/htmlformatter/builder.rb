@@ -1,8 +1,8 @@
-require "htmlbeautifier/parser"
-require "htmlbeautifier/ruby_indenter"
-require "htmlbeautifier/elixir_indenter"
+require "htmlformatter/parser"
+require "htmlformatter/ruby_indenter"
+require "htmlformatter/elixir_indenter"
 
-module HtmlBeautifier
+module HtmlFormatter
   class Builder
     DEFAULT_OPTIONS = {
       indent: "  ",

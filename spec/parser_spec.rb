@@ -1,6 +1,6 @@
-require "htmlbeautifier/parser"
+require "htmlformatter/parser"
 
-describe HtmlBeautifier::Parser do
+describe HtmlFormatter::Parser do
   class Receiver
     attr_reader :sequence
 

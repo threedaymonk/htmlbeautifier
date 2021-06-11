@@ -1,4 +1,4 @@
-module HtmlBeautifier
+module HtmlFormatter
   class RubyIndenter
     INDENT_KEYWORDS = %w[ if elsif else unless while until begin for ]
     OUTDENT_KEYWORDS = %w[ elsif else end ]

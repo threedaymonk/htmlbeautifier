@@ -1,4 +1,4 @@
-module HtmlBeautifierSpecUtilities
+module HtmlFormatterSpecUtilities
   def code(str)
     str = str.gsub(%r{\A\n|\n\s*\Z}, "")
     indentation = str[%r{\A +}]
@@ -8,5 +8,5 @@ module HtmlBeautifierSpecUtilities
 end
 
 RSpec.configure do |config|
-  config.include HtmlBeautifierSpecUtilities
+  config.include HtmlFormatterSpecUtilities
 end

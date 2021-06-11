@@ -1,6 +1,6 @@
 require "strscan"
 
-module HtmlBeautifier
+module HtmlFormatter
   class Parser
     def initialize
       @maps = []

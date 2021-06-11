@@ -1,6 +1,6 @@
-# HTML Beautifier
+# HTML Formatter
 
-A normaliser/beautifier for HTML that also understands embedded Ruby and Elixir.
+A normaliser/formatter for HTML that also understands embedded Ruby and Elixir.
 Ideal for tidying up Rails and Phoenix templates.
 
 ## What it does
@@ -23,27 +23,27 @@ Ideal for tidying up Rails and Phoenix templates.
 To update files in-place:
 
 ``` sh
-$ htmlbeautifier file1 [file2 ...]
+$ htmlformatter file1 [file2 ...]
 ```
 
 or to operate on standard input and output:
 
 ``` sh
-$ htmlbeautifier < input > output
+$ htmlformatter < input > output
 ```
 
 ### In your code
 
 ```ruby
-require 'htmlbeautifier'
+require 'htmlformatter'
 
-beautiful = HtmlBeautifier.beautify(messy)
+formatted = HtmlFormatter.format(messy)
 ```
 
 You can also specify how to indent (the default is two spaces):
 
 ```ruby
-beautiful = HtmlBeautifier.beautify(messy, indent: "\t")
+formatted = HtmlFormatter.format(messy, indent: "\t")
 ```
 
 ## Installation
@@ -52,13 +52,13 @@ This is a Ruby gem.
 To install the command-line tool (you may need `sudo`):
 
 ```sh
-$ gem install htmlbeautifier
+$ gem install htmlformatter
 ```
 
 To use the gem with Bundler, add to your `Gemfile`:
 
 ```ruby
-gem 'htmlbeautifier'
+gem 'htmlformatter'
 ```
 
 ## Contributing
