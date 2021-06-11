@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
-require "htmlbeautifier"
+require "htmlformatter"
 require "optparse"
 require "fileutils"
 
-def beautify(name, input, output, options)
-  output.puts HtmlBeautifier.beautify(input, options)
+def format(name, input, output, options)
+  output.puts HtmlFormatter.format(input, options)
 rescue => e
   raise "Error parsing #{name}: #{e}"
 end
@@ -21,7 +21,7 @@ parser = OptionParser.new do |opts|
 1. If no files are listed, it will read from standard input and write to
    standard output.
 2. If files are listed, it will modify each file in place, overwriting it
-   with the beautified output.
+   with the formatted output.
 
 The following options are available:
 
@@ -77,10 +77,10 @@ if ARGV.any?
     input = File.read(path)
     temppath = path + ".tmp"
     File.open(temppath, "w") do |output|
-      beautify path, input, output, options
+      format path, input, output, options
     end
     FileUtils.mv temppath, path
   end
 else
-  beautify "standard input", $stdin.read, $stdout, options
+  format "standard input", $stdin.read, $stdout, options
 end

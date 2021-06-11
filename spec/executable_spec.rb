@@ -1,7 +1,7 @@
 require "shellwords"
 require "fileutils"
 
-describe "bin/htmlbeautifier" do
+describe "bin/htmlformatter" do
   before do
     FileUtils.mkdir_p path_to("tmp")
   end
@@ -23,7 +23,7 @@ describe "bin/htmlbeautifier" do
   def command
     "ruby -I%s %s" % [
       escape(path_to("lib")),
-      escape(path_to("bin", "htmlbeautifier"))
+      escape(path_to("bin", "htmlformatter"))
     ]
   end
 
@@ -31,7 +31,7 @@ describe "bin/htmlbeautifier" do
     Shellwords.escape(s)
   end
 
-  it "beautifies a file in place" do
+  it "formats a file in place" do
     input = "<p>\nfoo\n</p>"
     expected = "<p>\n  foo\n</p>\n"
     path = path_to("tmp", "in-place.html")
@@ -42,7 +42,7 @@ describe "bin/htmlbeautifier" do
     expect(read(path)).to eq(expected)
   end
 
-  it "beautifies a file from stdin to stdout" do
+  it "formats a file from stdin to stdout" do
     input = "<p>\nfoo\n</p>"
     expected = "<p>\n  foo\n</p>\n"
     in_path = path_to("tmp", "input.html")

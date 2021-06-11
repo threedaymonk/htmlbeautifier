@@ -1,4 +1,4 @@
-module HtmlBeautifier
+module HtmlFormatter
   class ElixirIndenter
     INDENT_KEYWORDS = %w[ else ]
     OUTDENT_KEYWORDS = %w[ else end ]

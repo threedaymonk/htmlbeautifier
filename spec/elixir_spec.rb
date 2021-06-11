@@ -1,6 +1,6 @@
-require "htmlbeautifier"
+require "htmlformatter"
 
-describe HtmlBeautifier do
+describe HtmlFormatter do
   it "ignores HTML fragments in embedded EEX" do
     source = code <<-END
       <div>
@@ -12,17 +12,17 @@ describe HtmlBeautifier do
         <%= Module.func("\n","<br />\n") %>
       </div>
     END
-    expect(described_class.beautify(source, {engine: "eex"})).to eq(expected)
+    expect(described_class.format(source, {engine: "eex"})).to eq(expected)
   end
 
   it "does not break line on embedded code within <script> opening tag" do
     source = %{<script src="<%= path %>" type="text/javascript"></script>}
-    expect(described_class.beautify(source, {engine: "eex"})).to eq(source)
+    expect(described_class.format(source, {engine: "eex"})).to eq(source)
   end
 
   it "does not break line on embedded code within normal element" do
     source = %{<img src="<%= path %>" alt="foo" />}
-    expect(described_class.beautify(source, {engine: "eex"})).to eq(source)
+    expect(described_class.format(source, {engine: "eex"})).to eq(source)
   end
 
   it "outdents else" do
@@ -40,7 +40,7 @@ describe HtmlBeautifier do
         Bar
       <% end %>
     END
-    expect(described_class.beautify(source, {engine: "eex"})).to eq(expected)
+    expect(described_class.format(source, {engine: "eex"})).to eq(expected)
   end
 
   it "keeps multiline indentations" do
@@ -64,6 +64,6 @@ describe HtmlBeautifier do
         </div>
       </div>
     END
-    expect(described_class.beautify(source, {engine: "eex"})).to eq(expected)
+    expect(described_class.format(source, {engine: "eex"})).to eq(expected)
   end
 end

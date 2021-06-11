@@ -1,6 +1,6 @@
-require "htmlbeautifier/parser"
+require "htmlformatter/parser"
 
-module HtmlBeautifier
+module HtmlFormatter
   class HtmlParser < Parser
     ELEMENT_CONTENT = %r{ (?:<%.*?%>|[^>])* }mx
     HTML_VOID_ELEMENTS = %r{(?:

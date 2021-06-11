@@ -1,10 +1,10 @@
-require "htmlbeautifier/builder"
-require "htmlbeautifier/html_parser"
-require "htmlbeautifier/version"
+require "htmlformatter/builder"
+require "htmlformatter/html_parser"
+require "htmlformatter/version"
 
-module HtmlBeautifier
+module HtmlFormatter
   #
-  # Returns a beautified HTML/HTML+EEX document as a String.
+  # Returns a formatted HTML/HTML+EEX document as a String.
   # html must be an object that responds to +#to_s+.
   #
   # Available options are:
@@ -18,7 +18,7 @@ module HtmlBeautifier
   # keep_blank_lines - an integer for the number of consecutive empty lines
   # to keep in output.
   #
-  def self.beautify(html, options = {})
+  def self.format(html, options = {})
     if options[:tab_stops]
       options[:indent] = " " * options[:tab_stops]
     end

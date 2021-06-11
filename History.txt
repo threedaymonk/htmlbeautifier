@@ -1,3 +1,6 @@
+== 1.5.0 (2021-06-11)
+* Forked name to HtmlFormatter to be able to reuse it from rubygems
+
 == 1.4.0 (2020-11-25)
 * Add support for Embedded Elixir
 

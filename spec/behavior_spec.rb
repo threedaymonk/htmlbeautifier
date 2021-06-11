@@ -1,6 +1,6 @@
-require "htmlbeautifier"
+require "htmlformatter"
 
-describe HtmlBeautifier do
+describe HtmlFormatter do
   it "ignores HTML fragments in embedded ERB" do
     source = code <<-END
       <div>
@@ -12,7 +12,7 @@ describe HtmlBeautifier do
         <%= a[:b].gsub("\n","<br />\n") %>
       </div>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "allows < in an attribute" do
@@ -26,7 +26,7 @@ describe HtmlBeautifier do
         <p>Hello</p>
       </div>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "allows > in an attribute" do
@@ -40,7 +40,7 @@ describe HtmlBeautifier do
         <p>Hello</p>
       </div>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "indents within <script>" do
@@ -60,7 +60,7 @@ describe HtmlBeautifier do
         }
       </script>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "indents only the first line of code inside <script> or <style> and retains the other lines' indents relative to the first line" do
@@ -108,7 +108,7 @@ describe HtmlBeautifier do
                     }
       </style>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "retains empty <script> and <style> blocks" do
@@ -124,7 +124,7 @@ describe HtmlBeautifier do
       <script></script>
       <style></style>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "trims blank lines around scripts" do
@@ -140,24 +140,24 @@ describe HtmlBeautifier do
         f();
       </script>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "removes trailing space from script lines" do
     source   = "<script>\n  f();  \n</script>"
     expected = "<script>\n  f();\n</script>"
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "leaves empty scripts as they are" do
     source = %{<script src="/foo.js" type="text/javascript" charset="utf-8"></script>}
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "removes whitespace from script tags containing only whitespace" do
     source   = "<script>\n</script>"
     expected = "<script></script>"
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "ignores case of <script> tag" do
@@ -173,7 +173,7 @@ describe HtmlBeautifier do
         // code
       </SCRIPT>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "indents within <style>" do
@@ -195,7 +195,7 @@ describe HtmlBeautifier do
         }
       </style>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "trims blank lines around styles" do
@@ -211,13 +211,13 @@ describe HtmlBeautifier do
         .foo{ margin: 0; }
       </style>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "removes trailing space from style lines" do
     source   = "<style>\n  .foo{ margin: 0; }  \n</style>"
     expected = "<style>\n  .foo{ margin: 0; }\n</style>"
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "ignores case of <style> tag" do
@@ -233,7 +233,7 @@ describe HtmlBeautifier do
         .foo{ margin: 0; }
       </STYLE>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "indents <div>s containing standalone elements" do
@@ -257,17 +257,17 @@ describe HtmlBeautifier do
         </div>
       </div>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "does not break line on embedded code within <script> opening tag" do
     source = %{<script src="<%= path %>" type="text/javascript"></script>}
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "does not break line on embedded code within normal element" do
     source = %{<img src="<%= path %>" alt="foo" />}
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "outdents else" do
@@ -285,7 +285,7 @@ describe HtmlBeautifier do
         Bar
       <% end %>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "indents with hyphenated ERB tags" do
@@ -307,7 +307,7 @@ describe HtmlBeautifier do
         <hr />
       <%- end -%>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "does not indent after comments" do
@@ -315,7 +315,7 @@ describe HtmlBeautifier do
       <!-- This is a comment -->
       <!-- So is this -->
     END
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "does not indent one-line IE conditional comments" do
@@ -328,7 +328,7 @@ describe HtmlBeautifier do
         </body>
       </html>
     END
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "indents inside IE conditional comments" do
@@ -348,7 +348,7 @@ describe HtmlBeautifier do
         <link rel="stylesheet" href="/stylesheets/ie5.css" type="text/css" />
       <![endif]-->
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "does not indent after doctype" do
@@ -357,7 +357,7 @@ describe HtmlBeautifier do
       <html>
       </html>
     END
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "does not indent after void HTML elements" do
@@ -366,7 +366,7 @@ describe HtmlBeautifier do
       <input id="id">
       <br>
     END
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "ignores case of void elements" do
@@ -375,7 +375,7 @@ describe HtmlBeautifier do
       <INPUT id="id">
       <BR>
     END
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "does not treat <colgroup> as standalone" do
@@ -384,7 +384,7 @@ describe HtmlBeautifier do
         <col style="width: 50%;">
       </colgroup>
     END
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "does not modify content of <pre>" do
@@ -399,7 +399,7 @@ describe HtmlBeautifier do
         </pre>
       </div>
     END
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "adds a single newline after block elements" do
@@ -421,7 +421,7 @@ describe HtmlBeautifier do
         </ol>
       </section>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "does not modify content of <textarea>" do
@@ -436,7 +436,7 @@ describe HtmlBeautifier do
         </textarea>
       </div>
     END
-    expect(described_class.beautify(source)).to eq(source)
+    expect(described_class.format(source)).to eq(source)
   end
 
   it "adds newlines around <pre>" do
@@ -446,7 +446,7 @@ describe HtmlBeautifier do
         <pre>puts "Allons-y!"</pre>
       </section>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "adds newline after <br>" do
@@ -457,7 +457,7 @@ describe HtmlBeautifier do
         amet,<br/>
         consectetur.</p>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "indents after control expressions without optional `do` keyword" do
@@ -483,7 +483,7 @@ describe HtmlBeautifier do
         Lorem ipsum
       <% end %>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "indents general self-closing tags" do
@@ -513,7 +513,7 @@ describe HtmlBeautifier do
         </p>
       </div>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "removes excess indentation on next line after text" do
@@ -533,7 +533,7 @@ describe HtmlBeautifier do
         Lorem ipsum
       </em>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   it "indents subsequent lines of multiline text" do
@@ -551,7 +551,7 @@ describe HtmlBeautifier do
         Lorem
       </p>
     END
-    expect(described_class.beautify(source)).to eq(expected)
+    expect(described_class.format(source)).to eq(expected)
   end
 
   context "when keep_blank_lines is 0" do
@@ -567,7 +567,7 @@ describe HtmlBeautifier do
         <h1>Lorem</h1>
         <p>Ipsum</p>
       END
-      expect(described_class.beautify(source, keep_blank_lines: 0)).to eq(expected)
+      expect(described_class.format(source, keep_blank_lines: 0)).to eq(expected)
     end
   end
 
@@ -585,7 +585,7 @@ describe HtmlBeautifier do
 
         <p>Ipsum</p>
       END
-      expect(described_class.beautify(source, keep_blank_lines: 1)).to eq(expected)
+      expect(described_class.format(source, keep_blank_lines: 1)).to eq(expected)
     end
 
     it "does not add blank lines" do
@@ -596,7 +596,7 @@ describe HtmlBeautifier do
           <p>dolor</p>
         </div>
       END
-      expect(described_class.beautify(source, keep_blank_lines: 1)).to eq(source)
+      expect(described_class.format(source, keep_blank_lines: 1)).to eq(source)
     end
 
     it "does not indent blank lines" do
@@ -615,7 +615,7 @@ describe HtmlBeautifier do
           <p>dolor</p>
         </div>
       END
-      expect(described_class.beautify(source, keep_blank_lines: 1)).to eq(expected)
+      expect(described_class.format(source, keep_blank_lines: 1)).to eq(expected)
     end
   end
 
@@ -634,7 +634,7 @@ describe HtmlBeautifier do
 
         <p>Ipsum</p>
       END
-      expect(described_class.beautify(source, keep_blank_lines: 2)).to eq(expected)
+      expect(described_class.format(source, keep_blank_lines: 2)).to eq(expected)
     end
   end
 end
