@@ -66,4 +66,31 @@ describe HtmlFormatter do
     END
     expect(described_class.format(source, {engine: "eex"})).to eq(expected)
   end
+
+  it "has no trouble with complicated html" do
+    source = code <<-END
+      <x <% x %>>
+        <% x %><% x %><% x %><% x %><% x %><% x %>
+        
+        <% x %><% x %><% x %><% x %><% x %><% x %>
+        <% x %><% x %><% x %><% x %><% x %><% x %>
+        <% x %><% x %><% x %><% x %><% x %><% x %>
+      </x>
+    END
+
+    expected = code <<-END
+      <x <% x %>>
+        <% x %><% x %><% x %><% x %><% x %><% x %>
+        <% x %><% x %><% x %><% x %><% x %><% x %>
+        <% x %><% x %><% x %><% x %><% x %><% x %>
+        <% x %><% x %><% x %><% x %><% x %><% x %>
+      </x>
+    END
+
+    # this is very slow:
+    # regex = %r{<\w+([^>]|<%.*?%>)*/>}om
+    # puts regex.match(source.to_s)
+
+    expect(described_class.format(source, {engine: "eex"})).to eq(expected)
+  end
 end
