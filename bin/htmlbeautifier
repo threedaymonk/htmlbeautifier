@@ -57,6 +57,13 @@ END
     options[:keep_blank_lines] = num
   end
   opts.on(
+    "-v", "--version",
+    "Display version and exit"
+  ) do
+    puts HtmlBeautifier::VERSION::STRING
+    exit
+  end
+  opts.on(
     "-h", "--help",
     "Display this help message and exit"
   ) do
