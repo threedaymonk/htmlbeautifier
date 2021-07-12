@@ -11,7 +11,7 @@ module HtmlFormatter
       address | article | aside | audio | blockquote | canvas | dd | dir | div |
       dl | dt | fieldset | figcaption | figure | footer | form | h1 | h2 | h3 |
       h4 | h5 | h6 | header | hr | li | menu | noframes | noscript | ol | p |
-      pre | section | table | tbody | td | tfoot | th | thead | tr | ul | video
+      pre | section | span | table | tbody | td | tfoot | th | thead | tr | ul | video
     )}mix
 
     MAPPINGS = [
