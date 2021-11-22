@@ -65,6 +65,19 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it "handles self-closing HTML fragments in javascript: <img /> (bug repro)" do
+    source = code <<-ERB
+    <div class="<%= get_class %>" ></div>
+    <script>
+      var warning_message = "<%= confirm_data %>";
+      $('#img').html('<img src="/myimg.jpg" />')
+      $('#errors').html('<div class="alert alert-danger" role="alert">' + error_message + '</div>')
+    </script>
+    ERB
+
+    expect(described_class.beautify(source, stop_on_errors: true)).to eq(source)
+  end
+
   it "indents only the first line of code inside <script> or <style> and retains the other lines' indents relative to the first line" do
     source = code <<~HTML
       <script>
@@ -146,7 +159,7 @@ describe HtmlBeautifier do
   end
 
   it "removes trailing space from script lines" do
-    source   = "<script>\n  f();  \n</script>"
+    source = "<script>\n  f();  \n</script>"
     expected = "<script>\n  f();\n</script>"
     expect(described_class.beautify(source)).to eq(expected)
   end
@@ -157,7 +170,7 @@ describe HtmlBeautifier do
   end
 
   it "removes whitespace from script tags containing only whitespace" do
-    source   = "<script>\n</script>"
+    source = "<script>\n</script>"
     expected = "<script></script>"
     expect(described_class.beautify(source)).to eq(expected)
   end
@@ -217,7 +230,7 @@ describe HtmlBeautifier do
   end
 
   it "removes trailing space from style lines" do
-    source   = "<style>\n  .foo{ margin: 0; }  \n</style>"
+    source = "<style>\n  .foo{ margin: 0; }  \n</style>"
     expected = "<style>\n  .foo{ margin: 0; }\n</style>"
     expect(described_class.beautify(source)).to eq(expected)
   end
