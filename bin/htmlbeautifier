@@ -87,7 +87,6 @@ if ARGV.any?
   failures = []
   ARGV.each do |path|
     input = File.read(path)
-
     if options[:lint_only]
       output = StringIO.new
       beautify path, input, output, options
@@ -101,7 +100,10 @@ if ARGV.any?
     end
   end
   unless failures.empty?
-    puts "error - files would be modified:\n" + failures.join("\n")
+    relative_paths = failures.map do |path|
+      Pathname.new(path).relative_path_from Dir.pwd
+    end
+    puts "Lint failed - files would be modified:\n" + relative_paths.join("\n")
     exit 1
   end
 else

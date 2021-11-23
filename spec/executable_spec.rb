@@ -2,6 +2,7 @@
 
 require "shellwords"
 require "fileutils"
+require "open3"
 
 describe "bin/htmlbeautifier" do
   before do
@@ -54,6 +55,40 @@ describe "bin/htmlbeautifier" do
     system "%s < %s > %s" % [command, escape(in_path), escape(out_path)]
 
     expect(read(out_path)).to eq(expected)
+  end
+
+  it "displays which files would fail with --lint-only flag" do
+    good_input = "<p></p>\n"
+    good_path = path_to("tmp", "good.html")
+    write(good_path, good_input)
+
+    bad_input = "<div><p></p></div>\n"
+    bad_path = path_to("tmp", "bad.html")
+    write(bad_path, bad_input)
+
+    expected_message = "Lint failed - files would be modified:\ntmp/bad.html\n"
+
+    stdout, _stderr, status = Open3.capture3(
+      "%s %s %s --lint-only" % [command, escape(good_path), escape(bad_path)]
+    )
+
+    expect(status.exitstatus).to eq(1)
+    expect(stdout).to eq(expected_message)
+  end
+
+  it "does not modify files with --lint-only flag" do
+    good_input = "<p></p>\n"
+    good_path = path_to("tmp", "good.html")
+    write(good_path, good_input)
+
+    bad_input = "<div><p></p></div>\n"
+    bad_path = path_to("tmp", "bad.html")
+    write(bad_path, bad_input)
+
+    system("%s %s %s --lint-only" % [command, escape(good_path), escape(bad_path)])
+
+    expect(read(good_path)).to eq(good_input)
+    expect(read(bad_path)).to eq(bad_input)
   end
 
   it "allows a configurable number of tab stops" do
