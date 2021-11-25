@@ -133,7 +133,7 @@ module HtmlBeautifier
     def new_lines(*content)
       blank_lines = content.first.scan(%r{\n}).count - 1
       blank_lines = [blank_lines, @keep_blank_lines].min
-      @output << "\n" * blank_lines
+      @output << ("\n" * blank_lines)
       new_line
     end
 
