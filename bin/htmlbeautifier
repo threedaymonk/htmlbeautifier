@@ -7,7 +7,7 @@ require "fileutils"
 
 def beautify(name, input, output, options)
   output.puts HtmlBeautifier.beautify(input, options)
-rescue => e
+rescue StandardError => e
   raise "Error parsing #{name}: #{e}"
 end
 
@@ -78,7 +78,7 @@ parser.parse!
 if ARGV.any?
   ARGV.each do |path|
     input = File.read(path)
-    temppath = path + ".tmp"
+    temppath = "#{path}.tmp"
     File.open(temppath, "w") do |output|
       beautify path, input, output, options
     end

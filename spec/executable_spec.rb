@@ -19,7 +19,7 @@ describe "bin/htmlbeautifier" do
   end
 
   def path_to(*partial)
-    File.join(File.expand_path("../..", __FILE__), *partial)
+    File.join(File.expand_path("..", __dir__), *partial)
   end
 
   def command

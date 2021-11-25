@@ -51,7 +51,7 @@ module HtmlBeautifier
        :new_lines],
       [%r{[^<\n]+},
        :text]
-    ]
+    ].freeze
 
     def initialize
       super do |p|

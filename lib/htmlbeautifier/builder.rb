@@ -10,7 +10,7 @@ module HtmlBeautifier
       initial_level: 0,
       stop_on_errors: false,
       keep_blank_lines: 0
-    }
+    }.freeze
 
     def initialize(output, options = {})
       options = DEFAULT_OPTIONS.merge(options)

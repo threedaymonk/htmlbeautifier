@@ -2,11 +2,11 @@
 
 module HtmlBeautifier
   class RubyIndenter
-    INDENT_KEYWORDS = %w[if elsif else unless while until begin for]
-    OUTDENT_KEYWORDS = %w[elsif else end]
+    INDENT_KEYWORDS = %w[if elsif else unless while until begin for].freeze
+    OUTDENT_KEYWORDS = %w[elsif else end].freeze
     RUBY_INDENT = %r{
       ^ ( #{INDENT_KEYWORDS.join("|")} )\b
-      | \b ( do | \{ ) ( \s* \| [^\|]+ \| )? $
+      | \b ( do | \{ ) ( \s* \| [^|]+ \| )? $
     }xo
     RUBY_OUTDENT = %r{ ^ ( #{OUTDENT_KEYWORDS.join("|")} | \} ) \b }xo
 

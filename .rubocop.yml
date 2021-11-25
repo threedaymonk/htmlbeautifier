@@ -93,24 +93,14 @@ Style/PercentLiteralDelimiters:
     '%':  '{}'
     '%r': '{}'
 
-# New cops since last version not enabled yet
-Style/AccessorGrouping:
-  Enabled: false
-Style/ExpandPathArguments:
-  Enabled: false
+# Exclude from specs for now
 Style/FormatStringToken:
-  Enabled: false
-Style/MissingRespondToMissing:
-  Enabled: false
-Style/MutableConstant:
-  Enabled: false
+  Exclude:
+    - 'spec/**/*'
+
+# This rule insists on .zero? and .positive?. Sometimes those make sense,
+# but not always
 Style/NumericPredicate:
-  Enabled: false
-Style/RedundantRegexpEscape:
-  Enabled: false
-Style/RescueStandardError:
-  Enabled: false
-Style/StringConcatenation:
   Enabled: false
 
 # Disable these new cops for now

@@ -14,6 +14,10 @@ describe HtmlBeautifier::Parser do
       def method_missing(method, *params)
         @sequence << [method, params]
       end
+
+      def respond_to_missing?
+        true
+      end
     end
   }
 
