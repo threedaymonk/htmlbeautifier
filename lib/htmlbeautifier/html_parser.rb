@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htmlbeautifier/parser"
 
 module HtmlBeautifier
@@ -48,7 +50,8 @@ module HtmlBeautifier
       [%r{(\s*\r?\n\s*)+}om,
        :new_lines],
       [%r{[^<\n]+},
-       :text]]
+       :text]
+    ].freeze
 
     def initialize
       super do |p|

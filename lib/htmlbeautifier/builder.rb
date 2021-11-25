@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htmlbeautifier/parser"
 require "htmlbeautifier/ruby_indenter"
 
@@ -8,7 +10,7 @@ module HtmlBeautifier
       initial_level: 0,
       stop_on_errors: false,
       keep_blank_lines: 0
-    }
+    }.freeze
 
     def initialize(output, options = {})
       options = DEFAULT_OPTIONS.merge(options)
@@ -27,6 +29,7 @@ module HtmlBeautifier
 
     def error(text)
       return unless @stop_on_errors
+
       raise text
     end
 
@@ -87,42 +90,42 @@ module HtmlBeautifier
       new_line
     end
 
-    def standalone_element(e)
-      emit e
-      new_line if e =~ %r{^<br[^\w]}
+    def standalone_element(elem)
+      emit elem
+      new_line if elem =~ %r{^<br[^\w]}
     end
 
-    def close_element(e)
+    def close_element(elem)
       outdent
-      emit e
+      emit elem
     end
 
-    def close_block_element(e)
-      close_element e
+    def close_block_element(elem)
+      close_element elem
       new_line
     end
 
-    def open_element(e)
-      emit e
+    def open_element(elem)
+      emit elem
       indent
     end
 
-    def open_block_element(e)
+    def open_block_element(elem)
       new_line
-      open_element e
+      open_element elem
     end
 
-    def close_ie_cc(e)
+    def close_ie_cc(elem)
       if @ie_cc_levels.empty?
         error "Unclosed conditional comment"
       else
         @level = @ie_cc_levels.pop
       end
-      emit e
+      emit elem
     end
 
-    def open_ie_cc(e)
-      emit e
+    def open_ie_cc(elem)
+      emit elem
       @ie_cc_levels.push @level
       indent
     end
@@ -130,12 +133,10 @@ module HtmlBeautifier
     def new_lines(*content)
       blank_lines = content.first.scan(%r{\n}).count - 1
       blank_lines = [blank_lines, @keep_blank_lines].min
-      @output << "\n" * blank_lines
+      @output << ("\n" * blank_lines)
       new_line
     end
 
-    def text(t)
-      emit t
-    end
+    alias_method :text, :emit
   end
 end

@@ -1,5 +1,7 @@
-module HtmlBeautifier #:nodoc:
-  module VERSION #:nodoc:
+# frozen_string_literal: true
+
+module HtmlBeautifier # :nodoc:
+  module VERSION # :nodoc:
     MAJOR = 1
     MINOR = 3
     TINY  = 1

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htmlbeautifier/builder"
 require "htmlbeautifier/html_parser"
 require "htmlbeautifier/version"
@@ -22,7 +24,7 @@ module HtmlBeautifier
     if options[:tab_stops]
       options[:indent] = " " * options[:tab_stops]
     end
-    "".tap { |output|
+    String.new.tap { |output|
       HtmlParser.new.scan html.to_s, Builder.new(output, options)
     }
   end

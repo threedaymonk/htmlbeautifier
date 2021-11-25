@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "shellwords"
 require "fileutils"
 
@@ -17,7 +19,7 @@ describe "bin/htmlbeautifier" do
   end
 
   def path_to(*partial)
-    File.join(File.expand_path("../..", __FILE__), *partial)
+    File.join(File.expand_path("..", __dir__), *partial)
   end
 
   def command
@@ -27,8 +29,8 @@ describe "bin/htmlbeautifier" do
     ]
   end
 
-  def escape(s)
-    Shellwords.escape(s)
+  def escape(str)
+    Shellwords.escape(str)
   end
 
   it "beautifies a file in place" do
