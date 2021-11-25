@@ -1,0 +1,13 @@
+inherit_from:
+  - ../.rubocop.yml
+
+# I can't always fit test data in 80 chars
+Layout/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+# I'd like to enable this, but there's a lot of % interpolation in the specs
+Style/FormatStringToken:
+  Enabled: false

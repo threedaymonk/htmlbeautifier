@@ -1,7 +1,6 @@
 AllCops:
   # Exclude anything that isn't really part of our code.
   Exclude:
-    - 'vendor/**/*'
     - '**/*.gemspec'
     - '**/Rakefile'
   TargetRubyVersion: 3.0
@@ -43,18 +42,10 @@ Metrics/ClassLength:
 
 Layout/LineLength:
   Max: 80
-  Exclude:
-    - 'spec/**/*'
 
 # I prefer my own judgement
 Metrics/BlockLength:
   Enabled: false
-
-# Don't worry about long methods in specs.
-Metrics/MethodLength:
-  Max: 10
-  Exclude:
-    - 'spec/**/*'
 
 Style/Alias:
   EnforcedStyle: prefer_alias_method
@@ -92,11 +83,6 @@ Style/PercentLiteralDelimiters:
     '%W': '[]'
     '%':  '{}'
     '%r': '{}'
-
-# Exclude from specs for now
-Style/FormatStringToken:
-  Exclude:
-    - 'spec/**/*'
 
 # This rule insists on .zero? and .positive?. Sometimes those make sense,
 # but not always
