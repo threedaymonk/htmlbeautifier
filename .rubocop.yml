@@ -46,6 +46,10 @@ Layout/LineLength:
   Exclude:
     - 'spec/**/*'
 
+# I prefer my own judgement
+Metrics/BlockLength:
+  Enabled: false
+
 # Don't worry about long methods in specs.
 Metrics/MethodLength:
   Max: 10
@@ -87,8 +91,6 @@ Style/PercentLiteralDelimiters:
     '%r': '{}'
 
 # New cops since last version not enabled yet
-Metrics/BlockLength:
-  Enabled: false
 Naming/HeredocDelimiterNaming:
   Enabled: false
 Naming/MethodParameterName:
