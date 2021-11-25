@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HtmlBeautifier
   class RubyIndenter
     INDENT_KEYWORDS = %w[if elsif else unless while until begin for]

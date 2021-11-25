@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htmlbeautifier/parser"
 
 describe HtmlBeautifier::Parser do

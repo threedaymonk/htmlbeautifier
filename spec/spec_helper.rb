@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HtmlBeautifierSpecUtilities
   def code(str)
     str = str.gsub(%r{\A\n|\n\s*\Z}, "")
