@@ -100,6 +100,11 @@ Style/RegexpLiteral:
 Style/RedundantArgument: 
   Enabled: false
 
+# I'm not convinced that using warn is the correct path for output
+# intentionally writted to stderr.
+Style/StderrPuts:
+  Enabled: false
+
 # Enforce double quotes everywhere.
 Style/StringLiterals:
   EnforcedStyle: double_quotes

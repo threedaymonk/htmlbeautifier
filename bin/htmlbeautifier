@@ -4,6 +4,7 @@
 require "htmlbeautifier"
 require "optparse"
 require "fileutils"
+require "stringio"
 
 def beautify(name, input, output, options)
   output.puts HtmlBeautifier.beautify(input, options)
@@ -59,6 +60,13 @@ parser = OptionParser.new do |opts|
     options[:keep_blank_lines] = num
   end
   opts.on(
+    "-l", "--lint-only",
+    "Lint only, error on files which would be modified",
+    "This is not available when reading from standard input"
+  ) do |num|
+    options[:lint_only] = num
+  end
+  opts.on(
     "-v", "--version",
     "Display version and exit"
   ) do
@@ -73,16 +81,34 @@ parser = OptionParser.new do |opts|
     exit
   end
 end
+
 parser.parse!
 
 if ARGV.any?
+  failures = []
   ARGV.each do |path|
     input = File.read(path)
-    temppath = "#{path}.tmp"
-    File.open(temppath, "w") do |output|
+    if options[:lint_only]
+      output = StringIO.new
       beautify path, input, output, options
+      failures << path unless input == output.string
+    else
+      temppath = "#{path}.tmp"
+      File.open(temppath, "w") do |file|
+        beautify path, input, file, options
+      end
+      FileUtils.mv temppath, path
     end
-    FileUtils.mv temppath, path
+  end
+  unless failures.empty?
+    relative_paths = failures.map { |path|
+      Pathname.new(path).relative_path_from Dir.pwd
+    }
+    $stderr.puts [
+      "Lint failed - files would be modified:",
+      *relative_paths
+    ].join("\n")
+    exit 1
   end
 else
   beautify "standard input", $stdin.read, $stdout, options
