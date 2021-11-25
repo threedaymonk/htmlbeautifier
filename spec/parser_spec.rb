@@ -21,7 +21,7 @@ describe HtmlBeautifier::Parser do
       p.map %r{\s+}, :whitespace
     }
     parser.scan("foo bar ", receiver)
-    expected =  [[:foo, ["foo"]], [:whitespace, [" "]], [:bar, ["bar "]]]
+    expected = [[:foo, ["foo"]], [:whitespace, [" "]], [:bar, ["bar "]]]
     expect(receiver.sequence).to eq(expected)
   end
 
@@ -31,7 +31,7 @@ describe HtmlBeautifier::Parser do
       p.map %r{(foo)\((.*?)\)}, :foo
     }
     parser.scan("foo(bar)", receiver)
-    expected = [[:foo, %w[ foo bar ]]]
+    expected = [[:foo, %w[foo bar]]]
     expect(receiver.sequence).to eq(expected)
   end
 
@@ -66,7 +66,7 @@ describe HtmlBeautifier::Parser do
   end
 
   it "gives source line number" do
-    parser = described_class.new{ |p|
+    parser = described_class.new { |p|
       p.map %r{(M+)}m, :append_new_source_line_number
       p.map %r{([\s\n]+)}m, :space_or_newline
     }

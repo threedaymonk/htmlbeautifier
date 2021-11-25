@@ -27,6 +27,7 @@ module HtmlBeautifier
 
     def error(text)
       return unless @stop_on_errors
+
       raise text
     end
 

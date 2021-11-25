@@ -87,22 +87,6 @@ Style/PercentLiteralDelimiters:
     '%r': '{}'
 
 # New cops since last version not enabled yet
-Layout/EmptyLineAfterGuardClause:
-  Enabled: false
-Layout/ExtraSpacing:
-  Enabled: false
-Layout/HeredocIndentation:
-  Enabled: false
-Layout/LeadingCommentSpace:
-  Enabled: false
-Layout/MultilineArrayBraceLayout:
-  Enabled: false
-Layout/SpaceAroundOperators:
-  Enabled: false
-Layout/SpaceBeforeBlockBraces:
-  Enabled: false
-Layout/SpaceInsidePercentLiteralDelimiters:
-  Enabled: false
 Lint/ConstantDefinitionInBlock:
   Enabled: false
 Metrics/BlockLength:

@@ -48,7 +48,8 @@ module HtmlBeautifier
       [%r{(\s*\r?\n\s*)+}om,
        :new_lines],
       [%r{[^<\n]+},
-       :text]]
+       :text]
+    ]
 
     def initialize
       super do |p|
