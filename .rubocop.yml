@@ -94,8 +94,6 @@ Style/PercentLiteralDelimiters:
     '%r': '{}'
 
 # New cops since last version not enabled yet
-Naming/RescuedExceptionsVariableName:
-  Enabled: false
 Style/AccessorGrouping:
   Enabled: false
 Style/ExpandPathArguments:

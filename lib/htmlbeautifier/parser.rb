@@ -33,8 +33,8 @@ module HtmlBeautifier
       raise "Unmatched sequence" unless method
 
       receiver.__send__(method, *extract_params(@scanner))
-    rescue => ex
-      raise "#{ex.message} on line #{source_line_number}"
+    rescue => e
+      raise "#{e.message} on line #{source_line_number}"
     end
 
     def extract_params(scanner)
