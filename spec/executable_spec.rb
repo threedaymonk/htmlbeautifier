@@ -68,12 +68,12 @@ describe "bin/htmlbeautifier" do
 
     expected_message = "Lint failed - files would be modified:\ntmp/bad.html\n"
 
-    stdout, _stderr, status = Open3.capture3(
+    _stdout, stderr, status = Open3.capture3(
       "%s %s %s --lint-only" % [command, escape(good_path), escape(bad_path)]
     )
 
     expect(status.exitstatus).to eq(1)
-    expect(stdout).to eq(expected_message)
+    expect(stderr).to eq(expected_message)
   end
 
   it "does not modify files with --lint-only flag" do
@@ -85,7 +85,9 @@ describe "bin/htmlbeautifier" do
     bad_path = path_to("tmp", "bad.html")
     write(bad_path, bad_input)
 
-    system("%s %s %s --lint-only" % [command, escape(good_path), escape(bad_path)])
+    Open3.capture3(
+      "%s %s %s --lint-only" % [command, escape(good_path), escape(bad_path)]
+    )
 
     expect(read(good_path)).to eq(good_input)
     expect(read(bad_path)).to eq(bad_input)

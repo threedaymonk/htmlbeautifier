@@ -104,7 +104,7 @@ if ARGV.any?
     relative_paths = failures.map { |path|
       Pathname.new(path).relative_path_from Dir.pwd
     }
-    puts [
+    $stderr.puts [
       "Lint failed - files would be modified:",
       *relative_paths
     ].join("\n")
