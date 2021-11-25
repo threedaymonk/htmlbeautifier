@@ -8,14 +8,47 @@ AllCops:
     - '**/Rakefile'
   TargetRubyVersion: 3.0
 
+
+#### LAYOUT ####
+
 # private/protected/public
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
+
+# Chain methods with trailing dots.
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/LineLength:
+  Max: 80
 
 # Just indent parameters by two spaces. It's less volatile if methods change,
 # and there's less busy work lining things up.
 Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
+
+
+#### LINT ####
+
+# Don't allow assignment in conditions
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: false
+
+
+#### METRICS ####
+
+# I prefer my own judgement
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+
+#### STYLE ####
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
 
 # Use Weirich style
 Style/BlockDelimiters:
@@ -26,9 +59,10 @@ Style/CollectionMethods:
     inject: inject
     reduce: inject
 
-# Chain methods with trailing dots.
-Layout/DotPosition:
-  EnforcedStyle: trailing
+# Prefer sensible naming to comments everywhere.
+Style/Documentation:
+  Description: Document classes and non-namespace modules.
+  Enabled: false
 
 # Percent-formatting and hash interpolation both have their place. Don't
 # enforce any particular one.
@@ -39,43 +73,15 @@ Style/FormatString:
 Style/GuardClause:
   Enabled: false
 
-Metrics/ClassLength:
-  Enabled: false
-
-Layout/LineLength:
-  Max: 80
-
-# I prefer my own judgement
-Metrics/BlockLength:
-  Enabled: false
-
-Style/Alias:
-  EnforcedStyle: prefer_alias_method
-
-Style/RegexpLiteral:
-  EnforcedStyle: percent_r
-
-# I'm happy with raise, thanks.
-Style/SignalException:
-  Enabled: false
-
-# Enforce double quotes everywhere.
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
-
-# Prefer sensible naming to comments everywhere.
-Style/Documentation:
-  Description: Document classes and non-namespace modules.
-  Enabled: false
-
 # Would enforce do_y if x over if x / do y / end. As with GuardClause above,
 # this enforces code organisation that doesn't necesarily make things clearer.
 Style/IfUnlessModifier:
   Enabled: false
 
-# Don't allow assignment in conditions
-Lint/AssignmentInCondition:
-  AllowSafeAssignment: false
+# This rule insists on .zero? and .positive?. Sometimes those make sense,
+# but not always
+Style/NumericPredicate:
+  Enabled: false
 
 # Just a preference to use %w[] over %w()
 Style/PercentLiteralDelimiters:
@@ -86,15 +92,24 @@ Style/PercentLiteralDelimiters:
     '%':  '{}'
     '%r': '{}'
 
+Style/RegexpLiteral:
+  EnforcedStyle: percent_r
+
 # This rule insists that array.join("") is redundant because "" is the implied
 # default, but this is not true if $, is redefined elsewhere.
 Style/RedundantArgument: 
   Enabled: false
 
-# This rule insists on .zero? and .positive?. Sometimes those make sense,
-# but not always
-Style/NumericPredicate:
+# I'm happy with raise, thanks.
+Style/SignalException:
   Enabled: false
+
+# Enforce double quotes everywhere.
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+
+#### NEW COPS ####
 
 # Enable other new cops
 Gemspec/DateAssignment: 
