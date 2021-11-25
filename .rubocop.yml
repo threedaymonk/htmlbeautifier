@@ -4,14 +4,16 @@ AllCops:
     - 'vendor/**/*'
     - '**/*.gemspec'
     - '**/Rakefile'
+  TargetRubyVersion: 3.0
+  SuggestExtensions: false
 
 # private/protected/public
-Style/AccessModifierIndentation:
+Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
 # Just indent parameters by two spaces. It's less volatile if methods change,
 # and there's less busy work lining things up.
-Style/AlignParameters:
+Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 
 # Use Weirich style
@@ -24,7 +26,7 @@ Style/CollectionMethods:
     reduce: inject
 
 # Chain methods with trailing dots.
-Style/DotPosition:
+Layout/DotPosition:
   EnforcedStyle: trailing
 
 # Percent-formatting and hash interpolation both have their place. Don't
@@ -39,7 +41,7 @@ Style/GuardClause:
 Metrics/ClassLength:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 80
   Exclude:
     - 'spec/**/*'
@@ -62,13 +64,13 @@ Style/StringLiterals:
   EnforcedStyle: double_quotes
 
 # Prefer sensible naming to comments everywhere.
-Documentation:
+Style/Documentation:
   Description: Document classes and non-namespace modules.
   Enabled: false
 
 # Would enforce do_y if x over if x / do y / end. As with GuardClause above,
 # this enforces code organisation that doesn't necesarily make things clearer.
-IfUnlessModifier:
+Style/IfUnlessModifier:
   Enabled: false
 
 # Don't allow assignment in conditions
@@ -83,3 +85,147 @@ Style/PercentLiteralDelimiters:
     '%W': '[]'
     '%':  '{}'
     '%r': '{}'
+
+# New cops since last version not enabled yet
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+Layout/ExtraSpacing:
+  Enabled: false
+Layout/HeredocIndentation:
+  Enabled: false
+Layout/LeadingCommentSpace:
+  Enabled: false
+Layout/MultilineArrayBraceLayout:
+  Enabled: false
+Layout/SpaceAroundOperators:
+  Enabled: false
+Layout/SpaceBeforeBlockBraces:
+  Enabled: false
+Layout/SpaceInsidePercentLiteralDelimiters:
+  Enabled: false
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+Naming/MethodParameterName:
+  Enabled: false
+Naming/RescuedExceptionsVariableName:
+  Enabled: false
+Style/AccessorGrouping:
+  Enabled: false
+Style/ExpandPathArguments:
+  Enabled: false
+Style/FormatStringToken:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/MissingRespondToMissing:
+  Enabled: false
+Style/MutableConstant:
+  Enabled: false
+Style/NumericPredicate:
+  Enabled: false
+Style/RedundantRegexpEscape:
+  Enabled: false
+Style/RescueStandardError:
+  Enabled: false
+Style/StringConcatenation:
+  Enabled: false
+
+# Disable these new cops for now
+Gemspec/DateAssignment: 
+  Enabled: false
+Gemspec/RequireMFA: 
+  Enabled: false
+Layout/LineEndStringConcatenationIndentation: 
+  Enabled: false
+Layout/SpaceBeforeBrackets: 
+  Enabled: false
+Lint/AmbiguousAssignment: 
+  Enabled: false
+Lint/AmbiguousOperatorPrecedence: 
+  Enabled: false
+Lint/AmbiguousRange: 
+  Enabled: false
+Lint/DeprecatedConstants: 
+  Enabled: false
+Lint/DuplicateBranch: 
+  Enabled: false
+Lint/DuplicateRegexpCharacterClassElement: 
+  Enabled: false
+Lint/EmptyBlock: 
+  Enabled: false
+Lint/EmptyClass: 
+  Enabled: false
+Lint/EmptyInPattern: 
+  Enabled: false
+Lint/IncompatibleIoSelectWithFiberScheduler: 
+  Enabled: false
+Lint/LambdaWithoutLiteralBlock: 
+  Enabled: false
+Lint/NoReturnInBeginEndBlocks: 
+  Enabled: false
+Lint/NumberedParameterAssignment: 
+  Enabled: false
+Lint/OrAssignmentToConstant: 
+  Enabled: false
+Lint/RedundantDirGlobSort: 
+  Enabled: false
+Lint/RequireRelativeSelfPath: 
+  Enabled: false
+Lint/SymbolConversion: 
+  Enabled: false
+Lint/ToEnumArguments: 
+  Enabled: false
+Lint/TripleQuotes: 
+  Enabled: false
+Lint/UnexpectedBlockArity: 
+  Enabled: false
+Lint/UnmodifiedReduceAccumulator: 
+  Enabled: false
+Lint/UselessRuby2Keywords: 
+  Enabled: false
+Security/IoMethods: 
+  Enabled: false
+Style/ArgumentsForwarding: 
+  Enabled: false
+Style/CollectionCompact: 
+  Enabled: false
+Style/DocumentDynamicEvalDefinition: 
+  Enabled: false
+Style/EndlessMethod: 
+  Enabled: false
+Style/HashConversion: 
+  Enabled: false
+Style/HashExcept: 
+  Enabled: false
+Style/IfWithBooleanLiteralBranches: 
+  Enabled: false
+Style/InPatternThen: 
+  Enabled: false
+Style/MultilineInPatternThen: 
+  Enabled: false
+Style/NegatedIfElseCondition: 
+  Enabled: false
+Style/NilLambda: 
+  Enabled: false
+Style/NumberedParameters: 
+  Enabled: false
+Style/NumberedParametersLimit: 
+  Enabled: false
+Style/OpenStructUse: 
+  Enabled: false
+Style/QuotedSymbols: 
+  Enabled: false
+Style/RedundantArgument: 
+  Enabled: false
+Style/RedundantSelfAssignmentBranch: 
+  Enabled: false
+Style/SelectByRegexp: 
+  Enabled: false
+Style/StringChars: 
+  Enabled: false
+Style/SwapValues: 
+  Enabled: false
