@@ -1,10 +1,12 @@
+require:
+  - rubocop-rake
+
 AllCops:
   # Exclude anything that isn't really part of our code.
   Exclude:
     - '**/*.gemspec'
     - '**/Rakefile'
   TargetRubyVersion: 3.0
-  SuggestExtensions: false
 
 # private/protected/public
 Layout/AccessModifierIndentation:
