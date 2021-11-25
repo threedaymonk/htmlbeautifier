@@ -87,8 +87,6 @@ Style/PercentLiteralDelimiters:
     '%r': '{}'
 
 # New cops since last version not enabled yet
-Lint/ConstantDefinitionInBlock:
-  Enabled: false
 Metrics/BlockLength:
   Enabled: false
 Naming/HeredocDelimiterNaming:
