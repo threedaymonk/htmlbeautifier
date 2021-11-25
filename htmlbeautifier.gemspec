@@ -10,8 +10,6 @@ spec = Gem::Specification.new do |s|
   s.homepage          = "http://github.com/threedaymonk/htmlbeautifier"
   s.license           = "MIT"
 
-  s.has_rdoc          = true
-
   s.files             = %w(Rakefile README.md) + Dir.glob("{bin,test,lib}/**/*")
   s.executables       = Dir["bin/**"].map { |f| File.basename(f) }
 
