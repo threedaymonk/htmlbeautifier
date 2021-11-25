@@ -43,45 +43,47 @@ describe HtmlBeautifier::Parser do
     expect(receiver.sequence).to eq(expected)
   end
 
-  let(:source_tracking_receiver_class) {
-    Class.new(receiver_class) do
-      attr_reader :sources_so_far
-      attr_reader :source_line_numbers
+  context "when tracking source lines" do
+    let(:source_tracking_receiver_class) {
+      Class.new(receiver_class) do
+        attr_reader :sources_so_far
+        attr_reader :source_line_numbers
 
-      def initialize(parser)
-        @sources_so_far = []
-        @source_line_numbers = []
-        @parser = parser
-        super()
-      end
+        def initialize(parser)
+          @sources_so_far = []
+          @source_line_numbers = []
+          @parser = parser
+          super()
+        end
 
-      def append_new_source_so_far(*)
-        @sources_so_far << @parser.source_so_far
-      end
+        def append_new_source_so_far(*)
+          @sources_so_far << @parser.source_so_far
+        end
 
-      def append_new_source_line_number(*)
-        @source_line_numbers << @parser.source_line_number
+        def append_new_source_line_number(*)
+          @source_line_numbers << @parser.source_line_number
+        end
       end
+    }
+
+    it "gives source so far" do
+      parser = described_class.new { |p|
+        p.map %r{(M+)}m, :append_new_source_so_far
+        p.map %r{([\s\n]+)}m, :space_or_newline
+      }
+      receiver = source_tracking_receiver_class.new(parser)
+      parser.scan("M MM MMM", receiver)
+      expect(receiver.sources_so_far).to eq(["M", "M MM", "M MM MMM"])
     end
-  }
 
-  it "gives source so far" do
-    parser = described_class.new { |p|
-      p.map %r{(M+)}m, :append_new_source_so_far
-      p.map %r{([\s\n]+)}m, :space_or_newline
-    }
-    receiver = source_tracking_receiver_class.new(parser)
-    parser.scan("M MM MMM", receiver)
-    expect(receiver.sources_so_far).to eq(["M", "M MM", "M MM MMM"])
-  end
-
-  it "gives source line number" do
-    parser = described_class.new { |p|
-      p.map %r{(M+)}m, :append_new_source_line_number
-      p.map %r{([\s\n]+)}m, :space_or_newline
-    }
-    receiver = source_tracking_receiver_class.new(parser)
-    parser.scan("M \n\nMM\nMMM", receiver)
-    expect(receiver.source_line_numbers).to eq([1, 3, 4])
+    it "gives source line number" do
+      parser = described_class.new { |p|
+        p.map %r{(M+)}m, :append_new_source_line_number
+        p.map %r{([\s\n]+)}m, :space_or_newline
+      }
+      receiver = source_tracking_receiver_class.new(parser)
+      parser.scan("M \n\nMM\nMMM", receiver)
+      expect(receiver.source_line_numbers).to eq([1, 3, 4])
+    end
   end
 end

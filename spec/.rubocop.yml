@@ -1,5 +1,7 @@
 inherit_from:
   - ../.rubocop.yml
+require:
+  - rubocop-rspec
 
 # I can't always fit test data in 80 chars
 Layout/LineLength:
@@ -11,3 +13,29 @@ Metrics/MethodLength:
 # I'd like to enable this, but there's a lot of % interpolation in the specs
 Style/FormatStringToken:
   Enabled: false
+
+# By its nature this is not a class or module
+RSpec/DescribeClass:
+  Exclude:
+    - executable_spec.rb
+
+# Pragmatic relaxation to avoid shelling out too often
+RSpec/MultipleExpectations:
+  Exclude:
+    - executable_spec.rb
+
+# To be revisited
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/FilePath:
+  Enabled: false
+
+# Enable these new cops
+RSpec/ExcessiveDocstringSpacing:
+  Enabled: true
+RSpec/IdenticalEqualityAssertion:
+  Enabled: true
+RSpec/SubjectDeclaration:
+  Enabled: true
+RSpec/Rails/AvoidSetupHook:
+  Enabled: true
