@@ -56,6 +56,9 @@ Metrics/MethodLength:
   Exclude:
     - 'spec/**/*'
 
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
 Style/RegexpLiteral:
   EnforcedStyle: percent_r
 
@@ -91,8 +94,6 @@ Style/PercentLiteralDelimiters:
     '%r': '{}'
 
 # New cops since last version not enabled yet
-Naming/MethodParameterName:
-  Enabled: false
 Naming/RescuedExceptionsVariableName:
   Enabled: false
 Style/AccessorGrouping:

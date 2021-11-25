@@ -29,8 +29,8 @@ describe "bin/htmlbeautifier" do
     ]
   end
 
-  def escape(s)
-    Shellwords.escape(s)
+  def escape(str)
+    Shellwords.escape(str)
   end
 
   it "beautifies a file in place" do
