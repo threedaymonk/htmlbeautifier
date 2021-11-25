@@ -4,7 +4,7 @@ require "htmlbeautifier"
 
 describe HtmlBeautifier do
   it "correctly indents mixed document" do
-    source = code <<-END
+    source = code <<~ERB
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head>
@@ -48,8 +48,8 @@ describe HtmlBeautifier do
       </table>
       </body>
       </html>
-    END
-    expected = code <<-END
+    ERB
+    expected = code <<~ERB
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
         <head>
@@ -98,7 +98,7 @@ describe HtmlBeautifier do
           </table>
         </body>
       </html>
-    END
+    ERB
 
     expect(described_class.beautify(source)).to eq(expected)
   end
@@ -114,22 +114,22 @@ describe HtmlBeautifier do
 
   context "when stop_on_errors is false" do
     it "processes the rest of the document after the errant closing tag" do
-      source = code <<-END
+      source = code <<~HTML
         </head>
         <body>
         <div>
         text
         </div>
         </body>
-      END
-      expected = code <<-END
+      HTML
+      expected = code <<~HTML
         </head>
         <body>
           <div>
             text
           </div>
         </body>
-      END
+      HTML
       expect(described_class.beautify(source, stop_on_errors: false)).
         to eq(expected)
     end

@@ -91,8 +91,6 @@ Style/PercentLiteralDelimiters:
     '%r': '{}'
 
 # New cops since last version not enabled yet
-Naming/HeredocDelimiterNaming:
-  Enabled: false
 Naming/MethodParameterName:
   Enabled: false
 Naming/RescuedExceptionsVariableName:
