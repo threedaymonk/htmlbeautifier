@@ -61,7 +61,8 @@ parser = OptionParser.new do |opts|
   end
   opts.on(
     "-l", "--lint-only",
-    "Lint only, error on files which would be modified - not supported for stdin"
+    "Lint only, error on files which would be modified",
+    "This is not available when reading from standard input"
   ) do |num|
     options[:lint_only] = num
   end
@@ -93,17 +94,20 @@ if ARGV.any?
       failures << path unless input == output.string
     else
       temppath = "#{path}.tmp"
-      File.open(temppath, "w") do |output|
-        beautify path, input, output, options
+      File.open(temppath, "w") do |file|
+        beautify path, input, file, options
       end
       FileUtils.mv temppath, path
     end
   end
   unless failures.empty?
-    relative_paths = failures.map do |path|
+    relative_paths = failures.map { |path|
       Pathname.new(path).relative_path_from Dir.pwd
-    end
-    puts "Lint failed - files would be modified:\n" + relative_paths.join("\n")
+    }
+    puts [
+      "Lint failed - files would be modified:",
+      *relative_paths
+    ].join("\n")
     exit 1
   end
 else
