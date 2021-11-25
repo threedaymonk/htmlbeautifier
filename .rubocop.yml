@@ -100,10 +100,6 @@ Style/RegexpLiteral:
 Style/RedundantArgument: 
   Enabled: false
 
-# I'm happy with raise, thanks.
-Style/SignalException:
-  Enabled: false
-
 # Enforce double quotes everywhere.
 Style/StringLiterals:
   EnforcedStyle: double_quotes
