@@ -46,6 +46,7 @@ describe HtmlBeautifier do
       <td>Second column</td></tr>
       </tbody>
       </table>
+      <custom-tag attr1="" />
       </body>
       </html>
     ERB
@@ -96,6 +97,7 @@ describe HtmlBeautifier do
               </tr>
             </tbody>
           </table>
+          <custom-tag attr1="" />
         </body>
       </html>
     ERB
