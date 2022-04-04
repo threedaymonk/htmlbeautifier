@@ -5,6 +5,7 @@ require "htmlbeautifier"
 require "optparse"
 require "fileutils"
 require "stringio"
+require "pathname"
 
 def beautify(name, input, output, options)
   output.puts HtmlBeautifier.beautify(input, options)
