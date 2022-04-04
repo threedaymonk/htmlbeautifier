@@ -66,11 +66,13 @@ describe "bin/htmlbeautifier" do
     bad_path = path_to("tmp", "bad.html")
     write(bad_path, bad_input)
 
-    expected_message = "Lint failed - files would be modified:\ntmp/bad.html\n"
+    expected_message = "Lint failed - files would be modified:\n<redacted>/tmp/bad.html\n"
 
     _stdout, stderr, status = Open3.capture3(
       "%s %s %s --lint-only" % [command, escape(good_path), escape(bad_path)]
     )
+
+    stderr.sub!(%r{/.*tmp/}, "<redacted>/tmp/")
 
     expect(status.exitstatus).to eq(1)
     expect(stderr).to eq(expected_message)
