@@ -331,6 +331,26 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it "stays indented within <details> with Boolean attribute handled by ERB" do
+    source = code <<~ERB
+      <details <%= "open" if opened %>>
+        <summary>Hello</summary>
+        <div>
+          <table>
+            <% items.each do |item| %>
+              <tr>
+                <td>
+                  <code><%= item %></code>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </details>
+    ERB
+    expect(described_class.beautify(source)).to eq(source)
+  end
+
   it "does not indent after comments" do
     source = code <<~HTML
       <!-- This is a comment -->

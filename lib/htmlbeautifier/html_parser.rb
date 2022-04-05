@@ -10,10 +10,11 @@ module HtmlBeautifier
       link | meta | param | source | track | wbr
     )}mix
     HTML_BLOCK_ELEMENTS = %r{(?:
-      address | article | aside | audio | blockquote | canvas | dd | dir | div |
-      dl | dt | fieldset | figcaption | figure | footer | form | h1 | h2 | h3 |
-      h4 | h5 | h6 | header | hr | li | menu | noframes | noscript | ol | p |
-      pre | section | table | tbody | td | tfoot | th | thead | tr | ul | video
+      address | article | aside | audio | blockquote | canvas | dd | details |
+      dir | div | dl | dt | fieldset | figcaption | figure | footer | form |
+      h1 | h2 | h3 | h4 | h5 | h6 | header | hr | li | menu | noframes |
+      noscript | ol | p | pre | section | table | tbody | td | tfoot | th |
+      thead | tr | ul | video
     )}mix
 
     MAPPINGS = [
