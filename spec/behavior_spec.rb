@@ -2,6 +2,8 @@
 
 require "htmlbeautifier"
 
+HtmlBeautifier::HtmlParser.block_elements << "turbo-frame"
+
 describe HtmlBeautifier do
   it "ignores HTML fragments in embedded ERB" do
     source = code <<~HTML
@@ -461,6 +463,24 @@ describe HtmlBeautifier do
           <li>Second</li>
         </ol>
       </section>
+    HTML
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
+  it "detects and add new lines ot custom block elements" do
+    source = code <<~HTML
+      <main><turbo-frame id="content" target="_top">
+      <div class="card"></div></turbo-frame>
+
+
+      </main>
+    HTML
+    expected = code <<~HTML
+      <main>
+        <turbo-frame id="content" target="_top">
+          <div class="card"></div>
+        </turbo-frame>
+      </main>
     HTML
     expect(described_class.beautify(source)).to eq(expected)
   end
