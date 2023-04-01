@@ -331,6 +331,34 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it "indents case statements" do
+    source = code <<~ERB
+      <div>
+        <% case @x %>
+        <% when :a %>
+        a
+        <% when :b %>
+        b
+        <% else %>
+        c
+        <% end %>
+      </div>
+    ERB
+    expected = code <<~ERB
+      <div>
+        <% case @x %>
+        <% when :a %>
+          a
+        <% when :b %>
+          b
+        <% else %>
+          c
+        <% end %>
+      </div>
+    ERB
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
   it "stays indented within <details> with Boolean attribute handled by ERB" do
     source = code <<~ERB
       <details <%= "open" if opened %>>
