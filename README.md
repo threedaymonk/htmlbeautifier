@@ -29,7 +29,7 @@ $ htmlbeautifier file1 [file2 ...]
 or to operate on standard input and output:
 
 ``` sh
-$ htmlbeautifier < input > output
+$ htmlbeautifier < index.erb > index_formatted.erb
 ```
 
 ### In your code
