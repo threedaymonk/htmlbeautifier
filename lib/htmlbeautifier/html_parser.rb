@@ -18,6 +18,8 @@ module HtmlBeautifier
     )}mix
 
     MAPPINGS = [
+      [%r{(<%-?=\s*javascript_tag.+-?%>)(.*?)(<%-?=?\s*end\s*-?%>)}om,
+       :foreign_block],
       [%r{(<%-?=?)(.*?)(-?%>)}om,
         :embed],
       [%r{<!--\[.*?\]>}om,

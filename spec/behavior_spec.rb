@@ -65,6 +65,26 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it "indents within <script>" do
+    source = code <<~HTML
+      <%= javascript_tag(nonce: true) do -%>
+      function(f) {
+          g();
+          return 42;
+      }
+      <% end -%>
+    HTML
+    expected = code <<~HTML
+      <%= javascript_tag(nonce: true) do -%>
+        function(f) {
+            g();
+            return 42;
+        }
+      <% end -%>
+    HTML
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
   it "does not indent blank lines in scripts" do
     source = "<script>\n  function(f) {\n\n  }\n</script>"
     expected = "<script>\n  function(f) {\n\n  }\n</script>"
