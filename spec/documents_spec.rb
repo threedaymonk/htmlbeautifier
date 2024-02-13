@@ -132,8 +132,8 @@ describe HtmlBeautifier do
           </div>
         </body>
       HTML
-      expect(described_class.beautify(source, stop_on_errors: false)).
-        to eq(expected)
+      expect(described_class.beautify(source, stop_on_errors: false))
+        .to eq(expected)
     end
   end
 end

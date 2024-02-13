@@ -66,7 +66,7 @@ describe HtmlBeautifier do
   end
 
   it "does not indent blank lines in scripts" do
-    source   = "<script>\n  function(f) {\n\n  }\n</script>"
+    source = "<script>\n  function(f) {\n\n  }\n</script>"
     expected = "<script>\n  function(f) {\n\n  }\n</script>"
     expect(described_class.beautify(source)).to eq(expected)
   end
@@ -171,7 +171,7 @@ describe HtmlBeautifier do
   end
 
   it "leaves empty scripts as they are" do
-    source = %{<script src="/foo.js" type="text/javascript" charset="utf-8"></script>}
+    source = %(<script src="/foo.js" type="text/javascript" charset="utf-8"></script>)
     expect(described_class.beautify(source)).to eq(source)
   end
 
@@ -282,12 +282,12 @@ describe HtmlBeautifier do
   end
 
   it "does not break line on embedded code within <script> opening tag" do
-    source = %{<script src="<%= path %>" type="text/javascript"></script>}
+    source = %(<script src="<%= path %>" type="text/javascript"></script>)
     expect(described_class.beautify(source)).to eq(source)
   end
 
   it "does not break line on embedded code within normal element" do
-    source = %{<img src="<%= path %>" alt="foo" />}
+    source = %(<img src="<%= path %>" alt="foo" />)
     expect(described_class.beautify(source)).to eq(source)
   end
 
@@ -481,7 +481,7 @@ describe HtmlBeautifier do
   end
 
   it "adds newlines around <pre>" do
-    source = %{<section><pre>puts "Allons-y!"</pre></section>}
+    source = %(<section><pre>puts "Allons-y!"</pre></section>)
     expected = code <<~HTML
       <section>
         <pre>puts "Allons-y!"</pre>
@@ -491,7 +491,7 @@ describe HtmlBeautifier do
   end
 
   it "adds newline after <br>" do
-    source = %{<p>Lorem ipsum<br>dolor sit<br />amet,<br/>consectetur.</p>}
+    source = %(<p>Lorem ipsum<br>dolor sit<br />amet,<br/>consectetur.</p>)
     expected = code <<~HTML
       <p>Lorem ipsum<br>
         dolor sit<br />

@@ -25,7 +25,7 @@ module HtmlBeautifier
       @embedded_indenter = RubyIndenter.new
     end
 
-  private
+    private
 
     def error(text)
       return unless @stop_on_errors

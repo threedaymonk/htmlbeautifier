@@ -8,13 +8,13 @@ require "stringio"
 
 def beautify(name, input, output, options)
   output.puts HtmlBeautifier.beautify(input, options)
-rescue StandardError => e
+rescue => e
   raise "Error parsing #{name}: #{e}"
 end
 
 executable = File.basename(__FILE__)
 
-options = { indent: "  " }
+options = {indent: "  "}
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{executable} [options] [file ...]"
   opts.separator <<~STRING
@@ -101,7 +101,7 @@ if ARGV.any?
     end
   end
   unless failures.empty?
-    $stderr.puts [
+    warn [
       "Lint failed - files would be modified:",
       *failures
     ].join("\n")

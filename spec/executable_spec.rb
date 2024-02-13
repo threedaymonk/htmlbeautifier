@@ -10,9 +10,7 @@ describe "bin/htmlbeautifier" do
   end
 
   def write(path, content)
-    File.open(path, "w") do |f|
-      f.write content
-    end
+    File.write(path, content)
   end
 
   def read(path)
