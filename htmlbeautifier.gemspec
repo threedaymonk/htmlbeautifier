@@ -19,7 +19,7 @@ spec = Gem::Specification.new do |s|
 
   s.add_development_dependency "rake", "~> 13"
   s.add_development_dependency "rspec", "~> 3"
-  s.add_development_dependency "rubocop", "~> 1"
+  s.add_development_dependency "standard", "~> 1.33"
   s.add_development_dependency "rubocop-rspec", "~> 2"
   s.add_development_dependency "rubocop-rake", "~> 0.6"
 end

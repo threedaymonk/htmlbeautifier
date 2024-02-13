@@ -26,14 +26,14 @@ module HtmlBeautifier
       [source_so_far.chomp.split(%r{\n}).count, 1].max
     end
 
-  private
+    private
 
     def dispatch(receiver)
       _, method = @maps.find { |pattern, _| @scanner.scan(pattern) }
       raise "Unmatched sequence" unless method
 
       receiver.__send__(method, *extract_params(@scanner))
-    rescue StandardError => e
+    rescue => e
       raise "#{e.message} on line #{source_line_number}"
     end
 
