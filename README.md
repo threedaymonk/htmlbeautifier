@@ -23,13 +23,13 @@ Ideal for tidying up Rails templates.
 To update files in-place:
 
 ``` sh
-$ htmlbeautifier file1 [file2 ...]
+$ htmlbeautifier file1.html.erb [file2.html.erb ...]
 ```
 
 or to operate on standard input and output:
 
 ``` sh
-$ htmlbeautifier < input > output
+$ htmlbeautifier < untidy.html.erb > formatted.html.erb
 ```
 
 ### In your code
@@ -37,13 +37,13 @@ $ htmlbeautifier < input > output
 ```ruby
 require 'htmlbeautifier'
 
-beautiful = HtmlBeautifier.beautify(messy)
+beautiful = HtmlBeautifier.beautify(untify_html_string)
 ```
 
 You can also specify how to indent (the default is two spaces):
 
 ```ruby
-beautiful = HtmlBeautifier.beautify(messy, indent: "\t")
+beautiful = HtmlBeautifier.beautify(untidy_html_string, indent: "\t")
 ```
 
 ## Installation
