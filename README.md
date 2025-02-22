@@ -61,6 +61,23 @@ To use the gem with Bundler, add to your `Gemfile`:
 gem 'htmlbeautifier'
 ```
 
+## Config file
+
+Create `config/htmlbeautifier.yml` or `.htmlbeautifier.yml` in you application folder.
+Example:
+
+```yml
+indent: "  " # spaces or "\t" for tab
+
+initial_level: 0
+
+# Stop when invalid nesting is encountered in the input
+stop_on_errors: false
+
+# Set number of consecutive blank lines
+keep_blank_lines: 0
+```
+
 ## Contributing
 
 1. Follow [these guidelines][git-commit] when writing commit messages (briefly,

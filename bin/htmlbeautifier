@@ -14,7 +14,7 @@ end
 
 executable = File.basename(__FILE__)
 
-options = {indent: "  "}
+options = {}
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{executable} [options] [file ...]"
   opts.separator <<~STRING
@@ -31,7 +31,7 @@ parser = OptionParser.new do |opts|
   STRING
   opts.on(
     "-t", "--tab-stops NUMBER", Integer,
-    "Set number of spaces per indent (default #{options[:tab_stops]})"
+    "Set number of spaces per indent (default 2)"
   ) do |num|
     options[:indent] = " " * num
   end
@@ -43,15 +43,15 @@ parser = OptionParser.new do |opts|
   end
   opts.on(
     "-i", "--indent-by NUMBER", Integer,
-    "Indent the output by NUMBER steps (default 0)."
+    "Indent the output by NUMBER steps (default 0)"
   ) do |num|
     options[:initial_level] = num
   end
   opts.on(
     "-e", "--stop-on-errors",
     "Stop when invalid nesting is encountered in the input"
-  ) do |num|
-    options[:stop_on_errors] = num
+  ) do
+    options[:stop_on_errors] = true
   end
   opts.on(
     "-b", "--keep-blank-lines NUMBER", Integer,
@@ -63,8 +63,8 @@ parser = OptionParser.new do |opts|
     "-l", "--lint-only",
     "Lint only, error on files which would be modified",
     "This is not available when reading from standard input"
-  ) do |num|
-    options[:lint_only] = num
+  ) do
+    options[:lint_only] = true
   end
   opts.on(
     "-v", "--version",
@@ -83,6 +83,9 @@ parser = OptionParser.new do |opts|
 end
 
 parser.parse!
+
+app_config = HtmlBeautifier::Config.app_config
+options = app_config.merge(options)
 
 if ARGV.any?
   failures = []

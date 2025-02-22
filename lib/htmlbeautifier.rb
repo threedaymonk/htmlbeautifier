@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "htmlbeautifier/builder"
+require "htmlbeautifier/config"
 require "htmlbeautifier/html_parser"
 require "htmlbeautifier/version"
 

@@ -158,4 +158,24 @@ describe "bin/htmlbeautifier" do
 
     expect(read(path)).to eq(expected)
   end
+
+  describe "with a configuration file" do
+    before do
+      FileUtils.mkdir_p path_to("tmp", "config")
+      write path_to("tmp", "config", "htmlbeautifier.yml"), <<~YAML
+        keep_blank_lines: 2
+      YAML
+    end
+
+    it "allows configuration from a file" do
+      input = "<h1>foo</h1>\n\n\n\n\n<p>bar</p>\n"
+      expected = "<h1>foo</h1>\n\n\n<p>bar</p>\n"
+      path = path_to("tmp", "in-place.html")
+      write path, input
+
+      system "%s %s" % [command, escape(path)]
+
+      expect(read(path)).to eq(expected)
+    end
+  end
 end
