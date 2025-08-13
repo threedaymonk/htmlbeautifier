@@ -585,6 +585,24 @@ describe HtmlBeautifier do
     expect(described_class.beautify(source)).to eq(expected)
   end
 
+  it "handles multi-line self-closing tags" do
+    source = code <<~HTML
+      <div>
+      <input
+          class="btn"
+        />
+      </div>
+    HTML
+    expected = code <<~HTML
+      <div>
+        <input
+          class="btn"
+        />
+      </div>
+    HTML
+    expect(described_class.beautify(source)).to eq(expected)
+  end
+
   it "removes excess indentation on next line after text" do
     source = code <<~HTML
       Lorem ipsum
